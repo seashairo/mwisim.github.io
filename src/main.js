@@ -2,8 +2,10 @@ import Equipment from "./combatsimulator/equipment.js";
 import Player from "./combatsimulator/player.js";
 import abilityDetailMap from "./combatsimulator/data/abilityDetailMap.json";
 import itemDetailMap from "./combatsimulator/data/itemDetailMap.json";
+import houseRoomDetailMap from "./combatsimulator/data/houseRoomDetailMap.json";
 import Ability from "./combatsimulator/ability.js";
 import Consumable from "./combatsimulator/consumable.js";
+import HouseRoom from "./combatsimulator/houseRoom"
 import combatTriggerDependencyDetailMap from "./combatsimulator/data/combatTriggerDependencyDetailMap.json";
 import combatTriggerConditionDetailMap from "./combatsimulator/data/combatTriggerConditionDetailMap.json";
 import combatTriggerComparatorDetailMap from "./combatsimulator/data/combatTriggerComparatorDetailMap.json";
@@ -27,6 +29,12 @@ let drinks = [null, null, null];
 let abilities = [null, null, null, null];
 let triggerMap = {};
 let modalTriggers = [];
+
+window.revenue = 0;
+window.noRngRevenue = 0;
+window.expenses = 0;
+window.profit = 0;
+window.noRngProfit = 0;
 
 // #region Worker
 
@@ -54,7 +62,7 @@ worker.onmessage = function (event) {
 // #region Equipment
 
 function initEquipmentSection() {
-    ["head", "body", "legs", "feet", "hands", "main_hand", "two_hand", "off_hand", "pouch"].forEach((type) => {
+    ["head", "body", "legs", "feet", "hands", "main_hand", "two_hand", "off_hand", "pouch", "neck", "earrings", "ring"].forEach((type) => {
         initEquipmentSelect(type);
         initEnhancementLevelInput(type);
     });
@@ -81,6 +89,51 @@ function initEquipmentSelect(equipmentType) {
     selectElement.addEventListener("change", (event) => {
         equipmentSelectHandler(event, equipmentType);
     });
+}
+
+function initHouseRoomsModal() {
+    let houseRoomsList = document.getElementById("houseRoomsList");
+    let newChildren = [];
+    let houseRooms = Object.values(houseRoomDetailMap).sort((a, b) => a.sortIndex - b.sortIndex);
+    player.houseRooms = {};
+
+    for (const room of Object.values(houseRooms)) {
+        player.houseRooms[room.hrid] = 0;
+
+        let row = createElement("div", "row mb-2");
+
+        let nameCol = createElement("div", "col-md-4 offset-md-3 align-self-center", room.name);
+        row.appendChild(nameCol);
+
+        let levelCol = createElement("div", "col-md-2");
+        let levelInput = createHouseInput(room.hrid);
+
+        levelInput.addEventListener("input", function (e) {
+            let inputValue = e.target.value;
+            const hrid = e.target.dataset.houseHrid;
+            player.houseRooms[hrid] = parseInt(inputValue);
+        });
+
+        levelCol.appendChild(levelInput);
+        row.appendChild(levelCol);
+
+        newChildren.push(row);
+    }
+
+    houseRoomsList.replaceChildren(...newChildren);
+}
+
+function createHouseInput(hrid) {
+    let levelInput = document.createElement("input");
+    levelInput.className = "form-control";
+    levelInput.type = "number";
+    levelInput.placeholder = 0;
+    levelInput.min = 0;
+    levelInput.max = 8;
+    levelInput.step = 1;
+    levelInput.dataset.houseHrid = hrid;
+
+    return levelInput;
 }
 
 function initEnhancementLevelInput(equipmentType) {
@@ -131,7 +184,7 @@ function enhancementLevelInputHandler() {
 }
 
 function updateEquipmentState() {
-    ["head", "body", "legs", "feet", "hands", "main_hand", "two_hand", "off_hand", "pouch"].forEach((type) => {
+    ["head", "body", "legs", "feet", "hands", "main_hand", "two_hand", "off_hand", "pouch", "neck", "earrings", "ring"].forEach((type) => {
         let equipmentType = "/equipment_types/" + type;
         let selectType = type;
         if (type == "main_hand" || type == "two_hand") {
@@ -157,6 +210,61 @@ function updateEquipmentState() {
         let enhancementLevel = Number(document.getElementById("inputEquipmentEnhancementLevel_" + selectType).value);
         player.equipment[equipmentType] = new Equipment(gameItem.hrid, enhancementLevel);
     });
+}
+
+document.getElementById("selectEquipment_set").onchange = changeEquipmentSetListener;
+
+function changeEquipmentSetListener() {
+    let value = this.value
+    let optgroupType = this.options[this.selectedIndex].parentNode.label;
+
+    ["head", "body", "legs", "feet", "hands"].forEach((type) => {
+        let selectType = type;
+
+        let currentEquipment = document.getElementById("selectEquipment_" + selectType);
+        if (type === "feet") {
+            type = "_boots";
+        }
+        if (type === "hands") {
+            if (optgroupType === "RANGED") {
+                type = "_bracers";
+            } else if (optgroupType === "MAGIC") {
+                type = "_gloves";
+            } else {
+                type = "_gauntlets";
+            }
+        }
+        if (type === "head") {
+            if (optgroupType === "RANGED") {
+                type = "_hood";
+            } else if (optgroupType === "MAGIC") {
+                type = "_hat";
+            } else {
+                type = "_helmet";
+            }
+        }
+        if (type === "legs") {
+            if (optgroupType === "RANGED") {
+                type = "_chaps";
+            } else if (optgroupType === "MAGIC") {
+                type = "_robe_bottoms";
+            } else {
+                type = "_plate_legs";
+            }
+        }
+        if (type === "body") {
+            if (optgroupType === "RANGED") {
+                type = "_tunic";
+            } else if (optgroupType === "MAGIC") {
+                type = "_robe_top";
+            } else {
+                type = "_plate_body";
+            }
+        }
+        currentEquipment.value = "/items/" + value.toLowerCase() + type;
+    });
+    updateEquipmentState();
+    updateUI();
 }
 
 // #endregion
@@ -188,18 +296,28 @@ function updateCombatStatsUI() {
         "smashMaxDamage",
         "rangedAccuracyRating",
         "rangedMaxDamage",
+        "magicAccuracyRating",
         "magicMaxDamage",
         "stabEvasionRating",
         "slashEvasionRating",
         "smashEvasionRating",
         "rangedEvasionRating",
+        "magicEvasionRating",
         "totalArmor",
         "totalWaterResistance",
         "totalNatureResistance",
-        "totalFireResistance",
+        "totalFireResistance"
     ].forEach((stat) => {
         let element = document.getElementById("combatStat_" + stat);
         element.innerHTML = Math.floor(player.combatDetails[stat]);
+    });
+
+    [
+        "abilityHaste",
+        "tenacity"
+    ].forEach((stat) => {
+        let element = document.getElementById("combatStat_" + stat);
+        element.innerHTML = Math.floor(player.combatDetails.combatStats[stat]);
     });
 
     [
@@ -209,15 +327,24 @@ function updateCombatStatsUI() {
         "fireAmplify",
         "healingAmplify",
         "lifeSteal",
-        "physicalReflectPower",
         "HPRegen",
         "MPRegen",
-        "experienceRate",
+        "physicalReflectPower",
+        "criticalRate",
+        "criticalDamage",
+        "combatExperience",
+        "taskDamage",
+        "armorPenetration",
+        "waterPenetration",
+        "naturePenetration",
+        "firePenetration",
+        "manaLeech",
+        "castSpeed"
     ].forEach((stat) => {
         let element = document.getElementById("combatStat_" + stat);
         let value = (100 * player.combatDetails.combatStats[stat]).toLocaleString([], {
             minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 4,
         });
         element.innerHTML = value + "%";
     });
@@ -663,19 +790,38 @@ function initZones() {
 // #region Simulation Result
 
 function showSimulationResult(simResult) {
+    let expensesModalTable = document.querySelector("#expensesTable > tbody");
+    expensesModalTable.innerHTML = '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>';
+    let revenueModalTable = document.querySelector("#revenueTable > tbody");
+    revenueModalTable.innerHTML = '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>';
+    let noRngRevenueModalTable = document.querySelector("#noRngRevenueTable > tbody");
+    noRngRevenueModalTable.innerHTML = '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>';
     showKills(simResult);
     showDeaths(simResult);
     showExperienceGained(simResult);
     showConsumablesUsed(simResult);
+    showManaUsed(simResult);
     showHitpointsGained(simResult);
     showManapointsGained(simResult);
     showDamageDone(simResult);
     showDamageTaken(simResult);
+    window.profit = window.revenue - window.expenses;
+    document.getElementById('profitSpan').innerText = window.profit.toLocaleString();
+    document.getElementById('profitPreview').innerText = window.profit.toLocaleString();
+    window.noRngProfit = window.noRngRevenue - window.expenses;
+    document.getElementById('noRngProfitSpan').innerText = window.noRngProfit.toLocaleString();
+    document.getElementById('noRngProfitPreview').innerText = window.noRngProfit.toLocaleString();
 }
 
 function showKills(simResult) {
     let resultDiv = document.getElementById("simulationResultKills");
+    let dropsResultDiv = document.getElementById("simulationResultDrops");
+    let noRngDropsResultDiv = document.getElementById("noRngDrops");
     let newChildren = [];
+    let newDropChildren = [];
+    let newNoRngDropChildren = [];
+    let dropRateMultiplier = simResult.dropRateMultiplier;
+    let rareFindMultiplier = simResult.rareFindMultiplier;
 
     let hoursSimulated = simResult.simulatedTime / ONE_HOUR;
     let playerDeaths = simResult.deaths["player"] ?? 0;
@@ -688,6 +834,8 @@ function showKills(simResult) {
         .filter((enemy) => enemy != "player")
         .sort();
 
+    const totalDropMap = new Map();
+    const noRngTotalDropMap = new Map();
     for (const monster of monsters) {
         let killsPerHour = (simResult.deaths[monster] / hoursSimulated).toFixed(1);
         let monsterRow = createRow(
@@ -695,9 +843,168 @@ function showKills(simResult) {
             [combatMonsterDetailMap[monster].name, killsPerHour]
         );
         newChildren.push(monsterRow);
+
+        const dropMap = new Map();
+        const rareDropMap = new Map();
+        for (const drop of combatMonsterDetailMap[monster].dropTable) {
+            dropMap.set(itemDetailMap[drop.itemHrid]['name'], { "dropRate": drop.dropRate * dropRateMultiplier, "number": 0, "dropMin": drop.minCount, "dropMax": drop.maxCount, "noRngDropAmount": 0 });
+        }
+        for (const drop of combatMonsterDetailMap[monster].rareDropTable) {
+            rareDropMap.set(itemDetailMap[drop.itemHrid]['name'], { "dropRate": drop.dropRate * rareFindMultiplier, "number": 0, "dropMin": drop.minCount, "dropMax": drop.maxCount, "noRngDropAmount": 0 });
+        }
+
+        for (let dropObject of dropMap.values()) {
+            dropObject.noRngDropAmount += simResult.deaths[monster] * dropObject.dropRate * ((dropObject.dropMax + dropObject.dropMin) / 2);
+        }
+        for (let dropObject of rareDropMap.values()) {
+            dropObject.noRngDropAmount += simResult.deaths[monster] * dropObject.dropRate * ((dropObject.dropMax + dropObject.dropMin) / 2);
+        }
+
+        for (let i = 0; i < simResult.deaths[monster]; i++) {
+            for (let dropObject of dropMap.values()) {
+                let chance = Math.random();
+                if (chance <= dropObject.dropRate) {
+                    let amount = Math.floor(Math.random() * (dropObject.dropMax - dropObject.dropMin + 1) + dropObject.dropMin)
+                    dropObject.number = dropObject.number + amount;
+                }
+            }
+            for (let dropObject of rareDropMap.values()) {
+                let chance = Math.random();
+                if (chance <= dropObject.dropRate) {
+                    let amount = Math.floor(Math.random() * (dropObject.dropMax - dropObject.dropMin + 1) + dropObject.dropMin)
+                    dropObject.number = dropObject.number + amount;
+                }
+            }
+        }
+        for (let [name, dropObject] of dropMap.entries()) {
+            if (totalDropMap.has(name)) {
+                totalDropMap.set(name, totalDropMap.get(name) + dropObject.number);
+            } else {
+                totalDropMap.set(name, dropObject.number);
+            }
+            if (noRngTotalDropMap.has(name)) {
+                noRngTotalDropMap.set(name, noRngTotalDropMap.get(name) + dropObject.noRngDropAmount);
+            } else {
+                noRngTotalDropMap.set(name, dropObject.noRngDropAmount);
+            }
+        }
+        for (let [name, dropObject] of rareDropMap.entries()) {
+            if (totalDropMap.has(name)) {
+                totalDropMap.set(name, totalDropMap.get(name) + dropObject.number);
+            } else {
+                totalDropMap.set(name, dropObject.number);
+            }
+            if (noRngTotalDropMap.has(name)) {
+                noRngTotalDropMap.set(name, noRngTotalDropMap.get(name) + dropObject.noRngDropAmount);
+            } else {
+                noRngTotalDropMap.set(name, dropObject.noRngDropAmount);
+            }
+        }
     }
 
+    let revenueModalTable = document.querySelector("#revenueTable > tbody");
+    let total = 0;
+    for (let [name, dropAmount] of totalDropMap.entries()) {
+        let dropRow = createRow(
+            ["col-md-6", "col-md-6 text-end"],
+            [name, dropAmount.toLocaleString()]
+        );
+        newDropChildren.push(dropRow);
+
+        let tableRow = '<tr class="' + name.replace(/\s+/g, '') + '"><td>';
+        tableRow += name;
+        tableRow += '</td><td contenteditable="true">';
+        let price = -1;
+        let revenueSetting = document.getElementById('selectPrices_drops').value;
+        if (window.prices) {
+            let item = window.prices[name];
+            if (item) {
+                if (revenueSetting == 'bid') {
+                    if (item['bid'] !== -1) {
+                        price = item['bid'];
+                    } else if (item['ask'] !== -1) {
+                        price = item['ask'];
+                    }
+                } else if (revenueSetting == 'ask') {
+                    if (item['ask'] !== -1) {
+                        price = item['ask'];
+                    } else if (item['bid'] !== -1) {
+                        price = item['bid'];
+                    }
+                }
+                if (price == -1) {
+                    price = item['vendor'];
+                }
+            }
+        }
+        tableRow += price;
+        tableRow += '</td><td>';
+        tableRow += dropAmount;
+        tableRow += '</td><td>';
+        tableRow += price * dropAmount;
+        tableRow += '</td></tr>';
+        revenueModalTable.innerHTML += tableRow;
+        total += price * dropAmount;
+    }
+
+
+
+    let noRngRevenueModalTable = document.querySelector("#noRngRevenueTable > tbody");
+    let noRngTotal = 0;
+    for (let [name, dropAmount] of noRngTotalDropMap.entries()) {
+        let noRngDropRow = createRow(
+            ["col-md-6", "col-md-6 text-end"],
+            [name, dropAmount.toLocaleString()]
+        );
+        newNoRngDropChildren.push(noRngDropRow);
+
+        let tableRow = '<tr class="' + name.replace(/\s+/g, '') + '"><td>';
+        tableRow += name;
+        tableRow += '</td><td contenteditable="true">';
+        let price = -1;
+        let revenueSetting = document.getElementById('selectPrices_drops').value;
+        if (window.prices) {
+            let item = window.prices[name];
+            if (item) {
+                if (revenueSetting == 'bid') {
+                    if (item['bid'] !== -1) {
+                        price = item['bid'];
+                    } else if (item['ask'] !== -1) {
+                        price = item['ask'];
+                    }
+                } else if (revenueSetting == 'ask') {
+                    if (item['ask'] !== -1) {
+                        price = item['ask'];
+                    } else if (item['bid'] !== -1) {
+                        price = item['bid'];
+                    }
+                }
+                if (price == -1) {
+                    price = item['vendor'];
+                }
+            }
+        }
+        tableRow += price;
+        tableRow += '</td><td>';
+        tableRow += dropAmount;
+        tableRow += '</td><td>';
+        tableRow += price * dropAmount;
+        tableRow += '</td></tr>';
+        noRngRevenueModalTable.innerHTML += tableRow;
+        noRngTotal += price * dropAmount;
+    }
+
+    document.getElementById('revenueSpan').innerText = total.toLocaleString();
+    window.revenue = total;
+    document.getElementById('noRngRevenueSpan').innerText = noRngTotal.toLocaleString();
+    window.noRngRevenue = noRngTotal;
+
+    let resultAccordion = document.getElementById("noRngDropsAccordion");
+    showElement(resultAccordion);
+
     resultDiv.replaceChildren(...newChildren);
+    dropsResultDiv.replaceChildren(...newDropChildren);
+    noRngDropsResultDiv.replaceChildren(...newNoRngDropChildren);
 }
 
 function showDeaths(simResult) {
@@ -748,6 +1055,8 @@ function showConsumablesUsed(simResult) {
 
     let consumablesUsed = Object.entries(simResult.consumablesUsed["player"]).sort((a, b) => b[1] - a[1]);
 
+    let expensesModalTable = document.querySelector("#expensesTable > tbody");
+    let total = 0;
     for (const [consumable, amount] of consumablesUsed) {
         let consumablesPerHour = (amount / hoursSimulated).toFixed(0);
         let consumableRow = createRow(
@@ -755,6 +1064,67 @@ function showConsumablesUsed(simResult) {
             [itemDetailMap[consumable].name, consumablesPerHour]
         );
         newChildren.push(consumableRow);
+
+        let tableRow = '<tr class="' + itemDetailMap[consumable].name.replace(/\s+/g, '') + '"><td>';
+        tableRow += itemDetailMap[consumable].name;
+        tableRow += '</td><td contenteditable="true">';
+        let price = -1;
+        let expensesSetting = document.getElementById('selectPrices_consumables').value;
+        if (window.prices) {
+            let item = window.prices[itemDetailMap[consumable].name];
+            if (item) {
+                if (expensesSetting == 'bid') {
+                    if (item['bid'] !== -1) {
+                        price = item['bid'];
+                    } else if (item['ask'] !== -1) {
+                        price = item['ask'];
+                    }
+                } else if (expensesSetting == 'ask') {
+                    if (item['ask'] !== -1) {
+                        price = item['ask'];
+                    } else if (item['bid'] !== -1) {
+                        price = item['bid'];
+                    }
+                }
+                if (price == -1) {
+                    price = item['vendor'];
+                }
+            }
+        }
+        tableRow += price;
+        tableRow += '</td><td>';
+        tableRow += amount;
+        tableRow += '</td><td>';
+        tableRow += price * amount;
+        tableRow += '</td></tr>';
+        expensesModalTable.innerHTML += tableRow;
+        total += price * amount;
+    }
+
+    document.getElementById('expensesSpan').innerText = total.toLocaleString();
+    window.expenses = total;
+
+    resultDiv.replaceChildren(...newChildren);
+}
+
+function showManaUsed(simResult) {
+    let resultDiv = document.getElementById("simulationResultManaUsed");
+    let newChildren = [];
+
+    let hoursSimulated = simResult.simulatedTime / ONE_HOUR;
+    if (!simResult.manaUsed) {
+        resultDiv.replaceChildren(...newChildren);
+        return;
+    }
+    for (let ability in simResult.manaUsed) {
+        let manaPerHour = (simResult.manaUsed[ability] / hoursSimulated).toFixed(0);
+        let castsPerHour = (manaPerHour / abilityDetailMap[ability].manaCost).toFixed(2);
+        castsPerHour = " (" + castsPerHour + ")";
+        let manaRow = createRow(
+            ["col-md-6", "col-md-6 text-end"],
+            [ability.split("/")[2].replaceAll("_", " ") + castsPerHour, manaPerHour]
+        );
+        newChildren.push(manaRow);
     }
 
     resultDiv.replaceChildren(...newChildren);
@@ -846,6 +1216,9 @@ function showManapointsGained(simResult) {
             case "regen":
                 sourceText = "Regen";
                 break;
+            case "manaLeech":
+                sourceText = "Mana Leech"
+                break;
             default:
                 sourceText = itemDetailMap[source].name;
                 break;
@@ -871,15 +1244,23 @@ function showDamageDone(simResult) {
     let totalDamageDone = {};
     let enemyIndex = 1;
 
-    let secondsSimulated = simResult.simulatedTime / ONE_SECOND;
+    let totalSecondsSimulated = simResult.simulatedTime / ONE_SECOND;
 
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i < 7; i++) {
         let accordion = document.getElementById("simulationResultDamageDoneAccordionEnemy" + i);
         hideElement(accordion);
     }
 
+    let bossTimeHeadingDiv = document.getElementById("simulationBossTimeHeading");
+    bossTimeHeadingDiv.classList.add("d-none");
+    let bossTimeDiv = document.getElementById("simulationBossTime");
+    bossTimeDiv.classList.add("d-none");
+
     for (const [target, abilities] of Object.entries(simResult.attacks["player"])) {
         let targetDamageDone = {};
+
+        const i = simResult.timeSpentAlive.findIndex(e => e.name === target);
+        let aliveSecondsSimulated = simResult.timeSpentAlive[i].timeSpentAlive / ONE_SECOND;
 
         for (const [ability, abilityCasts] of Object.entries(abilities)) {
             let casts = Object.values(abilityCasts).reduce((prev, cur) => prev + cur, 0);
@@ -907,7 +1288,7 @@ function showDamageDone(simResult) {
         }
 
         let resultDiv = document.getElementById("simulationResultDamageDoneEnemy" + enemyIndex);
-        createDamageTable(resultDiv, targetDamageDone, secondsSimulated);
+        createDamageTable(resultDiv, targetDamageDone, aliveSecondsSimulated);
 
         let resultAccordion = document.getElementById("simulationResultDamageDoneAccordionEnemy" + enemyIndex);
         showElement(resultAccordion);
@@ -918,20 +1299,31 @@ function showDamageDone(simResult) {
         let targetName = combatMonsterDetailMap[target].name;
         resultAccordionButton.innerHTML = "<b>Damage Done (" + targetName + ")</b>";
 
+        if (simResult.bossFightMonsters.includes(target)) {
+            let hoursSpentOnBoss = (aliveSecondsSimulated / 60 / 60).toFixed(2);
+            let percentSpentOnBoss = (aliveSecondsSimulated / totalSecondsSimulated * 100).toFixed(2);
+
+            let bossRow = createRow(["col-md-6", "col-md-6 text-end"], [targetName, hoursSpentOnBoss + "h(" + percentSpentOnBoss + "%)"]);
+            bossTimeDiv.replaceChildren(bossRow);
+
+            bossTimeHeadingDiv.classList.remove("d-none");
+            bossTimeDiv.classList.remove("d-none");
+        }
+
         enemyIndex++;
     }
 
     let totalResultDiv = document.getElementById("simulationResultTotalDamageDone");
-    createDamageTable(totalResultDiv, totalDamageDone, secondsSimulated);
+    createDamageTable(totalResultDiv, totalDamageDone, totalSecondsSimulated);
 }
 
 function showDamageTaken(simResult) {
     let totalDamageTaken = {};
     let enemyIndex = 1;
 
-    let secondsSimulated = simResult.simulatedTime / ONE_SECOND;
+    let totalSecondsSimulated = simResult.simulatedTime / ONE_SECOND;
 
-    for (let i = 1; i < 6; i++) {
+    for (let i = 1; i < 7; i++) {
         let accordion = document.getElementById("simulationResultDamageTakenAccordionEnemy" + i);
         hideElement(accordion);
     }
@@ -941,6 +1333,8 @@ function showDamageTaken(simResult) {
             continue;
         }
 
+        const i = simResult.timeSpentAlive.findIndex(e => e.name === source);
+        let aliveSecondsSimulated = simResult.timeSpentAlive[i].timeSpentAlive / ONE_SECOND;
         let sourceDamageTaken = {};
 
         for (const [ability, abilityCasts] of Object.entries(targets["player"])) {
@@ -969,7 +1363,7 @@ function showDamageTaken(simResult) {
         }
 
         let resultDiv = document.getElementById("simulationResultDamageTakenEnemy" + enemyIndex);
-        createDamageTable(resultDiv, sourceDamageTaken, secondsSimulated);
+        createDamageTable(resultDiv, sourceDamageTaken, aliveSecondsSimulated);
 
         let resultAccordion = document.getElementById("simulationResultDamageTakenAccordionEnemy" + enemyIndex);
         showElement(resultAccordion);
@@ -984,7 +1378,7 @@ function showDamageTaken(simResult) {
     }
 
     let totalResultDiv = document.getElementById("simulationResultTotalDamageTaken");
-    createDamageTable(totalResultDiv, totalDamageTaken, secondsSimulated);
+    createDamageTable(totalResultDiv, totalDamageTaken, totalSecondsSimulated);
 }
 
 function createDamageTable(resultDiv, damageDone, secondsSimulated) {
@@ -1010,8 +1404,8 @@ function createDamageTable(resultDiv, damageDone, secondsSimulated) {
             case "autoAttack":
                 abilityText = "Auto Attack";
                 break;
-            case "bleed":
-                abilityText = "Bleed";
+            case "damageOverTime":
+                abilityText = "Damage Over Time";
                 break;
             case "physicalReflect":
                 abilityText = "Physical Reflect";
@@ -1249,6 +1643,7 @@ function getEquipmentSetFromUI() {
         drinks: {},
         abilities: {},
         triggerMap: {},
+        houseRooms: {},
     };
 
     ["stamina", "intelligence", "attack", "power", "defense", "ranged", "magic"].forEach((skill) => {
@@ -1256,7 +1651,7 @@ function getEquipmentSetFromUI() {
         equipmentSet.levels[skill] = Number(levelInput.value);
     });
 
-    ["head", "body", "legs", "feet", "hands", "weapon", "off_hand", "pouch"].forEach((type) => {
+    ["head", "body", "legs", "feet", "hands", "weapon", "off_hand", "pouch", "neck", "earrings", "ring"].forEach((type) => {
         let equipmentSelect = document.getElementById("selectEquipment_" + type);
         let enhancementLevelInput = document.getElementById("inputEquipmentEnhancementLevel_" + type);
 
@@ -1287,6 +1682,8 @@ function getEquipmentSetFromUI() {
 
     equipmentSet.triggerMap = triggerMap;
 
+    equipmentSet.houseRooms = player.houseRooms;
+
     return equipmentSet;
 }
 
@@ -1296,7 +1693,7 @@ function loadEquipmentSetIntoUI(equipmentSet) {
         levelInput.value = equipmentSet.levels[skill] ?? 1;
     });
 
-    ["head", "body", "legs", "feet", "hands", "weapon", "off_hand", "pouch"].forEach((type) => {
+    ["head", "body", "legs", "feet", "hands", "weapon", "off_hand", "pouch", "neck", "earrings", "ring"].forEach((type) => {
         let equipmentSelect = document.getElementById("selectEquipment_" + type);
         let enhancementLevelInput = document.getElementById("inputEquipmentEnhancementLevel_" + type);
 
@@ -1324,6 +1721,25 @@ function loadEquipmentSetIntoUI(equipmentSet) {
 
     triggerMap = equipmentSet.triggerMap;
 
+    if (equipmentSet.houseRooms) {
+        for (const room in equipmentSet.houseRooms) {
+            const field = document.querySelector('[data-house-hrid="' + room + '"]');
+            if (equipmentSet.houseRooms[room]) {
+                field.value = equipmentSet.houseRooms[room];
+            } else {
+                field.value = '';
+            }
+        }
+        player.houseRooms = equipmentSet.houseRooms;
+    } else {
+        let houseRooms = Object.values(houseRoomDetailMap);
+        for (const room of Object.values(houseRooms)) {
+            const field = document.querySelector('[data-house-hrid="' + room.hrid + '"]');
+            field.value = '';
+            player.houseRooms[room.hrid] = 0;
+        }
+    }
+
     updateState();
     updateUI();
 }
@@ -1341,6 +1757,159 @@ function initErrorHandling() {
     copyErrorButton.addEventListener("click", (event) => {
         let errorInput = document.getElementById("inputError");
         navigator.clipboard.writeText(errorInput.value);
+    });
+}
+
+function initImportExportModal() {
+    let exportSetButton = document.getElementById("buttonExportSet");
+    exportSetButton.addEventListener("click", (event) => {
+        let zoneSelect = document.getElementById("selectZone");
+        let simulationTimeInput = document.getElementById("inputSimulationTime");
+        let equipmentArray = [];
+        for (const item in player.equipment) {
+            if (player.equipment[item] != null) {
+                equipmentArray.push({
+                    "itemLocationHrid": player.equipment[item].gameItem.equipmentDetail.type.replaceAll("equipment_types", "item_locations"),
+                    "itemHrid": player.equipment[item].hrid,
+                    "enhancementLevel": player.equipment[item].enhancementLevel
+                });
+            }
+        }
+        let playerArray = {
+            "attackLevel": player.attackLevel,
+            "magicLevel": player.magicLevel,
+            "powerLevel": player.powerLevel,
+            "rangedLevel": player.rangedLevel,
+            "defenseLevel": player.defenseLevel,
+            "staminaLevel": player.staminaLevel,
+            "intelligenceLevel": player.intelligenceLevel,
+            "equipment": equipmentArray
+        };
+        let abilitiesArray = [];
+        for (let i = 0; i < 4; i++) {
+            let abilityLevelInput = document.getElementById("inputAbilityLevel_" + i);
+            let abilityName = document.getElementById("selectAbility_" + i);
+            abilitiesArray[i] = { "abilityHrid": abilityName.value, "level": abilityLevelInput.value };
+        }
+        let drinksArray = [];
+        for (let i = 0; i < drinks?.length; i++) {
+            drinksArray.push({ "itemHrid": drinks[i] });
+        }
+        let foodArray = [];
+        for (let i = 0; i < food?.length; i++) {
+            foodArray.push({ "itemHrid": food[i] });
+        }
+        let state = {
+            player: playerArray,
+            food: { "/action_types/combat": foodArray },
+            drinks: { "/action_types/combat": drinksArray },
+            abilities: abilitiesArray,
+            triggerMap: triggerMap,
+            zone: zoneSelect.value,
+            simulationTime: simulationTimeInput.value,
+            houseRooms: player.houseRooms
+        };
+        try {
+            navigator.clipboard.writeText(JSON.stringify(state)).then(() => alert("Current set has been copied to clipboard."));
+        } catch (err) {
+            alert('Error copying to clipboard: ' + err);
+        }
+    });
+
+    let importSetButton = document.getElementById("buttonImportSet");
+    importSetButton.addEventListener("click", (event) => {
+        let importSet = document.getElementById("inputSet").value;
+        importSet = JSON.parse(importSet);
+        ["stamina", "intelligence", "attack", "power", "defense", "ranged", "magic"].forEach((skill) => {
+            let levelInput = document.getElementById("inputLevel_" + skill);
+            levelInput.value = importSet.player[skill + "Level"];
+        });
+
+        ["head", "body", "legs", "feet", "hands", "off_hand", "pouch", "neck", "earrings", "ring"].forEach((type) => {
+            let equipmentSelect = document.getElementById("selectEquipment_" + type);
+            let enhancementLevelInput = document.getElementById("inputEquipmentEnhancementLevel_" + type);
+            let currentEquipment = importSet.player.equipment.find(item => item.itemLocationHrid === "/item_locations/" + type);
+            if (currentEquipment !== undefined) {
+                equipmentSelect.value = currentEquipment.itemHrid;
+                enhancementLevelInput.value = currentEquipment.enhancementLevel;
+            } else {
+                equipmentSelect.value = "";
+                enhancementLevelInput.value = 0;
+            }
+        });
+
+        let weaponSelect = document.getElementById("selectEquipment_weapon");
+        let weaponEnhancementLevelInput = document.getElementById("inputEquipmentEnhancementLevel_weapon");
+        let mainhandWeapon = importSet.player.equipment.find(item => item.itemLocationHrid === "/item_locations/main_hand");
+        let twohandWeapon = importSet.player.equipment.find(item => item.itemLocationHrid === "/item_locations/two_hand");
+        if (mainhandWeapon !== undefined) {
+            weaponSelect.value = mainhandWeapon.itemHrid;
+            weaponEnhancementLevelInput.value = mainhandWeapon.enhancementLevel;
+        } else if (twohandWeapon !== undefined) {
+            weaponSelect.value = twohandWeapon.itemHrid;
+            weaponEnhancementLevelInput.value = twohandWeapon.enhancementLevel;
+        } else {
+            weaponSelect.value = "";
+            weaponEnhancementLevelInput.value = 0;
+        }
+        importSet.drinks = importSet.drinks["/action_types/combat"];
+        importSet.food = importSet.food["/action_types/combat"];
+        for (let i = 0; i < 3; i++) {
+            let drinkSelect = document.getElementById("selectDrink_" + i);
+            let foodSelect = document.getElementById("selectFood_" + i);
+            if (importSet.drinks[i] != null) {
+                drinkSelect.value = importSet.drinks[i].itemHrid;
+            } else {
+                drinkSelect.value = "";
+            }
+            if (importSet.food[i] != null) {
+                foodSelect.value = importSet.food[i].itemHrid;
+            } else {
+                foodSelect.value = "";
+            }
+        }
+
+        for (let i = 0; i < 4; i++) {
+            let abilitySelect = document.getElementById("selectAbility_" + i);
+            let abilityLevelInput = document.getElementById("inputAbilityLevel_" + i);
+            if (importSet.abilities[i] != null) {
+                abilitySelect.value = importSet.abilities[i].abilityHrid;
+                abilityLevelInput.value = String(importSet.abilities[i].level);
+            } else {
+                abilitySelect.value = "";
+                abilityLevelInput.value = "1";
+            }
+        }
+
+        if (importSet.triggerMap) {
+            triggerMap = importSet.triggerMap;
+        }
+
+        if (importSet.houseRooms) {
+            for (const room in importSet.houseRooms) {
+                const field = document.querySelector('[data-house-hrid="' + room + '"]');
+                if (importSet.houseRooms[room]) {
+                    field.value = importSet.houseRooms[room];
+                } else {
+                    field.value = '';
+                }
+            }
+            player.houseRooms = importSet.houseRooms;
+        } else {
+            let houseRooms = Object.values(houseRoomDetailMap);
+            for (const room of Object.values(houseRooms)) {
+                const field = document.querySelector('[data-house-hrid="' + room.hrid + '"]');
+                field.value = '';
+                player.houseRooms[room.hrid] = 0;
+            }
+        }
+
+        let zoneSelect = document.getElementById("selectZone");
+        zoneSelect.value = importSet["zone"];
+        let simulationDuration = document.getElementById("inputSimulationTime");
+        simulationDuration.value = importSet["simulationTime"];
+        updateState();
+        updateUI();
     });
 }
 
@@ -1372,6 +1941,108 @@ function showErrorModal(error) {
     errorModal.show();
 }
 
+window.prices;
+
+async function fetchPrices() {
+    try {
+        const response = await fetch('https://raw.githubusercontent.com/holychikenz/MWIApi/main/milkyapi.json');
+        if (!response.ok) {
+            throw new Error('Error fetching prices');
+        }
+        const pricesJson = await response.json();
+        window.prices = pricesJson['market'];
+        window.prices["Coin"]["bid"] = 1;
+        window.prices["Coin"]["ask"] = 1;
+        window.prices["Coin"]["vendor"] = 1;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+document.getElementById("buttonGetPrices").onclick = async () => {
+    await fetchPrices();
+};
+
+document.addEventListener("input", (e) => {
+    let element = e.target;
+    if (element.tagName == "TD" && element.parentNode.parentNode.parentNode.classList.value.includes('profit-table')) {
+        let tableId = element.parentNode.parentNode.parentNode.id;
+        let row = element.parentNode.querySelectorAll('td');
+        let item = row[0].innerText;
+        let newPrice = element.innerText;
+
+        let revenueSetting = document.getElementById('selectPrices_drops').value;
+        let expensesSetting = document.getElementById('selectPrices_consumables').value;
+
+        let expensesDifference = 0;
+        let revenueDifference = 0;
+        let noRngRevenueDifference = 0;
+
+        if (tableId == 'expensesTable') {
+            expensesDifference = updateTable('expensesTable', item, newPrice);
+            if (revenueSetting == expensesSetting) {
+                revenueDifference = updateTable('revenueTable', item, newPrice);
+                noRngRevenueDifference = updateTable('noRngRevenueTable', item, newPrice);
+            }
+            if (window.prices) {
+                if (expensesSetting == 'bid') {
+                    window.prices[item]['bid'] = newPrice;
+                } else {
+                    window.prices[item]['ask'] = newPrice;
+                }
+            }
+        } else {
+            revenueDifference = updateTable('revenueTable', item, newPrice);
+            noRngRevenueDifference = updateTable('noRngRevenueTable', item, newPrice);
+            if (revenueSetting == expensesSetting) {
+                expensesDifference = updateTable('expensesTable', item, newPrice);
+            }
+            if (window.prices) {
+                if (revenueSetting == 'bid') {
+                    window.prices[item]['bid'] = newPrice;
+                } else {
+                    window.prices[item]['ask'] = newPrice;
+                }
+            }
+        }
+
+        window.expenses += expensesDifference;
+        document.getElementById('expensesSpan').innerText = window.expenses.toLocaleString();
+        window.revenue += revenueDifference;
+        document.getElementById('revenueSpan').innerText = window.revenue.toLocaleString();
+        window.noRngRevenue += noRngRevenueDifference;
+        document.getElementById('noRngRevenueSpan').innerText = window.noRngRevenue.toLocaleString();
+
+        window.profit = window.revenue - window.expenses;
+        document.getElementById('profitPreview').innerText = window.profit.toLocaleString();
+        document.getElementById('profitSpan').innerText = window.profit.toLocaleString();
+        window.noRngProfit = window.noRngRevenue - window.expenses;
+        document.getElementById('noRngProfitSpan').innerText = window.noRngProfit.toLocaleString();
+        document.getElementById('noRngProfitPreview').innerText = window.noRngProfit.toLocaleString();
+    }
+});
+
+function updateTable(tableId, item, price) {
+    let row = document.querySelector('#' + tableId + ' .' + item.replace(/\s+/g, ''));
+    if (row == null) {
+        return 0;
+    }
+
+    row = row.querySelectorAll('td');
+    let priceTd = row[1];
+    let amountTd = row[2];
+    let totalTd = row[3];
+    let oldTotal = totalTd.innerText;
+    let newTotal = price * amountTd.innerText;
+
+    if (priceTd.innerText != price) {
+        priceTd.innerText = price;
+    }
+    totalTd.innerText = newTotal;
+
+    return newTotal - oldTotal;
+}
+
 // #endregion
 
 function updateState() {
@@ -1389,7 +2060,21 @@ function updateUI() {
     updateAbilityUI();
 }
 
+const darkModeToggle = document.getElementById('darkModeToggle');
+const body = document.body;
+
+if (localStorage.getItem('darkModeEnabled') === 'true') {
+    body.classList.add('dark-mode');
+    darkModeToggle.checked = true;
+}
+
+darkModeToggle.addEventListener('change', () => {
+    body.classList.toggle('dark-mode');
+    localStorage.setItem('darkModeEnabled', darkModeToggle.checked);
+});
+
 initEquipmentSection();
+initHouseRoomsModal();
 initLevelSection();
 initFoodSection();
 initDrinksSection();
@@ -1399,6 +2084,7 @@ initTriggerModal();
 initSimulationControls();
 initEquipmentSetsModal();
 initErrorHandling();
+initImportExportModal();
 
 updateState();
 updateUI();

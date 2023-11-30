@@ -74,31 +74,42 @@ class Trigger {
 
     getDependencyValue(source, currentTime) {
         switch (this.conditionHrid) {
-            case "/combat_trigger_conditions/attack_coffee":
             case "/combat_trigger_conditions/berserk":
-            case "/combat_trigger_conditions/defense_coffee":
             case "/combat_trigger_conditions/elemental_affinity_fire_amplify":
             case "/combat_trigger_conditions/elemental_affinity_nature_amplify":
             case "/combat_trigger_conditions/elemental_affinity_water_amplify":
             case "/combat_trigger_conditions/frenzy":
-            case "/combat_trigger_conditions/intelligence_coffee_max_mp":
-            case "/combat_trigger_conditions/intelligence_coffee_mp_regen":
-            case "/combat_trigger_conditions/lucky_coffee":
-            case "/combat_trigger_conditions/magic_coffee":
-            case "/combat_trigger_conditions/power_coffee":
             case "/combat_trigger_conditions/precision":
-            case "/combat_trigger_conditions/ranged_coffee":
             case "/combat_trigger_conditions/spike_shell":
-            case "/combat_trigger_conditions/stamina_coffee_hp_regen":
-            case "/combat_trigger_conditions/stamina_coffee_max_hp":
-            case "/combat_trigger_conditions/swiftness_coffee":
             case "/combat_trigger_conditions/toughness_armor":
             case "/combat_trigger_conditions/toughness_fire_resistance":
             case "/combat_trigger_conditions/toughness_nature_resistance":
             case "/combat_trigger_conditions/toughness_water_resistance":
             case "/combat_trigger_conditions/vampirism":
+            case "/combat_trigger_conditions/attack_coffee":
+            case "/combat_trigger_conditions/defense_coffee":
+            case "/combat_trigger_conditions/intelligence_coffee_max_mp":
+            case "/combat_trigger_conditions/intelligence_coffee_mp_regen":
+            case "/combat_trigger_conditions/lucky_coffee":
+            case "/combat_trigger_conditions/magic_coffee":
+            case "/combat_trigger_conditions/power_coffee":
+            case "/combat_trigger_conditions/ranged_coffee":
+            case "/combat_trigger_conditions/stamina_coffee_hp_regen":
+            case "/combat_trigger_conditions/stamina_coffee_max_hp":
+            case "/combat_trigger_conditions/swiftness_coffee":
+            case "/combat_trigger_conditions/critical_coffee_damage":
+            case "/combat_trigger_conditions/critical_coffee_rate":
             case "/combat_trigger_conditions/wisdom_coffee":
-                let buffHrid = "/buff_sources";
+            case "/combat_trigger_conditions/ice_spear":
+            case "/combat_trigger_conditions/toxic_pollen_armor":
+            case "/combat_trigger_conditions/toxic_pollen_fire_resistance":
+            case "/combat_trigger_conditions/toxic_pollen_nature_resistance":
+            case "/combat_trigger_conditions/toxic_pollen_water_resistance":
+            case "/combat_trigger_conditions/puncture":
+            case "/combat_trigger_conditions/frost_surge":
+            case "/combat_trigger_conditions/elusiveness":
+            case "/combat_trigger_conditions/channeling_coffee":
+                let buffHrid = "/buff_uniques";
                 buffHrid += this.conditionHrid.slice(this.conditionHrid.lastIndexOf("/"));
                 return source.combatBuffs[buffHrid];
             case "/combat_trigger_conditions/current_hp":
@@ -113,6 +124,10 @@ class Trigger {
                 // Replicate the game's behaviour of "stun status active" triggers activating
                 // immediately after the stun has worn off
                 return source.isStunned || source.stunExpireTime == currentTime;
+            case "/combat_trigger_conditions/blind_status":
+                return source.isBlinded || source.blindExpireTime == currentTime;
+            case "/combat_trigger_conditions/silence_status":
+                return source.isSilenced || source.silenceExpireTime == currentTime;
             default:
                 throw new Error("Unknown conditionHrid in trigger: " + this.conditionHrid);
         }

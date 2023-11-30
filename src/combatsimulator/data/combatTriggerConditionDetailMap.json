@@ -4,7 +4,10 @@
         "name": "Attack Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 11
     },
     "/combat_trigger_conditions/berserk": {
@@ -12,8 +15,55 @@
         "name": "Berserk",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 23
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 27
+    },
+    "/combat_trigger_conditions/blind_status": {
+        "hrid": "/combat_trigger_conditions/blind_status",
+        "name": "Blind Status",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 41
+    },
+    "/combat_trigger_conditions/channeling_coffee": {
+        "hrid": "/combat_trigger_conditions/channeling_coffee",
+        "name": "Channeling Coffee",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 18
+    },
+    "/combat_trigger_conditions/critical_coffee_damage": {
+        "hrid": "/combat_trigger_conditions/critical_coffee_damage",
+        "name": "Critical Coffee (Damage)",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 20
+    },
+    "/combat_trigger_conditions/critical_coffee_rate": {
+        "hrid": "/combat_trigger_conditions/critical_coffee_rate",
+        "name": "Critical Coffee (Rate)",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 19
     },
     "/combat_trigger_conditions/current_hp": {
         "hrid": "/combat_trigger_conditions/current_hp",
@@ -42,7 +92,10 @@
         "name": "Defense Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 10
     },
     "/combat_trigger_conditions/elemental_affinity_fire_amplify": {
@@ -50,39 +103,87 @@
         "name": "Elemental Affinity (Fire Amplify)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 29
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 33
     },
     "/combat_trigger_conditions/elemental_affinity_nature_amplify": {
         "hrid": "/combat_trigger_conditions/elemental_affinity_nature_amplify",
         "name": "Elemental Affinity (Nature Amplify)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 28
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 32
     },
     "/combat_trigger_conditions/elemental_affinity_water_amplify": {
         "hrid": "/combat_trigger_conditions/elemental_affinity_water_amplify",
         "name": "Elemental Affinity (Water Amplify)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 27
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 31
+    },
+    "/combat_trigger_conditions/elusiveness": {
+        "hrid": "/combat_trigger_conditions/elusiveness",
+        "name": "Elusiveness",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 25
     },
     "/combat_trigger_conditions/frenzy": {
         "hrid": "/combat_trigger_conditions/frenzy",
         "name": "Frenzy",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 24
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 28
+    },
+    "/combat_trigger_conditions/frost_surge": {
+        "hrid": "/combat_trigger_conditions/frost_surge",
+        "name": "Frost Surge Debuff",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 36
+    },
+    "/combat_trigger_conditions/ice_spear": {
+        "hrid": "/combat_trigger_conditions/ice_spear",
+        "name": "Ice Spear Debuff",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 35
     },
     "/combat_trigger_conditions/intelligence_coffee_max_mp": {
         "hrid": "/combat_trigger_conditions/intelligence_coffee_max_mp",
         "name": "Intelligence Coffee (Max MP)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 8
     },
     "/combat_trigger_conditions/intelligence_coffee_mp_regen": {
@@ -90,7 +191,10 @@
         "name": "Intelligence Coffee (MP Regen)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 9
     },
     "/combat_trigger_conditions/lucky_coffee": {
@@ -98,7 +202,10 @@
         "name": "Lucky Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 16
     },
     "/combat_trigger_conditions/magic_coffee": {
@@ -106,7 +213,10 @@
         "name": "Magic Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 14
     },
     "/combat_trigger_conditions/missing_hp": {
@@ -147,7 +257,10 @@
         "name": "Power Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 12
     },
     "/combat_trigger_conditions/precision": {
@@ -155,31 +268,65 @@
         "name": "Precision",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 22
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 26
+    },
+    "/combat_trigger_conditions/puncture": {
+        "hrid": "/combat_trigger_conditions/puncture",
+        "name": "Puncture Debuff",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 34
     },
     "/combat_trigger_conditions/ranged_coffee": {
         "hrid": "/combat_trigger_conditions/ranged_coffee",
         "name": "Ranged Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 13
+    },
+    "/combat_trigger_conditions/silence_status": {
+        "hrid": "/combat_trigger_conditions/silence_status",
+        "name": "Silence Status",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 42
     },
     "/combat_trigger_conditions/spike_shell": {
         "hrid": "/combat_trigger_conditions/spike_shell",
         "name": "Spike Shell",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 25
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 29
     },
     "/combat_trigger_conditions/stamina_coffee_hp_regen": {
         "hrid": "/combat_trigger_conditions/stamina_coffee_hp_regen",
         "name": "Stamina Coffee (HP Regen)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 7
     },
     "/combat_trigger_conditions/stamina_coffee_max_hp": {
@@ -187,7 +334,10 @@
         "name": "Stamina Coffee (Max HP)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 6
     },
     "/combat_trigger_conditions/stun_status": {
@@ -195,15 +345,21 @@
         "name": "Stun Status",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 30
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 43
     },
     "/combat_trigger_conditions/swiftness_coffee": {
         "hrid": "/combat_trigger_conditions/swiftness_coffee",
         "name": "Swiftness Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 17
     },
     "/combat_trigger_conditions/toughness_armor": {
@@ -211,47 +367,109 @@
         "name": "Toughness (Armor)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 18
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 21
     },
     "/combat_trigger_conditions/toughness_fire_resistance": {
         "hrid": "/combat_trigger_conditions/toughness_fire_resistance",
         "name": "Toughness (Fire Resistance)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 21
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 24
     },
     "/combat_trigger_conditions/toughness_nature_resistance": {
         "hrid": "/combat_trigger_conditions/toughness_nature_resistance",
         "name": "Toughness (Nature Resistance)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 20
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 23
     },
     "/combat_trigger_conditions/toughness_water_resistance": {
         "hrid": "/combat_trigger_conditions/toughness_water_resistance",
         "name": "Toughness (Water Resistance)",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 19
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 22
+    },
+    "/combat_trigger_conditions/toxic_pollen_armor": {
+        "hrid": "/combat_trigger_conditions/toxic_pollen_armor",
+        "name": "Toxic Pollen Debuff (Armor)",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 37
+    },
+    "/combat_trigger_conditions/toxic_pollen_fire_resistance": {
+        "hrid": "/combat_trigger_conditions/toxic_pollen_fire_resistance",
+        "name": "Toxic Pollen Debuff (Fire Resistance)",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 40
+    },
+    "/combat_trigger_conditions/toxic_pollen_nature_resistance": {
+        "hrid": "/combat_trigger_conditions/toxic_pollen_nature_resistance",
+        "name": "Toxic Pollen Debuff (Nature Resistance)",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 39
+    },
+    "/combat_trigger_conditions/toxic_pollen_water_resistance": {
+        "hrid": "/combat_trigger_conditions/toxic_pollen_water_resistance",
+        "name": "Toxic Pollen Debuff (Water Resistance)",
+        "isSingleTarget": true,
+        "isMultiTarget": false,
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 38
     },
     "/combat_trigger_conditions/vampirism": {
         "hrid": "/combat_trigger_conditions/vampirism",
         "name": "Vampirism",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
-        "sortIndex": 26
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
+        "sortIndex": 30
     },
     "/combat_trigger_conditions/wisdom_coffee": {
         "hrid": "/combat_trigger_conditions/wisdom_coffee",
         "name": "Wisdom Coffee",
         "isSingleTarget": true,
         "isMultiTarget": false,
-        "allowedComparatorHrids": ["/combat_trigger_comparators/is_active", "/combat_trigger_comparators/is_inactive"],
+        "allowedComparatorHrids": [
+            "/combat_trigger_comparators/is_active",
+            "/combat_trigger_comparators/is_inactive"
+        ],
         "sortIndex": 15
     }
 }

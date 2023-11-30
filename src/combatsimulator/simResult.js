@@ -7,7 +7,12 @@ class SimResult {
         this.consumablesUsed = {};
         this.hitpointsGained = {};
         this.manapointsGained = {};
+        this.dropRateMultiplier = 1;
+        this.rareFindMultiplier = 1;
         this.playerRanOutOfMana = false;
+        this.manaUsed = {};
+        this.timeSpentAlive = [];
+        this.bossFightMonsters = [];
     }
 
     addDeath(unit) {
@@ -16,6 +21,22 @@ class SimResult {
         }
 
         this.deaths[unit.hrid] += 1;
+    }
+
+    updateTimeSpentAlive(name, alive, time) {
+        const i = this.timeSpentAlive.findIndex(e => e.name === name);
+        if (alive) {
+            if (i !== -1) {
+                this.timeSpentAlive[i].alive = true;
+                this.timeSpentAlive[i].spawnedAt = time;
+            } else {
+                this.timeSpentAlive.push({ name: name, timeSpentAlive: 0, spawnedAt: time, alive: true });
+            }
+        } else {
+            const timeAlive = time - this.timeSpentAlive[i].spawnedAt;
+            this.timeSpentAlive[i].alive = false;
+            this.timeSpentAlive[i].timeSpentAlive += timeAlive;
+        }
     }
 
     addExperienceGain(unit, type, experience) {
@@ -35,7 +56,7 @@ class SimResult {
             };
         }
 
-        this.experienceGained[unit.hrid][type] += experience * (1 + unit.combatDetails.combatStats.experienceRate);
+        this.experienceGained[unit.hrid][type] += experience * (1 + unit.combatDetails.combatStats.combatExperience);
     }
 
     addEncounterEnd() {
@@ -91,6 +112,17 @@ class SimResult {
         }
 
         this.manapointsGained[unit.hrid][source] += amount;
+    }
+
+    setDropRateMultipliers(unit) {
+        this.dropRateMultiplier = 1 + unit.combatDetails.combatStats.combatDropRate;
+        this.rareFindMultiplier = 1 + unit.combatDetails.combatStats.combatRareFind;
+    }
+
+    setManaUsed(unit) {
+        for (let [key, value] of unit.abilityManaCosts.entries()) {
+            this.manaUsed[key] = value;
+        }
     }
 }
 
