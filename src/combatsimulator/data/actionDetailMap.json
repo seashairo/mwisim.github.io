@@ -10049,9 +10049,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/marine_huntress"
-            ],
+            "bossFightMonsters": ["/monsters/marine_huntress"],
             "battlesPerBoss": 10
         },
         "sortIndex": 17
@@ -10141,9 +10139,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/red_panda"
-            ],
+            "bossFightMonsters": ["/monsters/red_panda"],
             "battlesPerBoss": 10
         },
         "sortIndex": 43
@@ -10548,9 +10544,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/gobo_chieftain"
-            ],
+            "bossFightMonsters": ["/monsters/gobo_chieftain"],
             "battlesPerBoss": 10
         },
         "sortIndex": 28
@@ -10735,9 +10729,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/crystal_colossus"
-            ],
+            "bossFightMonsters": ["/monsters/crystal_colossus"],
             "battlesPerBoss": 10
         },
         "sortIndex": 47
@@ -10922,9 +10914,7 @@
                     "strength": 90
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/demonic_overlord"
-            ],
+            "bossFightMonsters": ["/monsters/demonic_overlord"],
             "battlesPerBoss": 10
         },
         "sortIndex": 55
@@ -11009,9 +10999,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/luna_empress"
-            ],
+            "bossFightMonsters": ["/monsters/luna_empress"],
             "battlesPerBoss": 10
         },
         "sortIndex": 22
@@ -11266,9 +11254,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/the_watcher"
-            ],
+            "bossFightMonsters": ["/monsters/the_watcher"],
             "battlesPerBoss": 10
         },
         "sortIndex": 32
@@ -11618,9 +11604,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/chronofrost_sorcerer"
-            ],
+            "bossFightMonsters": ["/monsters/chronofrost_sorcerer"],
             "battlesPerBoss": 10
         },
         "sortIndex": 37
@@ -11740,9 +11724,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/giant_shoebill"
-            ],
+            "bossFightMonsters": ["/monsters/giant_shoebill"],
             "battlesPerBoss": 10
         },
         "sortIndex": 11
@@ -11892,9 +11874,7 @@
                     "strength": 100
                 }
             ],
-            "bossFightMonsters": [
-                "/monsters/dusk_revenant"
-            ],
+            "bossFightMonsters": ["/monsters/dusk_revenant"],
             "battlesPerBoss": 10
         },
         "sortIndex": 51

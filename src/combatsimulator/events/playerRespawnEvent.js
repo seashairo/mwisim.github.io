@@ -1,11 +1,11 @@
-import CombatEvent from "./combatEvent";
+import CombatEvent from './combatEvent'
 
 class PlayerRespawnEvent extends CombatEvent {
-    static type = "playerRespawn";
+    static type = 'playerRespawn'
 
     constructor(time) {
-        super(PlayerRespawnEvent.type, time);
+        super(PlayerRespawnEvent.type, time)
     }
 }
 
-export default PlayerRespawnEvent;
+export default PlayerRespawnEvent

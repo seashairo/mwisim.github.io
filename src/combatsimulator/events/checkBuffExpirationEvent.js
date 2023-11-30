@@ -1,13 +1,13 @@
-import CombatEvent from "./combatEvent";
+import CombatEvent from './combatEvent'
 
 class CheckBuffExpirationEvent extends CombatEvent {
-    static type = "checkBuffExpiration";
+    static type = 'checkBuffExpiration'
 
     constructor(time, source) {
-        super(CheckBuffExpirationEvent.type, time);
+        super(CheckBuffExpirationEvent.type, time)
 
-        this.source = source;
+        this.source = source
     }
 }
 
-export default CheckBuffExpirationEvent;
+export default CheckBuffExpirationEvent

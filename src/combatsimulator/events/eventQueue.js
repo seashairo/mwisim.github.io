@@ -1,48 +1,48 @@
-import Heap from "heap-js";
+import Heap from 'heap-js'
 
 class EventQueue {
     constructor() {
-        this.minHeap = new Heap((a, b) => a.time - b.time);
+        this.minHeap = new Heap((a, b) => a.time - b.time)
     }
 
     addEvent(event) {
-        this.minHeap.push(event);
+        this.minHeap.push(event)
     }
 
     getNextEvent() {
-        return this.minHeap.pop();
+        return this.minHeap.pop()
     }
 
     containsEventOfType(type) {
-        let heapEvents = this.minHeap.toArray();
+        let heapEvents = this.minHeap.toArray()
 
-        return heapEvents.some((event) => event.type == type);
+        return heapEvents.some((event) => event.type == type)
     }
 
     clear() {
-        this.minHeap = new Heap((a, b) => a.time - b.time);
+        this.minHeap = new Heap((a, b) => a.time - b.time)
     }
 
     clearEventsForUnit(unit) {
-        this.clearMatching((event) => event.source == unit || event.target == unit);
+        this.clearMatching((event) => event.source == unit || event.target == unit)
     }
 
     clearEventsOfType(type) {
-        this.clearMatching((event) => event.type == type);
+        this.clearMatching((event) => event.type == type)
     }
 
     clearMatching(fn) {
-        let cleared = false;
-        let heapEvents = this.minHeap.toArray();
+        let cleared = false
+        let heapEvents = this.minHeap.toArray()
 
         for (const event of heapEvents) {
             if (fn(event)) {
-                this.minHeap.remove(event);
-                cleared = true;
+                this.minHeap.remove(event)
+                cleared = true
             }
         }
-        return cleared;
+        return cleared
     }
 }
 
-export default EventQueue;
+export default EventQueue

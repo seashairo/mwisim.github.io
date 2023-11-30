@@ -36,9 +36,7 @@
             "rangedLevel": 0,
             "magicLevel": 160,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/fire",
                 "attackInterval": 6000000000,
                 "castSpeed": 0,
@@ -184,9 +182,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -346,9 +342,7 @@
             "rangedLevel": 40,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/water",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -490,9 +484,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -664,9 +656,7 @@
             "rangedLevel": 80,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -840,9 +830,7 @@
             "rangedLevel": 0,
             "magicLevel": 260,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/water",
                 "attackInterval": 6000000000,
                 "castSpeed": 0,
@@ -1014,9 +1002,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -1158,9 +1144,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -1338,9 +1322,7 @@
             "rangedLevel": 0,
             "magicLevel": 350,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/fire",
                 "attackInterval": 6000000000,
                 "castSpeed": 0,
@@ -1500,9 +1482,7 @@
             "rangedLevel": 340,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -1668,9 +1648,7 @@
             "rangedLevel": 0,
             "magicLevel": 180,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/fire",
                 "attackInterval": 6000000000,
                 "castSpeed": 0,
@@ -1844,9 +1822,7 @@
             "rangedLevel": 0,
             "magicLevel": 89,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -2042,9 +2018,7 @@
             "rangedLevel": 0,
             "magicLevel": 101,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -2192,9 +2166,7 @@
             "rangedLevel": 0,
             "magicLevel": 130,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/fire",
                 "attackInterval": 6000000000,
                 "castSpeed": 0,
@@ -2352,9 +2324,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 4000000000,
                 "castSpeed": 0,
@@ -2461,9 +2431,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -2605,9 +2573,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -2757,9 +2723,7 @@
             "rangedLevel": 0,
             "magicLevel": 50,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/fire",
                 "attackInterval": 7000000000,
                 "castSpeed": 0,
@@ -2925,9 +2889,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -3099,9 +3061,7 @@
             "rangedLevel": 50,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -3273,9 +3233,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3300000000,
                 "castSpeed": 0,
@@ -3447,9 +3405,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3700000000,
                 "castSpeed": 0,
@@ -3621,9 +3577,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 2500000000,
                 "castSpeed": 0,
@@ -3789,9 +3743,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3400000000,
                 "castSpeed": 0,
@@ -3961,9 +3913,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -4135,9 +4085,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 2800000000,
                 "castSpeed": 0,
@@ -4291,9 +4239,7 @@
             "rangedLevel": 0,
             "magicLevel": 120,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/water",
                 "attackInterval": 6000000000,
                 "castSpeed": 0,
@@ -4451,9 +4397,7 @@
             "rangedLevel": 0,
             "magicLevel": 260,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/fire",
                 "attackInterval": 5000000000,
                 "castSpeed": 0,
@@ -4605,9 +4549,7 @@
             "rangedLevel": 0,
             "magicLevel": 30,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/nature",
                 "attackInterval": 5000000000,
                 "castSpeed": 0,
@@ -4759,9 +4701,7 @@
             "rangedLevel": 0,
             "magicLevel": 140,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/nature",
                 "attackInterval": 5000000000,
                 "castSpeed": 0,
@@ -4927,9 +4867,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3400000000,
                 "castSpeed": 0,
@@ -5089,9 +5027,7 @@
             "rangedLevel": 95,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/water",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -5247,9 +5183,7 @@
             "rangedLevel": 0,
             "magicLevel": 40,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/nature",
                 "attackInterval": 5000000000,
                 "castSpeed": 0,
@@ -5397,9 +5331,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -5571,9 +5503,7 @@
             "rangedLevel": 0,
             "magicLevel": 90,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/water",
                 "attackInterval": 6000000000,
                 "castSpeed": 0,
@@ -5715,9 +5645,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3600000000,
                 "castSpeed": 0,
@@ -5907,9 +5835,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -6081,9 +6007,7 @@
             "rangedLevel": 10,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -6219,9 +6143,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -6375,9 +6297,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -6543,9 +6463,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 4000000000,
                 "castSpeed": 0,
@@ -6699,9 +6617,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -6837,9 +6753,7 @@
             "rangedLevel": 0,
             "magicLevel": 12,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/water",
                 "attackInterval": 5000000000,
                 "castSpeed": 0,
@@ -6979,9 +6893,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3200000000,
                 "castSpeed": 0,
@@ -7123,9 +7035,7 @@
             "rangedLevel": 220,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -7283,9 +7193,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -7455,9 +7363,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -7623,9 +7529,7 @@
             "rangedLevel": 180,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/ranged"
-                ],
+                "combatStyleHrids": ["/combat_styles/ranged"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -7785,9 +7689,7 @@
             "rangedLevel": 0,
             "magicLevel": 60,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/magic"
-                ],
+                "combatStyleHrids": ["/combat_styles/magic"],
                 "damageType": "/damage_types/nature",
                 "attackInterval": 5000000000,
                 "castSpeed": 0,
@@ -7981,9 +7883,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/smash"
-                ],
+                "combatStyleHrids": ["/combat_styles/smash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3500000000,
                 "castSpeed": 0,
@@ -8149,9 +8049,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/stab"
-                ],
+                "combatStyleHrids": ["/combat_styles/stab"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3300000000,
                 "castSpeed": 0,
@@ -8315,9 +8213,7 @@
             "rangedLevel": 0,
             "magicLevel": 113,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3000000000,
                 "castSpeed": 0,
@@ -8465,9 +8361,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3100000000,
                 "castSpeed": 0,
@@ -8631,9 +8525,7 @@
             "rangedLevel": 0,
             "magicLevel": 0,
             "combatStats": {
-                "combatStyleHrids": [
-                    "/combat_styles/slash"
-                ],
+                "combatStyleHrids": ["/combat_styles/slash"],
                 "damageType": "/damage_types/physical",
                 "attackInterval": 3400000000,
                 "castSpeed": 0,

@@ -1,11 +1,11 @@
-import CombatEvent from "./combatEvent";
+import CombatEvent from './combatEvent'
 
 class RegenTickEvent extends CombatEvent {
-    static type = "regenTick";
+    static type = 'regenTick'
 
     constructor(time) {
-        super(RegenTickEvent.type, time);
+        super(RegenTickEvent.type, time)
     }
 }
 
-export default RegenTickEvent;
+export default RegenTickEvent
