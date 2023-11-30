@@ -24,9 +24,15 @@ class Ability {
                 effectType: effect.effectType,
                 combatStyleHrid: effect.combatStyleHrid,
                 damageType: effect.damageType,
-                damageFlat: effect.baseDamageFlat + (this.level - 1) * effect.baseDamageFlatLevelBonus,
-                damageRatio: effect.baseDamageRatio + (this.level - 1) * effect.baseDamageRatioLevelBonus,
-                bonusAccuracyRatio: effect.bonusAccuracyRatio + (this.level - 1) * effect.bonusAccuracyRatioLevelBonus,
+                damageFlat:
+                    effect.baseDamageFlat +
+                    (this.level - 1) * effect.baseDamageFlatLevelBonus,
+                damageRatio:
+                    effect.baseDamageRatio +
+                    (this.level - 1) * effect.baseDamageRatioLevelBonus,
+                bonusAccuracyRatio:
+                    effect.bonusAccuracyRatio +
+                    (this.level - 1) * effect.bonusAccuracyRatioLevelBonus,
                 damageOverTimeRatio: effect.damageOverTimeRatio,
                 damageOverTimeDuration: effect.damageOverTimeDuration,
                 blindChance: effect.blindChance,
@@ -55,7 +61,7 @@ class Ability {
                     defaultTrigger.dependencyHrid,
                     defaultTrigger.conditionHrid,
                     defaultTrigger.comparatorHrid,
-                    defaultTrigger.value
+                    defaultTrigger.value,
                 )
                 this.triggers.push(trigger)
             }
@@ -65,7 +71,9 @@ class Ability {
     }
 
     static createFromDTO(dto) {
-        let triggers = dto.triggers.map((trigger) => Trigger.createFromDTO(trigger))
+        let triggers = dto.triggers.map((trigger) =>
+            Trigger.createFromDTO(trigger),
+        )
         let ability = new Ability(dto.hrid, dto.level, triggers)
 
         return ability
@@ -96,7 +104,15 @@ class Ability {
 
         let shouldTrigger = true
         for (const trigger of this.triggers) {
-            if (!trigger.isActive(source, target, friendlies, enemies, currentTime)) {
+            if (
+                !trigger.isActive(
+                    source,
+                    target,
+                    friendlies,
+                    enemies,
+                    currentTime,
+                )
+            ) {
                 shouldTrigger = false
             }
         }

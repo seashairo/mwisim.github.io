@@ -1,6 +1,6 @@
 import Heap from 'heap-js'
 
-class EventQueue {
+export default class EventQueue {
     constructor() {
         this.minHeap = new Heap((a, b) => a.time - b.time)
     }
@@ -24,7 +24,9 @@ class EventQueue {
     }
 
     clearEventsForUnit(unit) {
-        this.clearMatching((event) => event.source == unit || event.target == unit)
+        this.clearMatching(
+            (event) => event.source == unit || event.target == unit,
+        )
     }
 
     clearEventsOfType(type) {
@@ -44,5 +46,3 @@ class EventQueue {
         return cleared
     }
 }
-
-export default EventQueue

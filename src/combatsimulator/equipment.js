@@ -17,11 +17,15 @@ class Equipment {
     }
 
     getCombatStat(combatStat) {
-        let multiplier = enhancementLevelTotalMultiplierTable[this.enhancementLevel]
+        let multiplier =
+            enhancementLevelTotalMultiplierTable[this.enhancementLevel]
 
         let stat =
             this.gameItem.equipmentDetail.combatStats[combatStat] +
-            multiplier * this.gameItem.equipmentDetail.combatEnhancementBonuses[combatStat]
+            multiplier *
+                this.gameItem.equipmentDetail.combatEnhancementBonuses[
+                    combatStat
+                ]
 
         return stat
     }

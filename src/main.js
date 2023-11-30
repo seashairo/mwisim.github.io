@@ -91,7 +91,11 @@ function initEquipmentSelect(equipmentType) {
 
     let gameEquipment = Object.values(itemDetailMap)
         .filter((item) => item.categoryHrid == '/item_categories/equipment')
-        .filter((item) => item.equipmentDetail.type == '/equipment_types/' + equipmentType)
+        .filter(
+            (item) =>
+                item.equipmentDetail.type ==
+                '/equipment_types/' + equipmentType,
+        )
         .sort((a, b) => a.sortIndex - b.sortIndex)
 
     for (const equipment of Object.values(gameEquipment)) {
@@ -106,7 +110,9 @@ function initEquipmentSelect(equipmentType) {
 function initHouseRoomsModal() {
     let houseRoomsList = document.getElementById('houseRoomsList')
     let newChildren = []
-    let houseRooms = Object.values(houseRoomDetailMap).sort((a, b) => a.sortIndex - b.sortIndex)
+    let houseRooms = Object.values(houseRoomDetailMap).sort(
+        (a, b) => a.sortIndex - b.sortIndex,
+    )
     player.houseRooms = {}
 
     for (const room of Object.values(houseRooms)) {
@@ -114,7 +120,11 @@ function initHouseRoomsModal() {
 
         let row = createElement('div', 'row mb-2')
 
-        let nameCol = createElement('div', 'col-md-4 offset-md-3 align-self-center', room.name)
+        let nameCol = createElement(
+            'div',
+            'col-md-4 offset-md-3 align-self-center',
+            room.name,
+        )
         row.appendChild(nameCol)
 
         let levelCol = createElement('div', 'col-md-2')
@@ -179,11 +189,14 @@ function equipmentSelectHandler(event, type) {
 
     if (type == 'two_hand') {
         document.getElementById('selectEquipment_off_hand').value = ''
-        document.getElementById('inputEquipmentEnhancementLevel_off_hand').value = 0
+        document.getElementById(
+            'inputEquipmentEnhancementLevel_off_hand',
+        ).value = 0
     }
     if (type == 'off_hand' && player.equipment['/equipment_types/two_hand']) {
         document.getElementById('selectEquipment_weapon').value = ''
-        document.getElementById('inputEquipmentEnhancementLevel_weapon').value = 0
+        document.getElementById('inputEquipmentEnhancementLevel_weapon').value =
+            0
     }
 
     updateEquipmentState()
@@ -216,7 +229,9 @@ function updateEquipmentState() {
             selectType = 'weapon'
         }
 
-        let equipmentSelect = document.getElementById('selectEquipment_' + selectType)
+        let equipmentSelect = document.getElementById(
+            'selectEquipment_' + selectType,
+        )
         let equipmentHrid = equipmentSelect.value
 
         if (!equipmentHrid) {
@@ -232,12 +247,20 @@ function updateEquipmentState() {
             return
         }
 
-        let enhancementLevel = Number(document.getElementById('inputEquipmentEnhancementLevel_' + selectType).value)
-        player.equipment[equipmentType] = new Equipment(gameItem.hrid, enhancementLevel)
+        let enhancementLevel = Number(
+            document.getElementById(
+                'inputEquipmentEnhancementLevel_' + selectType,
+            ).value,
+        )
+        player.equipment[equipmentType] = new Equipment(
+            gameItem.hrid,
+            enhancementLevel,
+        )
     })
 }
 
-document.getElementById('selectEquipment_set').onchange = changeEquipmentSetListener
+document.getElementById('selectEquipment_set').onchange =
+    changeEquipmentSetListener
 
 function changeEquipmentSetListener() {
     let value = this.value
@@ -246,7 +269,9 @@ function changeEquipmentSetListener() {
     ;['head', 'body', 'legs', 'feet', 'hands'].forEach((type) => {
         let selectType = type
 
-        let currentEquipment = document.getElementById('selectEquipment_' + selectType)
+        let currentEquipment = document.getElementById(
+            'selectEquipment_' + selectType,
+        )
         if (type === 'feet') {
             type = '_boots'
         }
@@ -299,17 +324,24 @@ function changeEquipmentSetListener() {
 function updateCombatStatsUI() {
     player.updateCombatDetails()
 
-    let combatStyleElement = document.getElementById('combatStat_combatStyleHrid')
+    let combatStyleElement = document.getElementById(
+        'combatStat_combatStyleHrid',
+    )
     let combatStyle = player.combatDetails.combatStats.combatStyleHrid
     combatStyleElement.innerHTML = combatStyleDetailMap[combatStyle].name
 
     let damageTypeElement = document.getElementById('combatStat_damageType')
-    let damageType = damageTypeDetailMap[player.combatDetails.combatStats.damageType]
+    let damageType =
+        damageTypeDetailMap[player.combatDetails.combatStats.damageType]
     damageTypeElement.innerHTML = damageType.name
 
-    let attackIntervalElement = document.getElementById('combatStat_attackInterval')
-    attackIntervalElement.innerHTML = (player.combatDetails.combatStats.attackInterval / 1e9).toLocaleString() + 's'
-
+    let attackIntervalElement = document.getElementById(
+        'combatStat_attackInterval',
+    )
+    attackIntervalElement.innerHTML =
+        (
+            player.combatDetails.combatStats.attackInterval / 1e9
+        ).toLocaleString() + 's'
     ;[
         'maxHitpoints',
         'maxManapoints',
@@ -336,12 +368,10 @@ function updateCombatStatsUI() {
         let element = document.getElementById('combatStat_' + stat)
         element.innerHTML = Math.floor(player.combatDetails[stat])
     })
-
     ;['abilityHaste', 'tenacity'].forEach((stat) => {
         let element = document.getElementById('combatStat_' + stat)
         element.innerHTML = Math.floor(player.combatDetails.combatStats[stat])
     })
-
     ;[
         'physicalAmplify',
         'waterAmplify',
@@ -364,7 +394,9 @@ function updateCombatStatsUI() {
         'castSpeed',
     ].forEach((stat) => {
         let element = document.getElementById('combatStat_' + stat)
-        let value = (100 * player.combatDetails.combatStats[stat]).toLocaleString([], {
+        let value = (
+            100 * player.combatDetails.combatStats[stat]
+        ).toLocaleString([], {
             minimumFractionDigits: 0,
             maximumFractionDigits: 4,
         })
@@ -377,7 +409,15 @@ function updateCombatStatsUI() {
 // #region Level
 
 function initLevelSection() {
-    ;['stamina', 'intelligence', 'attack', 'power', 'defense', 'ranged', 'magic'].forEach((skill) => {
+    ;[
+        'stamina',
+        'intelligence',
+        'attack',
+        'power',
+        'defense',
+        'ranged',
+        'magic',
+    ].forEach((skill) => {
         let levelInput = document.getElementById('inputLevel_' + skill)
         levelInput.value = 1
         levelInput.addEventListener('change', levelInputHandler)
@@ -390,7 +430,15 @@ function levelInputHandler() {
 }
 
 function updateLevels() {
-    ;['stamina', 'intelligence', 'attack', 'power', 'defense', 'ranged', 'magic'].forEach((skill) => {
+    ;[
+        'stamina',
+        'intelligence',
+        'attack',
+        'power',
+        'defense',
+        'ranged',
+        'magic',
+    ].forEach((skill) => {
         let levelInput = document.getElementById('inputLevel_' + skill)
         player[skill + 'Level'] = Number(levelInput.value)
     })
@@ -427,7 +475,9 @@ function updateFoodState() {
         food[i] = foodSelect.value
         if (food[i] && !triggerMap[food[i]]) {
             let gameItem = itemDetailMap[food[i]]
-            triggerMap[food[i]] = structuredClone(gameItem.consumableDetail.defaultCombatTriggers)
+            triggerMap[food[i]] = structuredClone(
+                gameItem.consumableDetail.defaultCombatTriggers,
+            )
         }
     }
 }
@@ -438,7 +488,8 @@ function updateFoodUI() {
         let triggerButton = document.getElementById('buttonFoodTrigger_' + i)
 
         selectElement.disabled = i >= player.combatDetails.combatStats.foodSlots
-        triggerButton.disabled = i >= player.combatDetails.combatStats.foodSlots || !food[i]
+        triggerButton.disabled =
+            i >= player.combatDetails.combatStats.foodSlots || !food[i]
     }
 }
 
@@ -452,7 +503,12 @@ function initDrinksSection() {
 
         let gameDrinks = Object.values(itemDetailMap)
             .filter((item) => item.categoryHrid == '/item_categories/drink')
-            .filter((item) => item.consumableDetail.usableInActionTypeMap['/action_types/combat'])
+            .filter(
+                (item) =>
+                    item.consumableDetail.usableInActionTypeMap[
+                        '/action_types/combat'
+                    ],
+            )
             .sort((a, b) => a.sortIndex - b.sortIndex)
 
         for (const drink of Object.values(gameDrinks)) {
@@ -474,7 +530,9 @@ function updateDrinksState() {
         drinks[i] = drinkSelect.value
         if (drinks[i] && !triggerMap[drinks[i]]) {
             let gameItem = itemDetailMap[drinks[i]]
-            triggerMap[drinks[i]] = structuredClone(gameItem.consumableDetail.defaultCombatTriggers)
+            triggerMap[drinks[i]] = structuredClone(
+                gameItem.consumableDetail.defaultCombatTriggers,
+            )
         }
     }
 }
@@ -484,8 +542,10 @@ function updateDrinksUI() {
         let selectElement = document.getElementById('selectDrink_' + i)
         let triggerButton = document.getElementById('buttonDrinkTrigger_' + i)
 
-        selectElement.disabled = i >= player.combatDetails.combatStats.drinkSlots
-        triggerButton.disabled = i >= player.combatDetails.combatStats.drinkSlots || !drinks[i]
+        selectElement.disabled =
+            i >= player.combatDetails.combatStats.drinkSlots
+        triggerButton.disabled =
+            i >= player.combatDetails.combatStats.drinkSlots || !drinks[i]
     }
 }
 
@@ -500,7 +560,9 @@ function initAbilitiesSection() {
 
         inputElement.value = 1
 
-        let gameAbilities = Object.values(abilityDetailMap).sort((a, b) => a.sortIndex - b.sortIndex)
+        let gameAbilities = Object.values(abilityDetailMap).sort(
+            (a, b) => a.sortIndex - b.sortIndex,
+        )
 
         for (const ability of Object.values(gameAbilities)) {
             selectElement.add(new Option(ability.name, ability.hrid))
@@ -521,7 +583,9 @@ function updateAbilityState() {
         abilities[i] = abilitySelect.value
         if (abilities[i] && !triggerMap[abilities[i]]) {
             let gameAbility = abilityDetailMap[abilities[i]]
-            triggerMap[abilities[i]] = structuredClone(gameAbility.defaultCombatTriggers)
+            triggerMap[abilities[i]] = structuredClone(
+                gameAbility.defaultCombatTriggers,
+            )
         }
     }
 }
@@ -532,9 +596,13 @@ function updateAbilityUI() {
         let inputElement = document.getElementById('inputAbilityLevel_' + i)
         let triggerButton = document.getElementById('buttonAbilityTrigger_' + i)
 
-        selectElement.disabled = player.intelligenceLevel < abilitySlotsLevelRequirementList[i + 1]
-        inputElement.disabled = player.intelligenceLevel < abilitySlotsLevelRequirementList[i + 1]
-        triggerButton.disabled = player.intelligenceLevel < abilitySlotsLevelRequirementList[i + 1] || !abilities[i]
+        selectElement.disabled =
+            player.intelligenceLevel < abilitySlotsLevelRequirementList[i + 1]
+        inputElement.disabled =
+            player.intelligenceLevel < abilitySlotsLevelRequirementList[i + 1]
+        triggerButton.disabled =
+            player.intelligenceLevel <
+                abilitySlotsLevelRequirementList[i + 1] || !abilities[i]
     }
 }
 
@@ -544,29 +612,57 @@ function updateAbilityUI() {
 
 function initTriggerModal() {
     let modal = document.getElementById('triggerModal')
-    modal.addEventListener('show.bs.modal', (event) => triggerModalShownHandler(event))
+    modal.addEventListener('show.bs.modal', (event) =>
+        triggerModalShownHandler(event),
+    )
 
     let triggerSaveButton = document.getElementById('buttonTriggerModalSave')
-    triggerSaveButton.addEventListener('click', (event) => triggerModalSaveHandler(event))
+    triggerSaveButton.addEventListener('click', (event) =>
+        triggerModalSaveHandler(event),
+    )
 
     let triggerAddButton = document.getElementById('buttonAddTrigger')
-    triggerAddButton.addEventListener('click', (event) => triggerAddButtonHandler(event))
+    triggerAddButton.addEventListener('click', (event) =>
+        triggerAddButtonHandler(event),
+    )
 
     let triggerDefaultButton = document.getElementById('buttonDefaultTrigger')
-    triggerDefaultButton.addEventListener('click', (event) => triggerDefaultButtonHandler(event))
+    triggerDefaultButton.addEventListener('click', (event) =>
+        triggerDefaultButtonHandler(event),
+    )
 
     for (let i = 0; i < 4; i++) {
-        let triggerDependencySelect = document.getElementById('selectTriggerDependency_' + i)
-        let triggerConditionSelect = document.getElementById('selectTriggerCondition_' + i)
-        let triggerComparatorSelect = document.getElementById('selectTriggerComparator_' + i)
-        let triggerValueInput = document.getElementById('inputTriggerValue_' + i)
-        let triggerRemoveButton = document.getElementById('buttonRemoveTrigger_' + i)
+        let triggerDependencySelect = document.getElementById(
+            'selectTriggerDependency_' + i,
+        )
+        let triggerConditionSelect = document.getElementById(
+            'selectTriggerCondition_' + i,
+        )
+        let triggerComparatorSelect = document.getElementById(
+            'selectTriggerComparator_' + i,
+        )
+        let triggerValueInput = document.getElementById(
+            'inputTriggerValue_' + i,
+        )
+        let triggerRemoveButton = document.getElementById(
+            'buttonRemoveTrigger_' + i,
+        )
 
-        triggerDependencySelect.addEventListener('change', (event) => triggerDependencySelectHandler(event, i))
-        triggerConditionSelect.addEventListener('change', (event) => triggerConditionSelectHandler(event, i))
-        triggerComparatorSelect.addEventListener('change', (event) => triggerComparatorSelectHander(event, i))
-        triggerValueInput.addEventListener('change', (event) => triggerValueInputHandler(event, i))
-        triggerRemoveButton.addEventListener('click', (event) => triggerRemoveButtonHandler(event, i))
+        triggerDependencySelect.addEventListener('change', (event) =>
+            triggerDependencySelectHandler(event, i),
+        )
+        triggerConditionSelect.addEventListener('change', (event) =>
+            triggerConditionSelectHandler(event, i),
+        )
+        triggerComparatorSelect.addEventListener('change', (event) =>
+            triggerComparatorSelectHander(event, i),
+        )
+        triggerValueInput.addEventListener('change', (event) =>
+            triggerValueInputHandler(event, i),
+        )
+        triggerRemoveButton.addEventListener('click', (event) =>
+            triggerRemoveButtonHandler(event, i),
+        )
     }
 }
 
@@ -574,7 +670,9 @@ function triggerModalShownHandler(event) {
     let triggerButton = event.relatedTarget
 
     let triggerType = triggerButton.getAttribute('data-bs-triggertype')
-    let triggerIndex = Number(triggerButton.getAttribute('data-bs-triggerindex'))
+    let triggerIndex = Number(
+        triggerButton.getAttribute('data-bs-triggerindex'),
+    )
 
     let triggerTarget
     switch (triggerType) {
@@ -657,9 +755,13 @@ function triggerDefaultButtonHandler(event) {
     let triggerTarget = triggerTargetnput.value
 
     if (triggerTarget.startsWith('/items/')) {
-        modalTriggers = structuredClone(itemDetailMap[triggerTarget].consumableDetail.defaultCombatTriggers)
+        modalTriggers = structuredClone(
+            itemDetailMap[triggerTarget].consumableDetail.defaultCombatTriggers,
+        )
     } else {
-        modalTriggers = structuredClone(abilityDetailMap[triggerTarget].defaultCombatTriggers)
+        modalTriggers = structuredClone(
+            abilityDetailMap[triggerTarget].defaultCombatTriggers,
+        )
     }
 
     updateTriggerModal()
@@ -668,7 +770,8 @@ function triggerDefaultButtonHandler(event) {
 function updateTriggerModal() {
     let triggerStartTextElement = document.getElementById('triggerStartText')
     if (modalTriggers.length == 0) {
-        triggerStartTextElement.innerHTML = "Activate as soon as it's off cooldown"
+        triggerStartTextElement.innerHTML =
+            "Activate as soon as it's off cooldown"
     } else {
         triggerStartTextElement.innerHTML = 'Activate when:'
     }
@@ -688,10 +791,18 @@ function updateTriggerModal() {
 
         showElement(triggerElement)
 
-        let triggerDependencySelect = document.getElementById('selectTriggerDependency_' + i)
-        let triggerConditionSelect = document.getElementById('selectTriggerCondition_' + i)
-        let triggerComparatorSelect = document.getElementById('selectTriggerComparator_' + i)
-        let triggerValueInput = document.getElementById('inputTriggerValue_' + i)
+        let triggerDependencySelect = document.getElementById(
+            'selectTriggerDependency_' + i,
+        )
+        let triggerConditionSelect = document.getElementById(
+            'selectTriggerCondition_' + i,
+        )
+        let triggerComparatorSelect = document.getElementById(
+            'selectTriggerComparator_' + i,
+        )
+        let triggerValueInput = document.getElementById(
+            'inputTriggerValue_' + i,
+        )
 
         showElement(triggerDependencySelect)
         fillTriggerDependencySelect(triggerDependencySelect)
@@ -706,7 +817,10 @@ function updateTriggerModal() {
 
         triggerDependencySelect.value = modalTriggers[i].dependencyHrid
         showElement(triggerConditionSelect)
-        fillTriggerConditionSelect(triggerConditionSelect, modalTriggers[i].dependencyHrid)
+        fillTriggerConditionSelect(
+            triggerConditionSelect,
+            modalTriggers[i].dependencyHrid,
+        )
 
         if (modalTriggers[i].conditionHrid == '') {
             hideElement(triggerComparatorSelect)
@@ -717,7 +831,10 @@ function updateTriggerModal() {
 
         triggerConditionSelect.value = modalTriggers[i].conditionHrid
         showElement(triggerComparatorSelect)
-        fillTriggerComparatorSelect(triggerComparatorSelect, modalTriggers[i].conditionHrid)
+        fillTriggerComparatorSelect(
+            triggerComparatorSelect,
+            modalTriggers[i].conditionHrid,
+        )
 
         if (modalTriggers[i].comparatorHrid == '') {
             hideElement(triggerValueInput)
@@ -727,7 +844,10 @@ function updateTriggerModal() {
 
         triggerComparatorSelect.value = modalTriggers[i].comparatorHrid
 
-        if (combatTriggerComparatorDetailMap[modalTriggers[i].comparatorHrid].allowValue) {
+        if (
+            combatTriggerComparatorDetailMap[modalTriggers[i].comparatorHrid]
+                .allowValue
+        ) {
             showElement(triggerValueInput)
             triggerValueInput.value = modalTriggers[i].value
         } else {
@@ -743,9 +863,9 @@ function fillTriggerDependencySelect(element) {
     element.length = 0
     element.add(new Option('', ''))
 
-    for (const dependency of Object.values(combatTriggerDependencyDetailMap).sort(
-        (a, b) => a.sortIndex - b.sortIndex
-    )) {
+    for (const dependency of Object.values(
+        combatTriggerDependencyDetailMap,
+    ).sort((a, b) => a.sortIndex - b.sortIndex)) {
         element.add(new Option(dependency.name, dependency.hrid))
     }
 }
@@ -755,15 +875,21 @@ function fillTriggerConditionSelect(element, dependencyHrid) {
 
     let conditions
     if (dependency.isSingleTarget) {
-        conditions = Object.values(combatTriggerConditionDetailMap).filter((condition) => condition.isSingleTarget)
+        conditions = Object.values(combatTriggerConditionDetailMap).filter(
+            (condition) => condition.isSingleTarget,
+        )
     } else {
-        conditions = Object.values(combatTriggerConditionDetailMap).filter((condition) => condition.isMultiTarget)
+        conditions = Object.values(combatTriggerConditionDetailMap).filter(
+            (condition) => condition.isMultiTarget,
+        )
     }
 
     element.length = 0
     element.add(new Option('', ''))
 
-    for (const condition of Object.values(conditions).sort((a, b) => a.sortIndex - b.sortIndex)) {
+    for (const condition of Object.values(conditions).sort(
+        (a, b) => a.sortIndex - b.sortIndex,
+    )) {
         element.add(new Option(condition.name, condition.hrid))
     }
 }
@@ -771,12 +897,16 @@ function fillTriggerConditionSelect(element, dependencyHrid) {
 function fillTriggerComparatorSelect(element, conditionHrid) {
     let condition = combatTriggerConditionDetailMap[conditionHrid]
 
-    let comparators = condition.allowedComparatorHrids.map((hrid) => combatTriggerComparatorDetailMap[hrid])
+    let comparators = condition.allowedComparatorHrids.map(
+        (hrid) => combatTriggerComparatorDetailMap[hrid],
+    )
 
     element.length = 0
     element.add(new Option('', ''))
 
-    for (const comparator of Object.values(comparators).sort((a, b) => a.sortIndex - b.sortIndex)) {
+    for (const comparator of Object.values(comparators).sort(
+        (a, b) => a.sortIndex - b.sortIndex,
+    )) {
         element.add(new Option(comparator.name, comparator.hrid))
     }
 }
@@ -813,11 +943,16 @@ function initZones() {
 
 function showSimulationResult(simResult) {
     let expensesModalTable = document.querySelector('#expensesTable > tbody')
-    expensesModalTable.innerHTML = '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>'
+    expensesModalTable.innerHTML =
+        '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>'
     let revenueModalTable = document.querySelector('#revenueTable > tbody')
-    revenueModalTable.innerHTML = '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>'
-    let noRngRevenueModalTable = document.querySelector('#noRngRevenueTable > tbody')
-    noRngRevenueModalTable.innerHTML = '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>'
+    revenueModalTable.innerHTML =
+        '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>'
+    let noRngRevenueModalTable = document.querySelector(
+        '#noRngRevenueTable > tbody',
+    )
+    noRngRevenueModalTable.innerHTML =
+        '<tr><th>Item</th><th>Price</th><th>Amount</th><th>Total</th></tr>'
     showKills(simResult)
     showDeaths(simResult)
     showExperienceGained(simResult)
@@ -828,11 +963,15 @@ function showSimulationResult(simResult) {
     showDamageDone(simResult)
     showDamageTaken(simResult)
     window.profit = window.revenue - window.expenses
-    document.getElementById('profitSpan').innerText = window.profit.toLocaleString()
-    document.getElementById('profitPreview').innerText = window.profit.toLocaleString()
+    document.getElementById('profitSpan').innerText =
+        window.profit.toLocaleString()
+    document.getElementById('profitPreview').innerText =
+        window.profit.toLocaleString()
     window.noRngProfit = window.noRngRevenue - window.expenses
-    document.getElementById('noRngProfitSpan').innerText = window.noRngProfit.toLocaleString()
-    document.getElementById('noRngProfitPreview').innerText = window.noRngProfit.toLocaleString()
+    document.getElementById('noRngProfitSpan').innerText =
+        window.noRngProfit.toLocaleString()
+    document.getElementById('noRngProfitPreview').innerText =
+        window.noRngProfit.toLocaleString()
 }
 
 function showKills(simResult) {
@@ -849,7 +988,10 @@ function showKills(simResult) {
     let playerDeaths = simResult.deaths['player'] ?? 0
     let encountersPerHour = (simResult.encounters / hoursSimulated).toFixed(1)
 
-    let encountersRow = createRow(['col-md-6', 'col-md-6 text-end'], ['Encounters', encountersPerHour])
+    let encountersRow = createRow(
+        ['col-md-6', 'col-md-6 text-end'],
+        ['Encounters', encountersPerHour],
+    )
     newChildren.push(encountersRow)
 
     let monsters = Object.keys(simResult.deaths)
@@ -859,10 +1001,12 @@ function showKills(simResult) {
     const totalDropMap = new Map()
     const noRngTotalDropMap = new Map()
     for (const monster of monsters) {
-        let killsPerHour = (simResult.deaths[monster] / hoursSimulated).toFixed(1)
+        let killsPerHour = (simResult.deaths[monster] / hoursSimulated).toFixed(
+            1,
+        )
         let monsterRow = createRow(
             ['col-md-6', 'col-md-6 text-end'],
-            [combatMonsterDetailMap[monster].name, killsPerHour]
+            [combatMonsterDetailMap[monster].name, killsPerHour],
         )
         newChildren.push(monsterRow)
 
@@ -889,11 +1033,15 @@ function showKills(simResult) {
 
         for (let dropObject of dropMap.values()) {
             dropObject.noRngDropAmount +=
-                simResult.deaths[monster] * dropObject.dropRate * ((dropObject.dropMax + dropObject.dropMin) / 2)
+                simResult.deaths[monster] *
+                dropObject.dropRate *
+                ((dropObject.dropMax + dropObject.dropMin) / 2)
         }
         for (let dropObject of rareDropMap.values()) {
             dropObject.noRngDropAmount +=
-                simResult.deaths[monster] * dropObject.dropRate * ((dropObject.dropMax + dropObject.dropMin) / 2)
+                simResult.deaths[monster] *
+                dropObject.dropRate *
+                ((dropObject.dropMax + dropObject.dropMin) / 2)
         }
 
         for (let i = 0; i < simResult.deaths[monster]; i++) {
@@ -901,7 +1049,9 @@ function showKills(simResult) {
                 let chance = Math.random()
                 if (chance <= dropObject.dropRate) {
                     let amount = Math.floor(
-                        Math.random() * (dropObject.dropMax - dropObject.dropMin + 1) + dropObject.dropMin
+                        Math.random() *
+                            (dropObject.dropMax - dropObject.dropMin + 1) +
+                            dropObject.dropMin,
                     )
                     dropObject.number = dropObject.number + amount
                 }
@@ -910,7 +1060,9 @@ function showKills(simResult) {
                 let chance = Math.random()
                 if (chance <= dropObject.dropRate) {
                     let amount = Math.floor(
-                        Math.random() * (dropObject.dropMax - dropObject.dropMin + 1) + dropObject.dropMin
+                        Math.random() *
+                            (dropObject.dropMax - dropObject.dropMin + 1) +
+                            dropObject.dropMin,
                     )
                     dropObject.number = dropObject.number + amount
                 }
@@ -918,24 +1070,36 @@ function showKills(simResult) {
         }
         for (let [name, dropObject] of dropMap.entries()) {
             if (totalDropMap.has(name)) {
-                totalDropMap.set(name, totalDropMap.get(name) + dropObject.number)
+                totalDropMap.set(
+                    name,
+                    totalDropMap.get(name) + dropObject.number,
+                )
             } else {
                 totalDropMap.set(name, dropObject.number)
             }
             if (noRngTotalDropMap.has(name)) {
-                noRngTotalDropMap.set(name, noRngTotalDropMap.get(name) + dropObject.noRngDropAmount)
+                noRngTotalDropMap.set(
+                    name,
+                    noRngTotalDropMap.get(name) + dropObject.noRngDropAmount,
+                )
             } else {
                 noRngTotalDropMap.set(name, dropObject.noRngDropAmount)
             }
         }
         for (let [name, dropObject] of rareDropMap.entries()) {
             if (totalDropMap.has(name)) {
-                totalDropMap.set(name, totalDropMap.get(name) + dropObject.number)
+                totalDropMap.set(
+                    name,
+                    totalDropMap.get(name) + dropObject.number,
+                )
             } else {
                 totalDropMap.set(name, dropObject.number)
             }
             if (noRngTotalDropMap.has(name)) {
-                noRngTotalDropMap.set(name, noRngTotalDropMap.get(name) + dropObject.noRngDropAmount)
+                noRngTotalDropMap.set(
+                    name,
+                    noRngTotalDropMap.get(name) + dropObject.noRngDropAmount,
+                )
             } else {
                 noRngTotalDropMap.set(name, dropObject.noRngDropAmount)
             }
@@ -945,7 +1109,10 @@ function showKills(simResult) {
     let revenueModalTable = document.querySelector('#revenueTable > tbody')
     let total = 0
     for (let [name, dropAmount] of totalDropMap.entries()) {
-        let dropRow = createRow(['col-md-6', 'col-md-6 text-end'], [name, dropAmount.toLocaleString()])
+        let dropRow = createRow(
+            ['col-md-6', 'col-md-6 text-end'],
+            [name, dropAmount.toLocaleString()],
+        )
         newDropChildren.push(dropRow)
 
         let tableRow = '<tr class="' + name.replace(/\s+/g, '') + '"><td>'
@@ -984,10 +1151,15 @@ function showKills(simResult) {
         total += price * dropAmount
     }
 
-    let noRngRevenueModalTable = document.querySelector('#noRngRevenueTable > tbody')
+    let noRngRevenueModalTable = document.querySelector(
+        '#noRngRevenueTable > tbody',
+    )
     let noRngTotal = 0
     for (let [name, dropAmount] of noRngTotalDropMap.entries()) {
-        let noRngDropRow = createRow(['col-md-6', 'col-md-6 text-end'], [name, dropAmount.toLocaleString()])
+        let noRngDropRow = createRow(
+            ['col-md-6', 'col-md-6 text-end'],
+            [name, dropAmount.toLocaleString()],
+        )
         newNoRngDropChildren.push(noRngDropRow)
 
         let tableRow = '<tr class="' + name.replace(/\s+/g, '') + '"><td>'
@@ -1028,7 +1200,8 @@ function showKills(simResult) {
 
     document.getElementById('revenueSpan').innerText = total.toLocaleString()
     window.revenue = total
-    document.getElementById('noRngRevenueSpan').innerText = noRngTotal.toLocaleString()
+    document.getElementById('noRngRevenueSpan').innerText =
+        noRngTotal.toLocaleString()
     window.noRngRevenue = noRngTotal
 
     let resultAccordion = document.getElementById('noRngDropsAccordion')
@@ -1046,7 +1219,10 @@ function showDeaths(simResult) {
     let playerDeaths = simResult.deaths['player'] ?? 0
     let deathsPerHour = (playerDeaths / hoursSimulated).toFixed(2)
 
-    let deathRow = createRow(['col-md-6', 'col-md-6 text-end'], ['Player', deathsPerHour])
+    let deathRow = createRow(
+        ['col-md-6', 'col-md-6 text-end'],
+        ['Player', deathsPerHour],
+    )
     resultDiv.replaceChildren(deathRow)
 }
 
@@ -1056,18 +1232,34 @@ function showExperienceGained(simResult) {
 
     let hoursSimulated = simResult.simulatedTime / ONE_HOUR
 
-    let totalExperience = Object.values(simResult.experienceGained['player']).reduce((prev, cur) => prev + cur, 0)
+    let totalExperience = Object.values(
+        simResult.experienceGained['player'],
+    ).reduce((prev, cur) => prev + cur, 0)
     let totalExperiencePerHour = (totalExperience / hoursSimulated).toFixed(0)
-    let totalRow = createRow(['col-md-6', 'col-md-6 text-end'], ['Total', totalExperiencePerHour])
+    let totalRow = createRow(
+        ['col-md-6', 'col-md-6 text-end'],
+        ['Total', totalExperiencePerHour],
+    )
     newChildren.push(totalRow)
-
-    ;['Stamina', 'Intelligence', 'Attack', 'Power', 'Defense', 'Ranged', 'Magic'].forEach((skill) => {
-        let experience = simResult.experienceGained['player'][skill.toLowerCase()] ?? 0
+    ;[
+        'Stamina',
+        'Intelligence',
+        'Attack',
+        'Power',
+        'Defense',
+        'Ranged',
+        'Magic',
+    ].forEach((skill) => {
+        let experience =
+            simResult.experienceGained['player'][skill.toLowerCase()] ?? 0
         if (experience == 0) {
             return
         }
         let experiencePerHour = (experience / hoursSimulated).toFixed(0)
-        let experienceRow = createRow(['col-md-6', 'col-md-6 text-end'], [skill, experiencePerHour])
+        let experienceRow = createRow(
+            ['col-md-6', 'col-md-6 text-end'],
+            [skill, experiencePerHour],
+        )
         newChildren.push(experienceRow)
     })
 
@@ -1085,7 +1277,9 @@ function showConsumablesUsed(simResult) {
         return
     }
 
-    let consumablesUsed = Object.entries(simResult.consumablesUsed['player']).sort((a, b) => b[1] - a[1])
+    let consumablesUsed = Object.entries(
+        simResult.consumablesUsed['player'],
+    ).sort((a, b) => b[1] - a[1])
 
     let expensesModalTable = document.querySelector('#expensesTable > tbody')
     let total = 0
@@ -1093,15 +1287,20 @@ function showConsumablesUsed(simResult) {
         let consumablesPerHour = (amount / hoursSimulated).toFixed(0)
         let consumableRow = createRow(
             ['col-md-6', 'col-md-6 text-end'],
-            [itemDetailMap[consumable].name, consumablesPerHour]
+            [itemDetailMap[consumable].name, consumablesPerHour],
         )
         newChildren.push(consumableRow)
 
-        let tableRow = '<tr class="' + itemDetailMap[consumable].name.replace(/\s+/g, '') + '"><td>'
+        let tableRow =
+            '<tr class="' +
+            itemDetailMap[consumable].name.replace(/\s+/g, '') +
+            '"><td>'
         tableRow += itemDetailMap[consumable].name
         tableRow += '</td><td contenteditable="true">'
         let price = -1
-        let expensesSetting = document.getElementById('selectPrices_consumables').value
+        let expensesSetting = document.getElementById(
+            'selectPrices_consumables',
+        ).value
         if (window.prices) {
             let item = window.prices[itemDetailMap[consumable].name]
             if (item) {
@@ -1149,12 +1348,19 @@ function showManaUsed(simResult) {
         return
     }
     for (let ability in simResult.manaUsed) {
-        let manaPerHour = (simResult.manaUsed[ability] / hoursSimulated).toFixed(0)
-        let castsPerHour = (manaPerHour / abilityDetailMap[ability].manaCost).toFixed(2)
+        let manaPerHour = (
+            simResult.manaUsed[ability] / hoursSimulated
+        ).toFixed(0)
+        let castsPerHour = (
+            manaPerHour / abilityDetailMap[ability].manaCost
+        ).toFixed(2)
         castsPerHour = ' (' + castsPerHour + ')'
         let manaRow = createRow(
             ['col-md-6', 'col-md-6 text-end'],
-            [ability.split('/')[2].replaceAll('_', ' ') + castsPerHour, manaPerHour]
+            [
+                ability.split('/')[2].replaceAll('_', ' ') + castsPerHour,
+                manaPerHour,
+            ],
         )
         newChildren.push(manaRow)
     }
@@ -1173,13 +1379,20 @@ function showHitpointsGained(simResult) {
         return
     }
 
-    let hitpointsGained = Object.entries(simResult.hitpointsGained['player']).sort((a, b) => b[1] - a[1])
+    let hitpointsGained = Object.entries(
+        simResult.hitpointsGained['player'],
+    ).sort((a, b) => b[1] - a[1])
 
-    let totalHitpointsGained = hitpointsGained.reduce((prev, cur) => prev + cur[1], 0)
-    let totalHitpointsPerSecond = (totalHitpointsGained / secondsSimulated).toFixed(2)
+    let totalHitpointsGained = hitpointsGained.reduce(
+        (prev, cur) => prev + cur[1],
+        0,
+    )
+    let totalHitpointsPerSecond = (
+        totalHitpointsGained / secondsSimulated
+    ).toFixed(2)
     let totalRow = createRow(
         ['col-md-6', 'col-md-3 text-end', 'col-md-3 text-end'],
-        ['Total', totalHitpointsPerSecond, '100%']
+        ['Total', totalHitpointsPerSecond, '100%'],
     )
     newChildren.push(totalRow)
 
@@ -1209,7 +1422,7 @@ function showHitpointsGained(simResult) {
 
         let row = createRow(
             ['col-md-6', 'col-md-3 text-end', 'col-md-3 text-end'],
-            [sourceText, hitpointsPerSecond, percentage + '%']
+            [sourceText, hitpointsPerSecond, percentage + '%'],
         )
         newChildren.push(row)
     }
@@ -1228,13 +1441,20 @@ function showManapointsGained(simResult) {
         return
     }
 
-    let manapointsGained = Object.entries(simResult.manapointsGained['player']).sort((a, b) => b[1] - a[1])
+    let manapointsGained = Object.entries(
+        simResult.manapointsGained['player'],
+    ).sort((a, b) => b[1] - a[1])
 
-    let totalManapointsGained = manapointsGained.reduce((prev, cur) => prev + cur[1], 0)
-    let totalManapointsPerSecond = (totalManapointsGained / secondsSimulated).toFixed(2)
+    let totalManapointsGained = manapointsGained.reduce(
+        (prev, cur) => prev + cur[1],
+        0,
+    )
+    let totalManapointsPerSecond = (
+        totalManapointsGained / secondsSimulated
+    ).toFixed(2)
     let totalRow = createRow(
         ['col-md-6', 'col-md-3 text-end', 'col-md-3 text-end'],
-        ['Total', totalManapointsPerSecond, '100%']
+        ['Total', totalManapointsPerSecond, '100%'],
     )
     newChildren.push(totalRow)
 
@@ -1260,13 +1480,16 @@ function showManapointsGained(simResult) {
 
         let row = createRow(
             ['col-md-6', 'col-md-3 text-end', 'col-md-3 text-end'],
-            [sourceText, manapointsPerSecond, percentage + '%']
+            [sourceText, manapointsPerSecond, percentage + '%'],
         )
         newChildren.push(row)
     }
 
     let ranOutOfManaText = simResult.playerRanOutOfMana ? 'Yes' : 'No'
-    let ranOutOfManaRow = createRow(['col-md-6', 'col-md-6 text-end'], ['Ran out of mana', ranOutOfManaText])
+    let ranOutOfManaRow = createRow(
+        ['col-md-6', 'col-md-6 text-end'],
+        ['Ran out of mana', ranOutOfManaText],
+    )
     newChildren.push(ranOutOfManaRow)
 
     resultDiv.replaceChildren(...newChildren)
@@ -1279,23 +1502,33 @@ function showDamageDone(simResult) {
     let totalSecondsSimulated = simResult.simulatedTime / ONE_SECOND
 
     for (let i = 1; i < 7; i++) {
-        let accordion = document.getElementById('simulationResultDamageDoneAccordionEnemy' + i)
+        let accordion = document.getElementById(
+            'simulationResultDamageDoneAccordionEnemy' + i,
+        )
         hideElement(accordion)
     }
 
-    let bossTimeHeadingDiv = document.getElementById('simulationBossTimeHeading')
+    let bossTimeHeadingDiv = document.getElementById(
+        'simulationBossTimeHeading',
+    )
     bossTimeHeadingDiv.classList.add('d-none')
     let bossTimeDiv = document.getElementById('simulationBossTime')
     bossTimeDiv.classList.add('d-none')
 
-    for (const [target, abilities] of Object.entries(simResult.attacks['player'])) {
+    for (const [target, abilities] of Object.entries(
+        simResult.attacks['player'],
+    )) {
         let targetDamageDone = {}
 
         const i = simResult.timeSpentAlive.findIndex((e) => e.name === target)
-        let aliveSecondsSimulated = simResult.timeSpentAlive[i].timeSpentAlive / ONE_SECOND
+        let aliveSecondsSimulated =
+            simResult.timeSpentAlive[i].timeSpentAlive / ONE_SECOND
 
         for (const [ability, abilityCasts] of Object.entries(abilities)) {
-            let casts = Object.values(abilityCasts).reduce((prev, cur) => prev + cur, 0)
+            let casts = Object.values(abilityCasts).reduce(
+                (prev, cur) => prev + cur,
+                0,
+            )
             let misses = abilityCasts['miss'] ?? 0
             let damage = Object.entries(abilityCasts)
                 .filter((entry) => entry[0] != 'miss')
@@ -1319,25 +1552,36 @@ function showDamageDone(simResult) {
             }
         }
 
-        let resultDiv = document.getElementById('simulationResultDamageDoneEnemy' + enemyIndex)
+        let resultDiv = document.getElementById(
+            'simulationResultDamageDoneEnemy' + enemyIndex,
+        )
         createDamageTable(resultDiv, targetDamageDone, aliveSecondsSimulated)
 
-        let resultAccordion = document.getElementById('simulationResultDamageDoneAccordionEnemy' + enemyIndex)
+        let resultAccordion = document.getElementById(
+            'simulationResultDamageDoneAccordionEnemy' + enemyIndex,
+        )
         showElement(resultAccordion)
 
         let resultAccordionButton = document.getElementById(
-            'buttonSimulationResultDamageDoneAccordionEnemy' + enemyIndex
+            'buttonSimulationResultDamageDoneAccordionEnemy' + enemyIndex,
         )
         let targetName = combatMonsterDetailMap[target].name
-        resultAccordionButton.innerHTML = '<b>Damage Done (' + targetName + ')</b>'
+        resultAccordionButton.innerHTML =
+            '<b>Damage Done (' + targetName + ')</b>'
 
         if (simResult.bossFightMonsters.includes(target)) {
             let hoursSpentOnBoss = (aliveSecondsSimulated / 60 / 60).toFixed(2)
-            let percentSpentOnBoss = ((aliveSecondsSimulated / totalSecondsSimulated) * 100).toFixed(2)
+            let percentSpentOnBoss = (
+                (aliveSecondsSimulated / totalSecondsSimulated) *
+                100
+            ).toFixed(2)
 
             let bossRow = createRow(
                 ['col-md-6', 'col-md-6 text-end'],
-                [targetName, hoursSpentOnBoss + 'h(' + percentSpentOnBoss + '%)']
+                [
+                    targetName,
+                    hoursSpentOnBoss + 'h(' + percentSpentOnBoss + '%)',
+                ],
             )
             bossTimeDiv.replaceChildren(bossRow)
 
@@ -1348,7 +1592,9 @@ function showDamageDone(simResult) {
         enemyIndex++
     }
 
-    let totalResultDiv = document.getElementById('simulationResultTotalDamageDone')
+    let totalResultDiv = document.getElementById(
+        'simulationResultTotalDamageDone',
+    )
     createDamageTable(totalResultDiv, totalDamageDone, totalSecondsSimulated)
 }
 
@@ -1359,7 +1605,9 @@ function showDamageTaken(simResult) {
     let totalSecondsSimulated = simResult.simulatedTime / ONE_SECOND
 
     for (let i = 1; i < 7; i++) {
-        let accordion = document.getElementById('simulationResultDamageTakenAccordionEnemy' + i)
+        let accordion = document.getElementById(
+            'simulationResultDamageTakenAccordionEnemy' + i,
+        )
         hideElement(accordion)
     }
 
@@ -1369,11 +1617,17 @@ function showDamageTaken(simResult) {
         }
 
         const i = simResult.timeSpentAlive.findIndex((e) => e.name === source)
-        let aliveSecondsSimulated = simResult.timeSpentAlive[i].timeSpentAlive / ONE_SECOND
+        let aliveSecondsSimulated =
+            simResult.timeSpentAlive[i].timeSpentAlive / ONE_SECOND
         let sourceDamageTaken = {}
 
-        for (const [ability, abilityCasts] of Object.entries(targets['player'])) {
-            let casts = Object.values(abilityCasts).reduce((prev, cur) => prev + cur, 0)
+        for (const [ability, abilityCasts] of Object.entries(
+            targets['player'],
+        )) {
+            let casts = Object.values(abilityCasts).reduce(
+                (prev, cur) => prev + cur,
+                0,
+            )
             let misses = abilityCasts['miss'] ?? 0
             let damage = Object.entries(abilityCasts)
                 .filter((entry) => entry[0] != 'miss')
@@ -1397,39 +1651,65 @@ function showDamageTaken(simResult) {
             }
         }
 
-        let resultDiv = document.getElementById('simulationResultDamageTakenEnemy' + enemyIndex)
+        let resultDiv = document.getElementById(
+            'simulationResultDamageTakenEnemy' + enemyIndex,
+        )
         createDamageTable(resultDiv, sourceDamageTaken, aliveSecondsSimulated)
 
-        let resultAccordion = document.getElementById('simulationResultDamageTakenAccordionEnemy' + enemyIndex)
+        let resultAccordion = document.getElementById(
+            'simulationResultDamageTakenAccordionEnemy' + enemyIndex,
+        )
         showElement(resultAccordion)
 
         let resultAccordionButton = document.getElementById(
-            'buttonSimulationResultDamageTakenAccordionEnemy' + enemyIndex
+            'buttonSimulationResultDamageTakenAccordionEnemy' + enemyIndex,
         )
         let sourceName = combatMonsterDetailMap[source].name
-        resultAccordionButton.innerHTML = '<b>Damage Taken (' + sourceName + ')</b>'
+        resultAccordionButton.innerHTML =
+            '<b>Damage Taken (' + sourceName + ')</b>'
 
         enemyIndex++
     }
 
-    let totalResultDiv = document.getElementById('simulationResultTotalDamageTaken')
+    let totalResultDiv = document.getElementById(
+        'simulationResultTotalDamageTaken',
+    )
     createDamageTable(totalResultDiv, totalDamageTaken, totalSecondsSimulated)
 }
 
 function createDamageTable(resultDiv, damageDone, secondsSimulated) {
     let newChildren = []
 
-    let sortedDamageDone = Object.entries(damageDone).sort((a, b) => b[1].damage - a[1].damage)
+    let sortedDamageDone = Object.entries(damageDone).sort(
+        (a, b) => b[1].damage - a[1].damage,
+    )
 
-    let totalCasts = sortedDamageDone.reduce((prev, cur) => prev + cur[1].casts, 0)
-    let totalMisses = sortedDamageDone.reduce((prev, cur) => prev + cur[1].misses, 0)
-    let totalDamage = sortedDamageDone.reduce((prev, cur) => prev + cur[1].damage, 0)
-    let totalHitChance = ((100 * (totalCasts - totalMisses)) / totalCasts).toFixed(1)
+    let totalCasts = sortedDamageDone.reduce(
+        (prev, cur) => prev + cur[1].casts,
+        0,
+    )
+    let totalMisses = sortedDamageDone.reduce(
+        (prev, cur) => prev + cur[1].misses,
+        0,
+    )
+    let totalDamage = sortedDamageDone.reduce(
+        (prev, cur) => prev + cur[1].damage,
+        0,
+    )
+    let totalHitChance = (
+        (100 * (totalCasts - totalMisses)) /
+        totalCasts
+    ).toFixed(1)
     let totalDamagePerSecond = (totalDamage / secondsSimulated).toFixed(2)
 
     let totalRow = createRow(
-        ['col-md-5', 'col-md-3 text-end', 'col-md-2 text-end', 'col-md-2 text-end'],
-        ['Total', totalHitChance + '%', totalDamagePerSecond, '100%']
+        [
+            'col-md-5',
+            'col-md-3 text-end',
+            'col-md-2 text-end',
+            'col-md-2 text-end',
+        ],
+        ['Total', totalHitChance + '%', totalDamagePerSecond, '100%'],
     )
     newChildren.push(totalRow)
 
@@ -1450,13 +1730,21 @@ function createDamageTable(resultDiv, damageDone, secondsSimulated) {
                 break
         }
 
-        let hitChance = ((100 * (damageInfo.casts - damageInfo.misses)) / damageInfo.casts).toFixed(1)
+        let hitChance = (
+            (100 * (damageInfo.casts - damageInfo.misses)) /
+            damageInfo.casts
+        ).toFixed(1)
         let damagePerSecond = (damageInfo.damage / secondsSimulated).toFixed(2)
         let percentage = ((100 * damageInfo.damage) / totalDamage).toFixed(0)
 
         let row = createRow(
-            ['col-md-5', 'col-md-3 text-end', 'col-md-2 text-end', 'col-md-2 text-end'],
-            [abilityText, hitChance + '%', damagePerSecond, percentage + '%']
+            [
+                'col-md-5',
+                'col-md-3 text-end',
+                'col-md-2 text-end',
+                'col-md-2 text-end',
+            ],
+            [abilityText, hitChance + '%', damagePerSecond, percentage + '%'],
         )
         newChildren.push(row)
     }
@@ -1523,9 +1811,18 @@ function startSimulation() {
     }
 
     for (let i = 0; i < 4; i++) {
-        if (abilities[i] && player.intelligenceLevel >= abilitySlotsLevelRequirementList[i + 1]) {
-            let abilityLevelInput = document.getElementById('inputAbilityLevel_' + i)
-            let ability = new Ability(abilities[i], Number(abilityLevelInput.value), triggerMap[abilities[i]])
+        if (
+            abilities[i] &&
+            player.intelligenceLevel >= abilitySlotsLevelRequirementList[i + 1]
+        ) {
+            let abilityLevelInput = document.getElementById(
+                'inputAbilityLevel_' + i,
+            )
+            let ability = new Ability(
+                abilities[i],
+                Number(abilityLevelInput.value),
+                triggerMap[abilities[i]],
+            )
             player.abilities[i] = ability
         } else {
             player.abilities[i] = null
@@ -1553,13 +1850,23 @@ function startSimulation() {
 
 function initEquipmentSetsModal() {
     let equipmentSetsModal = document.getElementById('equipmentSetsModal')
-    equipmentSetsModal.addEventListener('show.bs.modal', equipmentSetsModalShownHandler)
+    equipmentSetsModal.addEventListener(
+        'show.bs.modal',
+        equipmentSetsModalShownHandler,
+    )
 
     let equipmentSetNameInput = document.getElementById('inputEquipmentSetName')
-    equipmentSetNameInput.addEventListener('input', (event) => equipmentSetNameChangedHandler(event))
+    equipmentSetNameInput.addEventListener('input', (event) =>
+        equipmentSetNameChangedHandler(event),
+    )
 
-    let createEquipmentSetButton = document.getElementById('buttonCreateNewEquipmentSet')
-    createEquipmentSetButton.addEventListener('click', createNewEquipmentSetHandler)
+    let createEquipmentSetButton = document.getElementById(
+        'buttonCreateNewEquipmentSet',
+    )
+    createEquipmentSetButton.addEventListener(
+        'click',
+        createNewEquipmentSetHandler,
+    )
 }
 
 function equipmentSetsModalShownHandler() {
@@ -1571,7 +1878,9 @@ function resetNewEquipmentSetControls() {
     let equipmentSetNameInput = document.getElementById('inputEquipmentSetName')
     equipmentSetNameInput.value = ''
 
-    let createEquipmentSetButton = document.getElementById('buttonCreateNewEquipmentSet')
+    let createEquipmentSetButton = document.getElementById(
+        'buttonCreateNewEquipmentSet',
+    )
     createEquipmentSetButton.disabled = true
 }
 
@@ -1582,27 +1891,37 @@ function updateEquipmentSetList() {
     for (const equipmentSetName of Object.keys(equipmentSets)) {
         let row = createElement('div', 'row mb-2')
 
-        let nameCol = createElement('div', 'col align-self-center', equipmentSetName)
+        let nameCol = createElement(
+            'div',
+            'col align-self-center',
+            equipmentSetName,
+        )
         row.appendChild(nameCol)
 
         let loadButtonCol = createElement('div', 'col-md-auto')
         let loadButton = createElement('button', 'btn btn-primary', 'Load')
         loadButton.setAttribute('type', 'button')
-        loadButton.addEventListener('click', (_) => loadEquipmentSetHandler(equipmentSetName))
+        loadButton.addEventListener('click', (_) =>
+            loadEquipmentSetHandler(equipmentSetName),
+        )
         loadButtonCol.appendChild(loadButton)
         row.appendChild(loadButtonCol)
 
         let saveButtonCol = createElement('div', 'col-md-auto')
         let saveButton = createElement('button', 'btn btn-primary', 'Save')
         saveButton.setAttribute('type', 'button')
-        saveButton.addEventListener('click', (_) => updateEquipmentSetHandler(equipmentSetName))
+        saveButton.addEventListener('click', (_) =>
+            updateEquipmentSetHandler(equipmentSetName),
+        )
         saveButtonCol.appendChild(saveButton)
         row.appendChild(saveButtonCol)
 
         let deleteButtonCol = createElement('div', 'col-md-auto')
         let deleteButton = createElement('button', 'btn btn-danger', 'Delete')
         deleteButton.setAttribute('type', 'button')
-        deleteButton.addEventListener('click', (_) => deleteEquipmentSetHandler(equipmentSetName))
+        deleteButton.addEventListener('click', (_) =>
+            deleteEquipmentSetHandler(equipmentSetName),
+        )
         deleteButtonCol.appendChild(deleteButton)
         row.appendChild(deleteButtonCol)
 
@@ -1625,7 +1944,9 @@ function equipmentSetNameChangedHandler(event) {
         invalid = true
     }
 
-    let createEquipmentSetButton = document.getElementById('buttonCreateNewEquipmentSet')
+    let createEquipmentSetButton = document.getElementById(
+        'buttonCreateNewEquipmentSet',
+    )
     createEquipmentSetButton.disabled = invalid
 }
 
@@ -1681,22 +2002,41 @@ function getEquipmentSetFromUI() {
         houseRooms: {},
     }
 
-    ;['stamina', 'intelligence', 'attack', 'power', 'defense', 'ranged', 'magic'].forEach((skill) => {
+    ;[
+        'stamina',
+        'intelligence',
+        'attack',
+        'power',
+        'defense',
+        'ranged',
+        'magic',
+    ].forEach((skill) => {
         let levelInput = document.getElementById('inputLevel_' + skill)
         equipmentSet.levels[skill] = Number(levelInput.value)
     })
+    ;[
+        'head',
+        'body',
+        'legs',
+        'feet',
+        'hands',
+        'weapon',
+        'off_hand',
+        'pouch',
+        'neck',
+        'earrings',
+        'ring',
+    ].forEach((type) => {
+        let equipmentSelect = document.getElementById('selectEquipment_' + type)
+        let enhancementLevelInput = document.getElementById(
+            'inputEquipmentEnhancementLevel_' + type,
+        )
 
-    ;['head', 'body', 'legs', 'feet', 'hands', 'weapon', 'off_hand', 'pouch', 'neck', 'earrings', 'ring'].forEach(
-        (type) => {
-            let equipmentSelect = document.getElementById('selectEquipment_' + type)
-            let enhancementLevelInput = document.getElementById('inputEquipmentEnhancementLevel_' + type)
-
-            equipmentSet.equipment[type] = {
-                equipment: equipmentSelect.value,
-                enhancementLevel: Number(enhancementLevelInput.value),
-            }
+        equipmentSet.equipment[type] = {
+            equipment: equipmentSelect.value,
+            enhancementLevel: Number(enhancementLevelInput.value),
         }
-    )
+    })
 
     for (let i = 0; i < 3; i++) {
         let foodSelect = document.getElementById('selectFood_' + i)
@@ -1710,7 +2050,9 @@ function getEquipmentSetFromUI() {
 
     for (let i = 0; i < 4; i++) {
         let abilitySelect = document.getElementById('selectAbility_' + i)
-        let abilityLevelInput = document.getElementById('inputAbilityLevel_' + i)
+        let abilityLevelInput = document.getElementById(
+            'inputAbilityLevel_' + i,
+        )
         equipmentSet.abilities[i] = {
             ability: abilitySelect.value,
             level: Number(abilityLevelInput.value),
@@ -1725,20 +2067,40 @@ function getEquipmentSetFromUI() {
 }
 
 function loadEquipmentSetIntoUI(equipmentSet) {
-    ;['stamina', 'intelligence', 'attack', 'power', 'defense', 'ranged', 'magic'].forEach((skill) => {
+    ;[
+        'stamina',
+        'intelligence',
+        'attack',
+        'power',
+        'defense',
+        'ranged',
+        'magic',
+    ].forEach((skill) => {
         let levelInput = document.getElementById('inputLevel_' + skill)
         levelInput.value = equipmentSet.levels[skill] ?? 1
     })
+    ;[
+        'head',
+        'body',
+        'legs',
+        'feet',
+        'hands',
+        'weapon',
+        'off_hand',
+        'pouch',
+        'neck',
+        'earrings',
+        'ring',
+    ].forEach((type) => {
+        let equipmentSelect = document.getElementById('selectEquipment_' + type)
+        let enhancementLevelInput = document.getElementById(
+            'inputEquipmentEnhancementLevel_' + type,
+        )
 
-    ;['head', 'body', 'legs', 'feet', 'hands', 'weapon', 'off_hand', 'pouch', 'neck', 'earrings', 'ring'].forEach(
-        (type) => {
-            let equipmentSelect = document.getElementById('selectEquipment_' + type)
-            let enhancementLevelInput = document.getElementById('inputEquipmentEnhancementLevel_' + type)
-
-            equipmentSelect.value = equipmentSet.equipment[type].equipment
-            enhancementLevelInput.value = equipmentSet.equipment[type].enhancementLevel
-        }
-    )
+        equipmentSelect.value = equipmentSet.equipment[type].equipment
+        enhancementLevelInput.value =
+            equipmentSet.equipment[type].enhancementLevel
+    })
 
     for (let i = 0; i < 3; i++) {
         let foodSelect = document.getElementById('selectFood_' + i)
@@ -1752,7 +2114,9 @@ function loadEquipmentSetIntoUI(equipmentSet) {
 
     for (let i = 0; i < 4; i++) {
         let abilitySelect = document.getElementById('selectAbility_' + i)
-        let abilityLevelInput = document.getElementById('inputAbilityLevel_' + i)
+        let abilityLevelInput = document.getElementById(
+            'inputAbilityLevel_' + i,
+        )
 
         abilitySelect.value = equipmentSet.abilities[i].ability
         abilityLevelInput.value = equipmentSet.abilities[i].level
@@ -1762,7 +2126,9 @@ function loadEquipmentSetIntoUI(equipmentSet) {
 
     if (equipmentSet.houseRooms) {
         for (const room in equipmentSet.houseRooms) {
-            const field = document.querySelector('[data-house-hrid="' + room + '"]')
+            const field = document.querySelector(
+                '[data-house-hrid="' + room + '"]',
+            )
             if (equipmentSet.houseRooms[room]) {
                 field.value = equipmentSet.houseRooms[room]
             } else {
@@ -1773,7 +2139,9 @@ function loadEquipmentSetIntoUI(equipmentSet) {
     } else {
         let houseRooms = Object.values(houseRoomDetailMap)
         for (const room of Object.values(houseRooms)) {
-            const field = document.querySelector('[data-house-hrid="' + room.hrid + '"]')
+            const field = document.querySelector(
+                '[data-house-hrid="' + room.hrid + '"]',
+            )
             field.value = ''
             player.houseRooms[room.hrid] = 0
         }
@@ -1808,9 +2176,11 @@ function initImportExportModal() {
         for (const item in player.equipment) {
             if (player.equipment[item] != null) {
                 equipmentArray.push({
-                    itemLocationHrid: player.equipment[item].gameItem.equipmentDetail.type.replaceAll(
+                    itemLocationHrid: player.equipment[
+                        item
+                    ].gameItem.equipmentDetail.type.replaceAll(
                         'equipment_types',
-                        'item_locations'
+                        'item_locations',
                     ),
                     itemHrid: player.equipment[item].hrid,
                     enhancementLevel: player.equipment[item].enhancementLevel,
@@ -1829,9 +2199,14 @@ function initImportExportModal() {
         }
         let abilitiesArray = []
         for (let i = 0; i < 4; i++) {
-            let abilityLevelInput = document.getElementById('inputAbilityLevel_' + i)
+            let abilityLevelInput = document.getElementById(
+                'inputAbilityLevel_' + i,
+            )
             let abilityName = document.getElementById('selectAbility_' + i)
-            abilitiesArray[i] = { abilityHrid: abilityName.value, level: abilityLevelInput.value }
+            abilitiesArray[i] = {
+                abilityHrid: abilityName.value,
+                level: abilityLevelInput.value,
+            }
         }
         let drinksArray = []
         for (let i = 0; i < drinks?.length; i++) {
@@ -1864,16 +2239,38 @@ function initImportExportModal() {
     importSetButton.addEventListener('click', (event) => {
         let importSet = document.getElementById('inputSet').value
         importSet = JSON.parse(importSet)
-        ;['stamina', 'intelligence', 'attack', 'power', 'defense', 'ranged', 'magic'].forEach((skill) => {
+        ;[
+            'stamina',
+            'intelligence',
+            'attack',
+            'power',
+            'defense',
+            'ranged',
+            'magic',
+        ].forEach((skill) => {
             let levelInput = document.getElementById('inputLevel_' + skill)
             levelInput.value = importSet.player[skill + 'Level']
         })
-
-        ;['head', 'body', 'legs', 'feet', 'hands', 'off_hand', 'pouch', 'neck', 'earrings', 'ring'].forEach((type) => {
-            let equipmentSelect = document.getElementById('selectEquipment_' + type)
-            let enhancementLevelInput = document.getElementById('inputEquipmentEnhancementLevel_' + type)
+        ;[
+            'head',
+            'body',
+            'legs',
+            'feet',
+            'hands',
+            'off_hand',
+            'pouch',
+            'neck',
+            'earrings',
+            'ring',
+        ].forEach((type) => {
+            let equipmentSelect = document.getElementById(
+                'selectEquipment_' + type,
+            )
+            let enhancementLevelInput = document.getElementById(
+                'inputEquipmentEnhancementLevel_' + type,
+            )
             let currentEquipment = importSet.player.equipment.find(
-                (item) => item.itemLocationHrid === '/item_locations/' + type
+                (item) => item.itemLocationHrid === '/item_locations/' + type,
             )
             if (currentEquipment !== undefined) {
                 equipmentSelect.value = currentEquipment.itemHrid
@@ -1885,12 +2282,14 @@ function initImportExportModal() {
         })
 
         let weaponSelect = document.getElementById('selectEquipment_weapon')
-        let weaponEnhancementLevelInput = document.getElementById('inputEquipmentEnhancementLevel_weapon')
+        let weaponEnhancementLevelInput = document.getElementById(
+            'inputEquipmentEnhancementLevel_weapon',
+        )
         let mainhandWeapon = importSet.player.equipment.find(
-            (item) => item.itemLocationHrid === '/item_locations/main_hand'
+            (item) => item.itemLocationHrid === '/item_locations/main_hand',
         )
         let twohandWeapon = importSet.player.equipment.find(
-            (item) => item.itemLocationHrid === '/item_locations/two_hand'
+            (item) => item.itemLocationHrid === '/item_locations/two_hand',
         )
         if (mainhandWeapon !== undefined) {
             weaponSelect.value = mainhandWeapon.itemHrid
@@ -1921,7 +2320,9 @@ function initImportExportModal() {
 
         for (let i = 0; i < 4; i++) {
             let abilitySelect = document.getElementById('selectAbility_' + i)
-            let abilityLevelInput = document.getElementById('inputAbilityLevel_' + i)
+            let abilityLevelInput = document.getElementById(
+                'inputAbilityLevel_' + i,
+            )
             if (importSet.abilities[i] != null) {
                 abilitySelect.value = importSet.abilities[i].abilityHrid
                 abilityLevelInput.value = String(importSet.abilities[i].level)
@@ -1937,7 +2338,9 @@ function initImportExportModal() {
 
         if (importSet.houseRooms) {
             for (const room in importSet.houseRooms) {
-                const field = document.querySelector('[data-house-hrid="' + room + '"]')
+                const field = document.querySelector(
+                    '[data-house-hrid="' + room + '"]',
+                )
                 if (importSet.houseRooms[room]) {
                     field.value = importSet.houseRooms[room]
                 } else {
@@ -1948,7 +2351,9 @@ function initImportExportModal() {
         } else {
             let houseRooms = Object.values(houseRoomDetailMap)
             for (const room of Object.values(houseRooms)) {
-                const field = document.querySelector('[data-house-hrid="' + room.hrid + '"]')
+                const field = document.querySelector(
+                    '[data-house-hrid="' + room.hrid + '"]',
+                )
                 field.value = ''
                 player.houseRooms[room.hrid] = 0
             }
@@ -1980,7 +2385,9 @@ function showErrorModal(error) {
     }
 
     for (let i = 0; i < 4; i++) {
-        let abilityLevelInput = document.getElementById('inputAbilityLevel_' + i)
+        let abilityLevelInput = document.getElementById(
+            'inputAbilityLevel_' + i,
+        )
         state['abilityLevel' + i] = abilityLevelInput.value
     }
 
@@ -1995,7 +2402,9 @@ window.prices
 
 async function fetchPrices() {
     try {
-        const response = await fetch('https://raw.githubusercontent.com/holychikenz/MWIApi/main/milkyapi.json')
+        const response = await fetch(
+            'https://raw.githubusercontent.com/holychikenz/MWIApi/main/milkyapi.json',
+        )
         if (!response.ok) {
             throw new Error('Error fetching prices')
         }
@@ -2015,14 +2424,21 @@ document.getElementById('buttonGetPrices').onclick = async () => {
 
 document.addEventListener('input', (e) => {
     let element = e.target
-    if (element.tagName == 'TD' && element.parentNode.parentNode.parentNode.classList.value.includes('profit-table')) {
+    if (
+        element.tagName == 'TD' &&
+        element.parentNode.parentNode.parentNode.classList.value.includes(
+            'profit-table',
+        )
+    ) {
         let tableId = element.parentNode.parentNode.parentNode.id
         let row = element.parentNode.querySelectorAll('td')
         let item = row[0].innerText
         let newPrice = element.innerText
 
         let revenueSetting = document.getElementById('selectPrices_drops').value
-        let expensesSetting = document.getElementById('selectPrices_consumables').value
+        let expensesSetting = document.getElementById(
+            'selectPrices_consumables',
+        ).value
 
         let expensesDifference = 0
         let revenueDifference = 0
@@ -2032,7 +2448,11 @@ document.addEventListener('input', (e) => {
             expensesDifference = updateTable('expensesTable', item, newPrice)
             if (revenueSetting == expensesSetting) {
                 revenueDifference = updateTable('revenueTable', item, newPrice)
-                noRngRevenueDifference = updateTable('noRngRevenueTable', item, newPrice)
+                noRngRevenueDifference = updateTable(
+                    'noRngRevenueTable',
+                    item,
+                    newPrice,
+                )
             }
             if (window.prices) {
                 if (expensesSetting == 'bid') {
@@ -2043,9 +2463,17 @@ document.addEventListener('input', (e) => {
             }
         } else {
             revenueDifference = updateTable('revenueTable', item, newPrice)
-            noRngRevenueDifference = updateTable('noRngRevenueTable', item, newPrice)
+            noRngRevenueDifference = updateTable(
+                'noRngRevenueTable',
+                item,
+                newPrice,
+            )
             if (revenueSetting == expensesSetting) {
-                expensesDifference = updateTable('expensesTable', item, newPrice)
+                expensesDifference = updateTable(
+                    'expensesTable',
+                    item,
+                    newPrice,
+                )
             }
             if (window.prices) {
                 if (revenueSetting == 'bid') {
@@ -2057,23 +2485,32 @@ document.addEventListener('input', (e) => {
         }
 
         window.expenses += expensesDifference
-        document.getElementById('expensesSpan').innerText = window.expenses.toLocaleString()
+        document.getElementById('expensesSpan').innerText =
+            window.expenses.toLocaleString()
         window.revenue += revenueDifference
-        document.getElementById('revenueSpan').innerText = window.revenue.toLocaleString()
+        document.getElementById('revenueSpan').innerText =
+            window.revenue.toLocaleString()
         window.noRngRevenue += noRngRevenueDifference
-        document.getElementById('noRngRevenueSpan').innerText = window.noRngRevenue.toLocaleString()
+        document.getElementById('noRngRevenueSpan').innerText =
+            window.noRngRevenue.toLocaleString()
 
         window.profit = window.revenue - window.expenses
-        document.getElementById('profitPreview').innerText = window.profit.toLocaleString()
-        document.getElementById('profitSpan').innerText = window.profit.toLocaleString()
+        document.getElementById('profitPreview').innerText =
+            window.profit.toLocaleString()
+        document.getElementById('profitSpan').innerText =
+            window.profit.toLocaleString()
         window.noRngProfit = window.noRngRevenue - window.expenses
-        document.getElementById('noRngProfitSpan').innerText = window.noRngProfit.toLocaleString()
-        document.getElementById('noRngProfitPreview').innerText = window.noRngProfit.toLocaleString()
+        document.getElementById('noRngProfitSpan').innerText =
+            window.noRngProfit.toLocaleString()
+        document.getElementById('noRngProfitPreview').innerText =
+            window.noRngProfit.toLocaleString()
     }
 })
 
 function updateTable(tableId, item, price) {
-    let row = document.querySelector('#' + tableId + ' .' + item.replace(/\s+/g, ''))
+    let row = document.querySelector(
+        '#' + tableId + ' .' + item.replace(/\s+/g, ''),
+    )
     if (row == null) {
         return 0
     }

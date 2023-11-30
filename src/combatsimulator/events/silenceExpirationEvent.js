@@ -1,6 +1,6 @@
 import CombatEvent from './combatEvent'
 
-class SilenceExpirationEvent extends CombatEvent {
+export default class SilenceExpirationEvent extends CombatEvent {
     static type = 'silenceExpiration'
 
     constructor(time, source) {
@@ -9,5 +9,3 @@ class SilenceExpirationEvent extends CombatEvent {
         this.source = source
     }
 }
-
-export default SilenceExpirationEvent

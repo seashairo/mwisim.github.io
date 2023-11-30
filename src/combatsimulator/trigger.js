@@ -9,11 +9,17 @@ class Trigger {
     }
 
     static createFromDTO(dto) {
-        return new Trigger(dto.dependencyHrid, dto.conditionHrid, dto.comparatorHrid, dto.value)
+        return new Trigger(
+            dto.dependencyHrid,
+            dto.conditionHrid,
+            dto.comparatorHrid,
+            dto.value,
+        )
     }
 
     isActive(source, target, friendlies, enemies, currentTime) {
-        return combatTriggerDependencyDetailMap[this.dependencyHrid].isSingleTarget
+        return combatTriggerDependencyDetailMap[this.dependencyHrid]
+            .isSingleTarget
             ? this.isActiveSingleTarget(source, target, currentTime)
             : this.isActiveMultiTarget(friendlies, enemies, currentTime)
     }
@@ -31,7 +37,9 @@ class Trigger {
                 dependencyValue = this.getDependencyValue(target, currentTime)
                 break
             default:
-                throw new Error('Unknown dependencyHrid in trigger: ' + this.dependencyHrid)
+                throw new Error(
+                    'Unknown dependencyHrid in trigger: ' + this.dependencyHrid,
+                )
         }
 
         return this.compareValue(dependencyValue)
@@ -50,13 +58,17 @@ class Trigger {
                 dependency = enemies
                 break
             default:
-                throw new Error('Unknown dependencyHrid in trigger: ' + this.dependencyHrid)
+                throw new Error(
+                    'Unknown dependencyHrid in trigger: ' + this.dependencyHrid,
+                )
         }
 
         let dependencyValue
         switch (this.conditionHrid) {
             case '/combat_trigger_conditions/number_of_active_units':
-                dependencyValue = dependency.filter((unit) => unit.combatDetails.currentHitpoints > 0).length
+                dependencyValue = dependency.filter(
+                    (unit) => unit.combatDetails.currentHitpoints > 0,
+                ).length
                 break
             default:
                 dependencyValue = dependency
@@ -106,16 +118,24 @@ class Trigger {
             case '/combat_trigger_conditions/elusiveness':
             case '/combat_trigger_conditions/channeling_coffee':
                 let buffHrid = '/buff_uniques'
-                buffHrid += this.conditionHrid.slice(this.conditionHrid.lastIndexOf('/'))
+                buffHrid += this.conditionHrid.slice(
+                    this.conditionHrid.lastIndexOf('/'),
+                )
                 return source.combatBuffs[buffHrid]
             case '/combat_trigger_conditions/current_hp':
                 return source.combatDetails.currentHitpoints
             case '/combat_trigger_conditions/current_mp':
                 return source.combatDetails.currentManapoints
             case '/combat_trigger_conditions/missing_hp':
-                return source.combatDetails.maxHitpoints - source.combatDetails.currentHitpoints
+                return (
+                    source.combatDetails.maxHitpoints -
+                    source.combatDetails.currentHitpoints
+                )
             case '/combat_trigger_conditions/missing_mp':
-                return source.combatDetails.maxManapoints - source.combatDetails.currentManapoints
+                return (
+                    source.combatDetails.maxManapoints -
+                    source.combatDetails.currentManapoints
+                )
             case '/combat_trigger_conditions/stun_status':
                 // Replicate the game's behaviour of "stun status active" triggers activating
                 // immediately after the stun has worn off
@@ -123,9 +143,13 @@ class Trigger {
             case '/combat_trigger_conditions/blind_status':
                 return source.isBlinded || source.blindExpireTime == currentTime
             case '/combat_trigger_conditions/silence_status':
-                return source.isSilenced || source.silenceExpireTime == currentTime
+                return (
+                    source.isSilenced || source.silenceExpireTime == currentTime
+                )
             default:
-                throw new Error('Unknown conditionHrid in trigger: ' + this.conditionHrid)
+                throw new Error(
+                    'Unknown conditionHrid in trigger: ' + this.conditionHrid,
+                )
         }
     }
 
@@ -140,7 +164,9 @@ class Trigger {
             case '/combat_trigger_comparators/is_inactive':
                 return !dependencyValue
             default:
-                throw new Error('Unknown comparatorHrid in trigger: ' + this.comparatorHrid)
+                throw new Error(
+                    'Unknown comparatorHrid in trigger: ' + this.comparatorHrid,
+                )
         }
     }
 }

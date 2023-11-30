@@ -49,7 +49,10 @@ class CombatSimulator extends EventTarget {
             if (ticks == 1000) {
                 ticks = 0
                 let progressEvent = new CustomEvent('progress', {
-                    detail: Math.min(this.simulationTime / simulationTimeLimit, 1),
+                    detail: Math.min(
+                        this.simulationTime / simulationTimeLimit,
+                        1,
+                    ),
                 })
                 this.dispatchEvent(progressEvent)
             }
@@ -57,7 +60,11 @@ class CombatSimulator extends EventTarget {
 
         for (let i = 0; i < this.simResult.timeSpentAlive.length; i++) {
             if (this.simResult.timeSpentAlive[i].alive == true) {
-                this.simResult.updateTimeSpentAlive(this.simResult.timeSpentAlive[i].name, false, simulationTimeLimit)
+                this.simResult.updateTimeSpentAlive(
+                    this.simResult.timeSpentAlive[i].name,
+                    false,
+                    simulationTimeLimit,
+                )
             }
         }
 
@@ -66,7 +73,8 @@ class CombatSimulator extends EventTarget {
         this.simResult.setManaUsed(this.players[0])
 
         if (this.zone.monsterSpawnInfo.bossFightMonsters) {
-            this.simResult.bossFightMonsters = this.zone.monsterSpawnInfo.bossFightMonsters
+            this.simResult.bossFightMonsters =
+                this.zone.monsterSpawnInfo.bossFightMonsters
         }
 
         return this.simResult
@@ -135,15 +143,19 @@ class CombatSimulator extends EventTarget {
     processCombatStartEvent(event) {
         this.players[0].generateHouseBuffs()
         this.players[0].reset(this.simulationTime)
-        let regenTickEvent = new RegenTickEvent(this.simulationTime + REGEN_TICK_INTERVAL)
+        let regenTickEvent = new RegenTickEvent(
+            this.simulationTime + REGEN_TICK_INTERVAL,
+        )
         this.eventQueue.addEvent(regenTickEvent)
 
         this.startNewEncounter()
     }
 
     processPlayerRespawnEvent(event) {
-        this.players[0].combatDetails.currentHitpoints = this.players[0].combatDetails.maxHitpoints
-        this.players[0].combatDetails.currentManapoints = this.players[0].combatDetails.maxManapoints
+        this.players[0].combatDetails.currentHitpoints =
+            this.players[0].combatDetails.maxHitpoints
+        this.players[0].combatDetails.currentManapoints =
+            this.players[0].combatDetails.maxManapoints
         this.players[0].clearBuffs()
         this.players[0].clearCCs()
         this.startAttacks()
@@ -158,7 +170,11 @@ class CombatSimulator extends EventTarget {
 
         this.enemies.forEach((enemy) => {
             enemy.reset(this.simulationTime)
-            this.simResult.updateTimeSpentAlive(enemy.hrid, true, this.simulationTime)
+            this.simResult.updateTimeSpentAlive(
+                enemy.hrid,
+                true,
+                this.simulationTime,
+            )
             // console.log(enemy.hrid, "spawned");
         })
 
@@ -204,25 +220,42 @@ class CombatSimulator extends EventTarget {
             event.source,
             target,
             'autoAttack',
-            attackResult.didHit ? attackResult.damageDone : 'miss'
+            attackResult.didHit ? attackResult.damageDone : 'miss',
         )
 
         if (attackResult.lifeStealHeal > 0) {
-            this.simResult.addHitpointsGained(event.source, 'lifesteal', attackResult.lifeStealHeal)
+            this.simResult.addHitpointsGained(
+                event.source,
+                'lifesteal',
+                attackResult.lifeStealHeal,
+            )
         }
 
         if (attackResult.manaLeechMana > 0) {
-            this.simResult.addManapointsGained(event.source, 'manaLeech', attackResult.manaLeechMana)
+            this.simResult.addManapointsGained(
+                event.source,
+                'manaLeech',
+                attackResult.manaLeechMana,
+            )
         }
 
         if (attackResult.reflectDamageDone > 0) {
-            this.simResult.addAttack(target, event.source, 'physicalReflect', attackResult.reflectDamageDone)
+            this.simResult.addAttack(
+                target,
+                event.source,
+                'physicalReflect',
+                attackResult.reflectDamageDone,
+            )
         }
 
-        for (const [skill, xp] of Object.entries(attackResult.experienceGained.source)) {
+        for (const [skill, xp] of Object.entries(
+            attackResult.experienceGained.source,
+        )) {
             this.simResult.addExperienceGain(event.source, skill, xp)
         }
-        for (const [skill, xp] of Object.entries(attackResult.experienceGained.target)) {
+        for (const [skill, xp] of Object.entries(
+            attackResult.experienceGained.target,
+        )) {
             this.simResult.addExperienceGain(target, skill, xp)
         }
 
@@ -230,17 +263,28 @@ class CombatSimulator extends EventTarget {
             this.eventQueue.clearEventsForUnit(target)
             this.simResult.addDeath(target)
             if (!target.isPlayer) {
-                this.simResult.updateTimeSpentAlive(target.hrid, false, this.simulationTime)
+                this.simResult.updateTimeSpentAlive(
+                    target.hrid,
+                    false,
+                    this.simulationTime,
+                )
             }
             // console.log(target.hrid, "died");
         }
 
         // Could die from reflect damage
-        if (event.source.combatDetails.currentHitpoints == 0 && attackResult.reflectDamageDone != 0) {
+        if (
+            event.source.combatDetails.currentHitpoints == 0 &&
+            attackResult.reflectDamageDone != 0
+        ) {
             this.eventQueue.clearEventsForUnit(event.source)
             this.simResult.addDeath(event.source)
             if (!event.source.isPlayer) {
-                this.simResult.updateTimeSpentAlive(event.source.hrid, false, this.simulationTime)
+                this.simResult.updateTimeSpentAlive(
+                    event.source.hrid,
+                    false,
+                    this.simulationTime,
+                )
             }
         }
 
@@ -253,10 +297,17 @@ class CombatSimulator extends EventTarget {
     checkEncounterEnd() {
         let encounterEnded = false
 
-        if (this.enemies && !this.enemies.some((enemy) => enemy.combatDetails.currentHitpoints > 0)) {
+        if (
+            this.enemies &&
+            !this.enemies.some(
+                (enemy) => enemy.combatDetails.currentHitpoints > 0,
+            )
+        ) {
             this.eventQueue.clearEventsOfType(AutoAttackEvent.type)
             this.eventQueue.clearEventsOfType(AbilityCastEndEvent.type)
-            let enemyRespawnEvent = new EnemyRespawnEvent(this.simulationTime + ENEMY_RESPAWN_INTERVAL)
+            let enemyRespawnEvent = new EnemyRespawnEvent(
+                this.simulationTime + ENEMY_RESPAWN_INTERVAL,
+            )
             this.eventQueue.addEvent(enemyRespawnEvent)
             this.enemies = null
 
@@ -268,13 +319,17 @@ class CombatSimulator extends EventTarget {
         }
 
         if (
-            !this.players.some((player) => player.combatDetails.currentHitpoints > 0) &&
+            !this.players.some(
+                (player) => player.combatDetails.currentHitpoints > 0,
+            ) &&
             !this.eventQueue.containsEventOfType(PlayerRespawnEvent.type)
         ) {
             this.eventQueue.clearEventsOfType(AutoAttackEvent.type)
             this.eventQueue.clearEventsOfType(AbilityCastEndEvent.type)
             // 120 seconds respawn and 30 seconds traveling to battle
-            let playerRespawnEvent = new PlayerRespawnEvent(this.simulationTime + PLAYER_RESPAWN_INTERVAL)
+            let playerRespawnEvent = new PlayerRespawnEvent(
+                this.simulationTime + PLAYER_RESPAWN_INTERVAL,
+            )
             this.eventQueue.addEvent(playerRespawnEvent)
             // console.log("Player died");
 
@@ -305,15 +360,22 @@ class CombatSimulator extends EventTarget {
             .forEach((ability) => {
                 if (
                     !usedAbility &&
-                    ability.shouldTrigger(this.simulationTime, source, target, friendlies, enemies) &&
+                    ability.shouldTrigger(
+                        this.simulationTime,
+                        source,
+                        target,
+                        friendlies,
+                        enemies,
+                    ) &&
                     this.canUseAbility(source, ability, true)
                 ) {
                     let castDuration = ability.castDuration
-                    castDuration /= 1 + source.combatDetails.combatStats.castSpeed
+                    castDuration /=
+                        1 + source.combatDetails.combatStats.castSpeed
                     let abilityCastEndEvent = new AbilityCastEndEvent(
                         this.simulationTime + castDuration,
                         source,
-                        ability
+                        ability,
                     )
                     this.eventQueue.addEvent(abilityCastEndEvent)
                     /*-if (source.isPlayer) {
@@ -334,8 +396,9 @@ class CombatSimulator extends EventTarget {
 
         if (!source.isBlinded) {
             let autoAttackEvent = new AutoAttackEvent(
-                this.simulationTime + source.combatDetails.combatStats.attackInterval,
-                source
+                this.simulationTime +
+                    source.combatDetails.combatStats.attackInterval,
+                source,
             )
             /*-if (source.isPlayer) {
                 console.log("next attack " + ((this.simulationTime + source.combatDetails.combatStats.attackInterval) / 1e9))
@@ -348,16 +411,30 @@ class CombatSimulator extends EventTarget {
                 .forEach((ability) => {
                     // TODO account for regen tick
                     if (this.canUseAbility(source, ability, false)) {
-                        let haste = source.combatDetails.combatStats.abilityHaste
+                        let haste =
+                            source.combatDetails.combatStats.abilityHaste
                         let cooldownDuration = ability.cooldownDuration
                         if (haste > 0) {
-                            cooldownDuration = (cooldownDuration * 100) / (100 + haste)
+                            cooldownDuration =
+                                (cooldownDuration * 100) / (100 + haste)
                         }
 
-                        let abilityNextCastTime = ability.lastUsed + cooldownDuration
+                        let abilityNextCastTime =
+                            ability.lastUsed + cooldownDuration
 
-                        if (abilityNextCastTime <= source.blindExpireTime && abilityNextCastTime < nextCast) {
-                            if (ability.shouldTrigger(abilityNextCastTime, source, target, friendlies, enemies)) {
+                        if (
+                            abilityNextCastTime <= source.blindExpireTime &&
+                            abilityNextCastTime < nextCast
+                        ) {
+                            if (
+                                ability.shouldTrigger(
+                                    abilityNextCastTime,
+                                    source,
+                                    target,
+                                    friendlies,
+                                    enemies,
+                                )
+                            ) {
                                 nextCast = abilityNextCastTime
                             }
                         }
@@ -366,15 +443,19 @@ class CombatSimulator extends EventTarget {
 
             if (nextCast > source.blindExpireTime) {
                 let autoAttackEvent = new AutoAttackEvent(
-                    source.blindExpireTime + source.combatDetails.combatStats.attackInterval,
-                    source
+                    source.blindExpireTime +
+                        source.combatDetails.combatStats.attackInterval,
+                    source,
                 )
                 /*-if (source.isPlayer) {
                     console.log("next attack " + ((source.blindExpireTime + source.combatDetails.combatStats.attackInterval) / 1e9))
                 }*/
                 this.eventQueue.addEvent(autoAttackEvent)
             } else {
-                let awaitCooldownEvent = new AwaitCooldownEvent(nextCast, source)
+                let awaitCooldownEvent = new AwaitCooldownEvent(
+                    nextCast,
+                    source,
+                )
                 this.eventQueue.addEvent(awaitCooldownEvent)
             }
         }
@@ -385,10 +466,14 @@ class CombatSimulator extends EventTarget {
             let tickValue = CombatUtilities.calculateTickValue(
                 event.consumable.hitpointRestore,
                 event.totalTicks,
-                event.currentTick
+                event.currentTick,
             )
             let hitpointsAdded = event.source.addHitpoints(tickValue)
-            this.simResult.addHitpointsGained(event.source, event.consumable.hrid, hitpointsAdded)
+            this.simResult.addHitpointsGained(
+                event.source,
+                event.consumable.hrid,
+                hitpointsAdded,
+            )
             // console.log("Added hitpoints:", hitpointsAdded);
         }
 
@@ -396,10 +481,14 @@ class CombatSimulator extends EventTarget {
             let tickValue = CombatUtilities.calculateTickValue(
                 event.consumable.manapointRestore,
                 event.totalTicks,
-                event.currentTick
+                event.currentTick,
             )
             let manapointsAdded = event.source.addManapoints(tickValue)
-            this.simResult.addManapointsGained(event.source, event.consumable.hrid, manapointsAdded)
+            this.simResult.addManapointsGained(
+                event.source,
+                event.consumable.hrid,
+                manapointsAdded,
+            )
             // console.log("Added manapoints:", manapointsAdded);
         }
 
@@ -409,37 +498,73 @@ class CombatSimulator extends EventTarget {
                 event.source,
                 event.consumable,
                 event.totalTicks,
-                event.currentTick + 1
+                event.currentTick + 1,
             )
             this.eventQueue.addEvent(consumableTickEvent)
         }
     }
 
     processDamageOverTimeTickEvent(event) {
-        let tickDamage = CombatUtilities.calculateTickValue(event.damage, event.totalTicks, event.currentTick)
-        let damage = Math.min(tickDamage, event.target.combatDetails.currentHitpoints)
+        let tickDamage = CombatUtilities.calculateTickValue(
+            event.damage,
+            event.totalTicks,
+            event.currentTick,
+        )
+        let damage = Math.min(
+            tickDamage,
+            event.target.combatDetails.currentHitpoints,
+        )
 
         event.target.combatDetails.currentHitpoints -= damage
-        this.simResult.addAttack(event.sourceRef, event.target, 'damageOverTime', damage)
+        this.simResult.addAttack(
+            event.sourceRef,
+            event.target,
+            'damageOverTime',
+            damage,
+        )
 
-        let targetStaminaExperience = CombatUtilities.calculateStaminaExperience(0, damage)
-        this.simResult.addExperienceGain(event.target, 'stamina', targetStaminaExperience)
+        let targetStaminaExperience =
+            CombatUtilities.calculateStaminaExperience(0, damage)
+        this.simResult.addExperienceGain(
+            event.target,
+            'stamina',
+            targetStaminaExperience,
+        )
         // console.log(event.target.hrid, "bleed for", damage);
 
         switch (event.combatStyleHrid) {
             case '/combat_styles/magic':
-                let sourceMagicExperience = CombatUtilities.calculateMagicExperience(damage, 0)
-                this.simResult.addExperienceGain(event.sourceRef, 'magic', sourceMagicExperience)
+                let sourceMagicExperience =
+                    CombatUtilities.calculateMagicExperience(damage, 0)
+                this.simResult.addExperienceGain(
+                    event.sourceRef,
+                    'magic',
+                    sourceMagicExperience,
+                )
                 break
             case '/combat_styles/slash':
-                let sourceAttackExperience = CombatUtilities.calculateAttackExperience(
-                    damage,
-                    0,
-                    '/combat_styles/slash'
+                let sourceAttackExperience =
+                    CombatUtilities.calculateAttackExperience(
+                        damage,
+                        0,
+                        '/combat_styles/slash',
+                    )
+                this.simResult.addExperienceGain(
+                    event.sourceRef,
+                    'attack',
+                    sourceAttackExperience,
                 )
-                this.simResult.addExperienceGain(event.sourceRef, 'attack', sourceAttackExperience)
-                let sourcePowerExperience = CombatUtilities.calculatePowerExperience(damage, 0, '/combat_styles/slash')
-                this.simResult.addExperienceGain(event.sourceRef, 'power', sourcePowerExperience)
+                let sourcePowerExperience =
+                    CombatUtilities.calculatePowerExperience(
+                        damage,
+                        0,
+                        '/combat_styles/slash',
+                    )
+                this.simResult.addExperienceGain(
+                    event.sourceRef,
+                    'power',
+                    sourcePowerExperience,
+                )
                 break
         }
 
@@ -451,7 +576,7 @@ class CombatSimulator extends EventTarget {
                 event.damage,
                 event.totalTicks,
                 event.currentTick + 1,
-                event.combatStyleHrid
+                event.combatStyleHrid,
             )
             this.eventQueue.addEvent(damageOverTimeTickEvent)
         }
@@ -460,7 +585,11 @@ class CombatSimulator extends EventTarget {
             this.eventQueue.clearEventsForUnit(event.target)
             this.simResult.addDeath(event.target)
             if (!event.target.isPlayer) {
-                this.simResult.updateTimeSpentAlive(event.target.hrid, false, this.simulationTime)
+                this.simResult.updateTimeSpentAlive(
+                    event.target.hrid,
+                    false,
+                    this.simulationTime,
+                )
             }
         }
 
@@ -478,18 +607,26 @@ class CombatSimulator extends EventTarget {
                 continue
             }
 
-            let hitpointRegen = Math.floor(unit.combatDetails.maxHitpoints * unit.combatDetails.combatStats.HPRegen)
+            let hitpointRegen = Math.floor(
+                unit.combatDetails.maxHitpoints *
+                    unit.combatDetails.combatStats.HPRegen,
+            )
             let hitpointsAdded = unit.addHitpoints(hitpointRegen)
             this.simResult.addHitpointsGained(unit, 'regen', hitpointsAdded)
             // console.log("Added hitpoints:", hitpointsAdded);
 
-            let manapointRegen = Math.floor(unit.combatDetails.maxManapoints * unit.combatDetails.combatStats.MPRegen)
+            let manapointRegen = Math.floor(
+                unit.combatDetails.maxManapoints *
+                    unit.combatDetails.combatStats.MPRegen,
+            )
             let manapointsAdded = unit.addManapoints(manapointRegen)
             this.simResult.addManapointsGained(unit, 'regen', manapointsAdded)
             // console.log("Added manapoints:", manapointsAdded);
         }
 
-        let regenTickEvent = new RegenTickEvent(this.simulationTime + REGEN_TICK_INTERVAL)
+        let regenTickEvent = new RegenTickEvent(
+            this.simulationTime + REGEN_TICK_INTERVAL,
+        )
         this.eventQueue.addEvent(regenTickEvent)
     }
 
@@ -520,7 +657,13 @@ class CombatSimulator extends EventTarget {
             this.players
                 .filter((player) => player.combatDetails.currentHitpoints > 0)
                 .forEach((player) => {
-                    if (this.checkTriggersForUnit(player, this.players, this.enemies)) {
+                    if (
+                        this.checkTriggersForUnit(
+                            player,
+                            this.players,
+                            this.enemies,
+                        )
+                    ) {
                         triggeredSomething = true
                     }
                 })
@@ -529,7 +672,13 @@ class CombatSimulator extends EventTarget {
                 this.enemies
                     .filter((enemy) => enemy.combatDetails.currentHitpoints > 0)
                     .forEach((enemy) => {
-                        if (this.checkTriggersForUnit(enemy, this.enemies, this.players)) {
+                        if (
+                            this.checkTriggersForUnit(
+                                enemy,
+                                this.enemies,
+                                this.players,
+                            )
+                        ) {
                             triggeredSomething = true
                         }
                     })
@@ -546,7 +695,16 @@ class CombatSimulator extends EventTarget {
         let target = CombatUtilities.getTarget(enemies)
 
         for (const food of unit.food) {
-            if (food && food.shouldTrigger(this.simulationTime, unit, target, friendlies, enemies)) {
+            if (
+                food &&
+                food.shouldTrigger(
+                    this.simulationTime,
+                    unit,
+                    target,
+                    friendlies,
+                    enemies,
+                )
+            ) {
                 let result = this.tryUseConsumable(unit, food)
                 if (result) {
                     triggeredSomething = true
@@ -555,7 +713,16 @@ class CombatSimulator extends EventTarget {
         }
 
         for (const drink of unit.drinks) {
-            if (drink && drink.shouldTrigger(this.simulationTime, unit, target, friendlies, enemies)) {
+            if (
+                drink &&
+                drink.shouldTrigger(
+                    this.simulationTime,
+                    unit,
+                    target,
+                    friendlies,
+                    enemies,
+                )
+            ) {
                 let result = this.tryUseConsumable(unit, drink)
                 if (result) {
                     triggeredSomething = true
@@ -574,21 +741,35 @@ class CombatSimulator extends EventTarget {
         }
 
         consumable.lastUsed = this.simulationTime
-        let cooldownReadyEvent = new CooldownReadyEvent(this.simulationTime + consumable.cooldownDuration)
+        let cooldownReadyEvent = new CooldownReadyEvent(
+            this.simulationTime + consumable.cooldownDuration,
+        )
         this.eventQueue.addEvent(cooldownReadyEvent)
 
         this.simResult.addConsumableUse(source, consumable)
 
         if (consumable.recoveryDuration == 0) {
             if (consumable.hitpointRestore > 0) {
-                let hitpointsAdded = source.addHitpoints(consumable.hitpointRestore)
-                this.simResult.addHitpointsGained(source, consumable.hrid, hitpointsAdded)
+                let hitpointsAdded = source.addHitpoints(
+                    consumable.hitpointRestore,
+                )
+                this.simResult.addHitpointsGained(
+                    source,
+                    consumable.hrid,
+                    hitpointsAdded,
+                )
                 // console.log("Added hitpoints:", hitpointsAdded);
             }
 
             if (consumable.manapointRestore > 0) {
-                let manapointsAdded = source.addManapoints(consumable.manapointRestore)
-                this.simResult.addManapointsGained(source, consumable.hrid, manapointsAdded)
+                let manapointsAdded = source.addManapoints(
+                    consumable.manapointRestore,
+                )
+                this.simResult.addManapointsGained(
+                    source,
+                    consumable.hrid,
+                    manapointsAdded,
+                )
                 // console.log("Added manapoints:", manapointsAdded);
             }
         } else {
@@ -597,7 +778,7 @@ class CombatSimulator extends EventTarget {
                 source,
                 consumable,
                 consumable.recoveryDuration / HOT_TICK_INTERVAL,
-                1
+                1,
             )
             this.eventQueue.addEvent(consumableTickEvent)
         }
@@ -605,7 +786,10 @@ class CombatSimulator extends EventTarget {
         for (const buff of consumable.buffs) {
             source.addBuff(buff, this.simulationTime)
             // console.log("Added buff:", buff);
-            let checkBuffExpirationEvent = new CheckBuffExpirationEvent(this.simulationTime + buff.duration, source)
+            let checkBuffExpirationEvent = new CheckBuffExpirationEvent(
+                this.simulationTime + buff.duration,
+                source,
+            )
             this.eventQueue.addEvent(checkBuffExpirationEvent)
         }
 
@@ -636,7 +820,11 @@ class CombatSimulator extends EventTarget {
 
         if (source.isPlayer) {
             if (source.abilityManaCosts.has(ability.hrid)) {
-                source.abilityManaCosts.set(ability.hrid, source.abilityManaCosts.get(ability.hrid) + ability.manaCost)
+                source.abilityManaCosts.set(
+                    ability.hrid,
+                    source.abilityManaCosts.get(ability.hrid) +
+                        ability.manaCost,
+                )
             } else {
                 source.abilityManaCosts.set(ability.hrid, ability.manaCost)
             }
@@ -644,8 +832,13 @@ class CombatSimulator extends EventTarget {
 
         source.combatDetails.currentManapoints -= ability.manaCost
 
-        let sourceIntelligenceExperience = CombatUtilities.calculateIntelligenceExperience(ability.manaCost)
-        this.simResult.addExperienceGain(source, 'intelligence', sourceIntelligenceExperience)
+        let sourceIntelligenceExperience =
+            CombatUtilities.calculateIntelligenceExperience(ability.manaCost)
+        this.simResult.addExperienceGain(
+            source,
+            'intelligence',
+            sourceIntelligenceExperience,
+        )
 
         ability.lastUsed = this.simulationTime
 
@@ -665,16 +858,30 @@ class CombatSimulator extends EventTarget {
         for (const abilityEffect of ability.abilityEffects) {
             switch (abilityEffect.effectType) {
                 case '/ability_effect_types/buff':
-                    this.processAbilityBuffEffect(source, ability, abilityEffect)
+                    this.processAbilityBuffEffect(
+                        source,
+                        ability,
+                        abilityEffect,
+                    )
                     break
                 case '/ability_effect_types/damage':
-                    this.processAbilityDamageEffect(source, ability, abilityEffect)
+                    this.processAbilityDamageEffect(
+                        source,
+                        ability,
+                        abilityEffect,
+                    )
                     break
                 case '/ability_effect_types/heal':
-                    this.processAbilityHealEffect(source, ability, abilityEffect)
+                    this.processAbilityHealEffect(
+                        source,
+                        ability,
+                        abilityEffect,
+                    )
                     break
                 default:
-                    throw new Error('Unsupported effect type for ability: ' + ability.hrid)
+                    throw new Error(
+                        'Unsupported effect type for ability: ' + ability.hrid,
+                    )
             }
         }
 
@@ -683,7 +890,11 @@ class CombatSimulator extends EventTarget {
             this.eventQueue.clearEventsForUnit(source)
             this.simResult.addDeath(source)
             if (!source.isPlayer) {
-                this.simResult.updateTimeSpentAlive(source.hrid, false, this.simulationTime)
+                this.simResult.updateTimeSpentAlive(
+                    source.hrid,
+                    false,
+                    this.simulationTime,
+                )
             }
         }
 
@@ -694,13 +905,19 @@ class CombatSimulator extends EventTarget {
 
     processAbilityBuffEffect(source, ability, abilityEffect) {
         if (abilityEffect.targetType != 'self') {
-            throw new Error('Unsupported target type for buff ability effect: ' + ability.hrid)
+            throw new Error(
+                'Unsupported target type for buff ability effect: ' +
+                    ability.hrid,
+            )
         }
 
         for (const buff of abilityEffect.buffs) {
             source.addBuff(buff, this.simulationTime)
             // console.log("Added buff:", abilityEffect.buff);
-            let checkBuffExpirationEvent = new CheckBuffExpirationEvent(this.simulationTime + buff.duration, source)
+            let checkBuffExpirationEvent = new CheckBuffExpirationEvent(
+                this.simulationTime + buff.duration,
+                source,
+            )
             this.eventQueue.addEvent(checkBuffExpirationEvent)
         }
     }
@@ -717,24 +934,36 @@ class CombatSimulator extends EventTarget {
                 targets = source.isPlayer ? this.enemies : this.players
                 break
             default:
-                throw new Error('Unsupported target type for damage ability effect: ' + ability.hrid)
+                throw new Error(
+                    'Unsupported target type for damage ability effect: ' +
+                        ability.hrid,
+                )
         }
 
-        for (const target of targets.filter((unit) => unit && unit.combatDetails.currentHitpoints > 0)) {
-            let attackResult = CombatUtilities.processAttack(source, target, abilityEffect)
+        for (const target of targets.filter(
+            (unit) => unit && unit.combatDetails.currentHitpoints > 0,
+        )) {
+            let attackResult = CombatUtilities.processAttack(
+                source,
+                target,
+                abilityEffect,
+            )
 
             if (attackResult.didHit && abilityEffect.buffs) {
                 for (const buff of abilityEffect.buffs) {
                     target.addBuff(buff, this.simulationTime)
                     let checkBuffExpirationEvent = new CheckBuffExpirationEvent(
                         this.simulationTime + buff.duration,
-                        target
+                        target,
                     )
                     this.eventQueue.addEvent(checkBuffExpirationEvent)
                 }
             }
 
-            if (abilityEffect.damageOverTimeRatio > 0 && attackResult.damageDone > 0) {
+            if (
+                abilityEffect.damageOverTimeRatio > 0 &&
+                attackResult.damageDone > 0
+            ) {
                 let damageOverTimeEvent = new DamageOverTimeEvent(
                     this.simulationTime + DOT_TICK_INTERVAL,
                     source,
@@ -742,7 +971,7 @@ class CombatSimulator extends EventTarget {
                     attackResult.damageDone * abilityEffect.damageOverTimeRatio,
                     abilityEffect.damageOverTimeDuration / DOT_TICK_INTERVAL,
                     1,
-                    abilityEffect.combatStyleHrid
+                    abilityEffect.combatStyleHrid,
                 )
                 this.eventQueue.addEvent(damageOverTimeEvent)
             }
@@ -750,62 +979,88 @@ class CombatSimulator extends EventTarget {
             if (
                 attackResult.didHit &&
                 abilityEffect.stunChance > 0 &&
-                Math.random() < (abilityEffect.stunChance * 100) / (100 + target.combatDetails.combatStats.tenacity)
+                Math.random() <
+                    (abilityEffect.stunChance * 100) /
+                        (100 + target.combatDetails.combatStats.tenacity)
             ) {
                 target.isStunned = true
-                target.stunExpireTime = this.simulationTime + abilityEffect.stunDuration
+                target.stunExpireTime =
+                    this.simulationTime + abilityEffect.stunDuration
                 this.eventQueue.clearMatching(
                     (event) =>
                         (event.type == AutoAttackEvent.type ||
                             event.type == AbilityCastEndEvent.type ||
                             event.type == StunExpirationEvent.type) &&
-                        event.source == target
+                        event.source == target,
                 )
-                let stunExpirationEvent = new StunExpirationEvent(target.stunExpireTime, target)
+                let stunExpirationEvent = new StunExpirationEvent(
+                    target.stunExpireTime,
+                    target,
+                )
                 this.eventQueue.addEvent(stunExpirationEvent)
             }
 
             if (
                 attackResult.didHit &&
                 abilityEffect.blindChance > 0 &&
-                Math.random() < (abilityEffect.blindChance * 100) / (100 + target.combatDetails.combatStats.tenacity)
+                Math.random() <
+                    (abilityEffect.blindChance * 100) /
+                        (100 + target.combatDetails.combatStats.tenacity)
             ) {
                 target.isBlinded = true
-                target.blindExpireTime = this.simulationTime + abilityEffect.blindDuration
+                target.blindExpireTime =
+                    this.simulationTime + abilityEffect.blindDuration
                 this.eventQueue.clearMatching(
-                    (event) => event.type == BlindExpirationEvent.type && event.source == target
+                    (event) =>
+                        event.type == BlindExpirationEvent.type &&
+                        event.source == target,
                 )
                 if (
                     this.eventQueue.clearMatching(
-                        (event) => event.type == AutoAttackEvent.type && event.source == target
+                        (event) =>
+                            event.type == AutoAttackEvent.type &&
+                            event.source == target,
                     )
                 ) {
                     // console.log("Blind " + (this.simulationTime / 1000000000));
                     this.addNextAttackEvent(target)
                 }
-                let blindExpirationEvent = new BlindExpirationEvent(target.blindExpireTime, target)
+                let blindExpirationEvent = new BlindExpirationEvent(
+                    target.blindExpireTime,
+                    target,
+                )
                 this.eventQueue.addEvent(blindExpirationEvent)
             }
 
             if (
                 attackResult.didHit &&
                 abilityEffect.silenceChance > 0 &&
-                Math.random() < (abilityEffect.silenceChance * 100) / (100 + target.combatDetails.combatStats.tenacity)
+                Math.random() <
+                    (abilityEffect.silenceChance * 100) /
+                        (100 + target.combatDetails.combatStats.tenacity)
             ) {
                 target.isSilenced = true
-                target.silenceExpireTime = this.simulationTime + abilityEffect.silenceDuration
+                target.silenceExpireTime =
+                    this.simulationTime + abilityEffect.silenceDuration
                 this.eventQueue.clearMatching(
-                    (event) => event.type == SilenceExpirationEvent.type && event.source == target
+                    (event) =>
+                        event.type == SilenceExpirationEvent.type &&
+                        event.source == target,
                 )
                 if (
                     this.eventQueue.clearMatching(
-                        (event) => event.type == AbilityCastEndEvent.type && event.source == target
+                        (event) =>
+                            event.type == AbilityCastEndEvent.type &&
+                            event.source == target,
                     )
                 ) {
                     // console.log("Silence " + (this.simulationTime / 1000000000));
                     this.addNextAttackEvent(target)
                 }
-                let silenceExpirationEvent = new SilenceExpirationEvent(target.silenceExpireTime, target)
+                let silenceExpirationEvent = new SilenceExpirationEvent(
+                    target.silenceExpireTime,
+                    target,
+                )
                 this.eventQueue.addEvent(silenceExpirationEvent)
             }
 
@@ -813,17 +1068,26 @@ class CombatSimulator extends EventTarget {
                 source,
                 target,
                 ability.hrid,
-                attackResult.didHit ? attackResult.damageDone : 'miss'
+                attackResult.didHit ? attackResult.damageDone : 'miss',
             )
 
             if (attackResult.reflectDamageDone > 0) {
-                this.simResult.addAttack(target, source, 'physicalReflect', attackResult.reflectDamageDone)
+                this.simResult.addAttack(
+                    target,
+                    source,
+                    'physicalReflect',
+                    attackResult.reflectDamageDone,
+                )
             }
 
-            for (const [skill, xp] of Object.entries(attackResult.experienceGained.source)) {
+            for (const [skill, xp] of Object.entries(
+                attackResult.experienceGained.source,
+            )) {
                 this.simResult.addExperienceGain(source, skill, xp)
             }
-            for (const [skill, xp] of Object.entries(attackResult.experienceGained.target)) {
+            for (const [skill, xp] of Object.entries(
+                attackResult.experienceGained.target,
+            )) {
                 this.simResult.addExperienceGain(target, skill, xp)
             }
 
@@ -831,7 +1095,11 @@ class CombatSimulator extends EventTarget {
                 this.eventQueue.clearEventsForUnit(target)
                 this.simResult.addDeath(target)
                 if (!target.isPlayer) {
-                    this.simResult.updateTimeSpentAlive(target.hrid, false, this.simulationTime)
+                    this.simResult.updateTimeSpentAlive(
+                        target.hrid,
+                        false,
+                        this.simulationTime,
+                    )
                 }
                 // console.log(target.hrid, "died");
             }
@@ -840,11 +1108,17 @@ class CombatSimulator extends EventTarget {
 
     processAbilityHealEffect(source, ability, abilityEffect) {
         if (abilityEffect.targetType != 'self') {
-            throw new Error('Unsupported target type for heal ability effect: ' + ability.hrid)
+            throw new Error(
+                'Unsupported target type for heal ability effect: ' +
+                    ability.hrid,
+            )
         }
 
         let amountHealed = CombatUtilities.processHeal(source, abilityEffect)
-        let experienceGained = CombatUtilities.calculateMagicExperience(amountHealed, 0)
+        let experienceGained = CombatUtilities.calculateMagicExperience(
+            amountHealed,
+            0,
+        )
 
         this.simResult.addHitpointsGained(source, ability.hrid, amountHealed)
         this.simResult.addExperienceGain(source, 'magic', experienceGained)

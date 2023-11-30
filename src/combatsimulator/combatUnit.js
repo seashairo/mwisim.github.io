@@ -119,31 +119,48 @@ class CombatUnit {
             if (this.combatDetails.combatStats.HPRegen === 0) {
                 this.combatDetails.combatStats.HPRegen = 0.01
             } else {
-                this.combatDetails.combatStats.HPRegen = 0.01 + this.combatDetails.combatStats.HPRegen
+                this.combatDetails.combatStats.HPRegen =
+                    0.01 + this.combatDetails.combatStats.HPRegen
             }
             if (this.combatDetails.combatStats.MPRegen === 0) {
                 this.combatDetails.combatStats.MPRegen = 0.01
             } else {
-                this.combatDetails.combatStats.MPRegen = 0.01 + this.combatDetails.combatStats.MPRegen
+                this.combatDetails.combatStats.MPRegen =
+                    0.01 + this.combatDetails.combatStats.MPRegen
             }
         }
 
-        ;['stamina', 'intelligence', 'attack', 'power', 'defense', 'ranged', 'magic'].forEach((stat) => {
+        ;[
+            'stamina',
+            'intelligence',
+            'attack',
+            'power',
+            'defense',
+            'ranged',
+            'magic',
+        ].forEach((stat) => {
             this.combatDetails[stat + 'Level'] = this[stat + 'Level']
             let boosts = this.getBuffBoosts('/buff_types/' + stat + '_level')
             boosts.forEach((buff) => {
-                this.combatDetails[stat + 'Level'] += Math.floor(this[stat + 'Level'] * buff.ratioBoost)
+                this.combatDetails[stat + 'Level'] += Math.floor(
+                    this[stat + 'Level'] * buff.ratioBoost,
+                )
                 this.combatDetails[stat + 'Level'] += buff.flatBoost
             })
         })
 
         this.combatDetails.maxHitpoints =
-            10 * (10 + this.combatDetails.staminaLevel) + this.combatDetails.combatStats.maxHitpoints
+            10 * (10 + this.combatDetails.staminaLevel) +
+            this.combatDetails.combatStats.maxHitpoints
         this.combatDetails.maxManapoints =
-            10 * (10 + this.combatDetails.intelligenceLevel) + this.combatDetails.combatStats.maxManapoints
+            10 * (10 + this.combatDetails.intelligenceLevel) +
+            this.combatDetails.combatStats.maxManapoints
 
-        let accuracyRatioBoost = this.getBuffBoost('/buff_types/accuracy').ratioBoost
-        let damageRatioBoost = this.getBuffBoost('/buff_types/damage').ratioBoost
+        let accuracyRatioBoost = this.getBuffBoost(
+            '/buff_types/accuracy',
+        ).ratioBoost
+        let damageRatioBoost =
+            this.getBuffBoost('/buff_types/damage').ratioBoost
 
         ;['stab', 'slash', 'smash'].forEach((style) => {
             this.combatDetails[style + 'AccuracyRating'] =
@@ -155,12 +172,14 @@ class CombatUnit {
                 (1 + this.combatDetails.combatStats[style + 'Damage']) *
                 (1 + damageRatioBoost)
             let baseEvasion =
-                (10 + this.combatDetails.defenseLevel) * (1 + this.combatDetails.combatStats[style + 'Evasion'])
+                (10 + this.combatDetails.defenseLevel) *
+                (1 + this.combatDetails.combatStats[style + 'Evasion'])
             this.combatDetails[style + 'EvasionRating'] = baseEvasion
             let evasionBoosts = this.getBuffBoosts('/buff_types/evasion')
             for (const boost of evasionBoosts) {
                 this.combatDetails[style + 'EvasionRating'] += boost.flatBoost
-                this.combatDetails[style + 'EvasionRating'] += baseEvasion * boost.ratioBoost
+                this.combatDetails[style + 'EvasionRating'] +=
+                    baseEvasion * boost.ratioBoost
             }
         })
 
@@ -174,12 +193,14 @@ class CombatUnit {
             (1 + damageRatioBoost)
 
         let baseRangedEvasion =
-            (10 + this.combatDetails.defenseLevel) * (1 + this.combatDetails.combatStats.rangedEvasion)
+            (10 + this.combatDetails.defenseLevel) *
+            (1 + this.combatDetails.combatStats.rangedEvasion)
         this.combatDetails.rangedEvasionRating = baseRangedEvasion
         let evasionBoosts = this.getBuffBoosts('/buff_types/evasion')
         for (const boost of evasionBoosts) {
             this.combatDetails.rangedEvasionRating += boost.flatBoost
-            this.combatDetails.rangedEvasionRating += baseRangedEvasion * boost.ratioBoost
+            this.combatDetails.rangedEvasionRating +=
+                baseRangedEvasion * boost.ratioBoost
         }
 
         this.combatDetails.magicAccuracyRating =
@@ -192,29 +213,46 @@ class CombatUnit {
             (1 + damageRatioBoost)
 
         let baseMagicEvasion =
-            (10 + (this.combatDetails.defenseLevel * 0.75 + this.combatDetails.rangedLevel * 0.25)) *
+            (10 +
+                (this.combatDetails.defenseLevel * 0.75 +
+                    this.combatDetails.rangedLevel * 0.25)) *
             (1 + this.combatDetails.combatStats.magicEvasion)
         this.combatDetails.magicEvasionRating = baseMagicEvasion
         for (const boost of evasionBoosts) {
             this.combatDetails.magicEvasionRating += boost.flatBoost
-            this.combatDetails.magicEvasionRating += baseMagicEvasion * boost.ratioBoost
+            this.combatDetails.magicEvasionRating +=
+                baseMagicEvasion * boost.ratioBoost
         }
 
-        this.combatDetails.combatStats.physicalAmplify += this.getBuffBoost('/buff_types/physical_amplify').flatBoost
-        this.combatDetails.combatStats.waterAmplify += this.getBuffBoost('/buff_types/water_amplify').flatBoost
-        this.combatDetails.combatStats.natureAmplify += this.getBuffBoost('/buff_types/nature_amplify').flatBoost
-        this.combatDetails.combatStats.fireAmplify += this.getBuffBoost('/buff_types/fire_amplify').flatBoost
+        this.combatDetails.combatStats.physicalAmplify += this.getBuffBoost(
+            '/buff_types/physical_amplify',
+        ).flatBoost
+        this.combatDetails.combatStats.waterAmplify += this.getBuffBoost(
+            '/buff_types/water_amplify',
+        ).flatBoost
+        this.combatDetails.combatStats.natureAmplify += this.getBuffBoost(
+            '/buff_types/nature_amplify',
+        ).flatBoost
+        this.combatDetails.combatStats.fireAmplify += this.getBuffBoost(
+            '/buff_types/fire_amplify',
+        ).flatBoost
 
         if (this.isPlayer) {
-            this.combatDetails.combatStats.attackInterval /= 1 + this.combatDetails.attackLevel / 2000
+            this.combatDetails.combatStats.attackInterval /=
+                1 + this.combatDetails.attackLevel / 2000
         }
-        let attackIntervalBoosts = this.getBuffBoosts('/buff_types/attack_speed')
+        let attackIntervalBoosts = this.getBuffBoosts(
+            '/buff_types/attack_speed',
+        )
         let attackIntervalRatioBoost = attackIntervalBoosts
             .map((boost) => boost.ratioBoost)
             .reduce((prev, cur) => prev + cur, 0)
-        this.combatDetails.combatStats.attackInterval /= 1 + attackIntervalRatioBoost
+        this.combatDetails.combatStats.attackInterval /=
+            1 + attackIntervalRatioBoost
 
-        let baseArmor = 0.2 * this.combatDetails.defenseLevel + this.combatDetails.combatStats.armor
+        let baseArmor =
+            0.2 * this.combatDetails.defenseLevel +
+            this.combatDetails.combatStats.armor
         this.combatDetails.totalArmor = baseArmor
         let armorBoosts = this.getBuffBoosts('/buff_types/armor')
         for (const boost of armorBoosts) {
@@ -223,54 +261,87 @@ class CombatUnit {
         }
 
         let baseWaterResistance =
-            0.1 * (this.combatDetails.defenseLevel + this.combatDetails.magicLevel) +
+            0.1 *
+                (this.combatDetails.defenseLevel +
+                    this.combatDetails.magicLevel) +
             this.combatDetails.combatStats.waterResistance
         this.combatDetails.totalWaterResistance = baseWaterResistance
-        let waterResistanceBoosts = this.getBuffBoosts('/buff_types/water_resistance')
+        let waterResistanceBoosts = this.getBuffBoosts(
+            '/buff_types/water_resistance',
+        )
         for (const boost of waterResistanceBoosts) {
             this.combatDetails.totalWaterResistance += boost.flatBoost
-            this.combatDetails.totalWaterResistance += baseWaterResistance * boost.ratioBoost
+            this.combatDetails.totalWaterResistance +=
+                baseWaterResistance * boost.ratioBoost
         }
 
         let baseNatureResistance =
-            0.1 * (this.combatDetails.defenseLevel + this.combatDetails.magicLevel) +
+            0.1 *
+                (this.combatDetails.defenseLevel +
+                    this.combatDetails.magicLevel) +
             this.combatDetails.combatStats.natureResistance
         this.combatDetails.totalNatureResistance = baseNatureResistance
-        let natureResistanceBoosts = this.getBuffBoosts('/buff_types/nature_resistance')
+        let natureResistanceBoosts = this.getBuffBoosts(
+            '/buff_types/nature_resistance',
+        )
         for (const boost of natureResistanceBoosts) {
             this.combatDetails.totalNatureResistance += boost.flatBoost
-            this.combatDetails.totalNatureResistance += baseNatureResistance * boost.ratioBoost
+            this.combatDetails.totalNatureResistance +=
+                baseNatureResistance * boost.ratioBoost
         }
 
         let baseFireResistance =
-            0.1 * (this.combatDetails.defenseLevel + this.combatDetails.magicLevel) +
+            0.1 *
+                (this.combatDetails.defenseLevel +
+                    this.combatDetails.magicLevel) +
             this.combatDetails.combatStats.fireResistance
         this.combatDetails.totalFireResistance = baseFireResistance
-        let fireResistanceBoosts = this.getBuffBoosts('/buff_types/fire_resistance')
+        let fireResistanceBoosts = this.getBuffBoosts(
+            '/buff_types/fire_resistance',
+        )
         for (const boost of fireResistanceBoosts) {
             this.combatDetails.totalFireResistance += boost.flatBoost
-            this.combatDetails.totalFireResistance += baseFireResistance * boost.ratioBoost
+            this.combatDetails.totalFireResistance +=
+                baseFireResistance * boost.ratioBoost
         }
 
-        this.combatDetails.combatStats.lifeSteal += this.getBuffBoost('/buff_types/life_steal').flatBoost
-        this.combatDetails.combatStats.HPRegen += this.getBuffBoost('/buff_types/hp_regen').flatBoost
-        this.combatDetails.combatStats.MPRegen += this.getBuffBoost('/buff_types/mp_regen').flatBoost
-        this.combatDetails.combatStats.physicalReflectPower += this.getBuffBoost(
-            '/buff_types/physical_reflect_power'
+        this.combatDetails.combatStats.lifeSteal += this.getBuffBoost(
+            '/buff_types/life_steal',
         ).flatBoost
-        this.combatDetails.combatStats.combatExperience += this.getBuffBoost('/buff_types/wisdom').flatBoost
-        this.combatDetails.combatStats.criticalRate += this.getBuffBoost('/buff_types/critical_rate').flatBoost
-        this.combatDetails.combatStats.criticalDamage += this.getBuffBoost('/buff_types/critical_damage').flatBoost
-        this.combatDetails.combatStats.castSpeed += this.getBuffBoost('/buff_types/cast_speed').flatBoost
+        this.combatDetails.combatStats.HPRegen += this.getBuffBoost(
+            '/buff_types/hp_regen',
+        ).flatBoost
+        this.combatDetails.combatStats.MPRegen += this.getBuffBoost(
+            '/buff_types/mp_regen',
+        ).flatBoost
+        this.combatDetails.combatStats.physicalReflectPower +=
+            this.getBuffBoost('/buff_types/physical_reflect_power').flatBoost
+        this.combatDetails.combatStats.combatExperience +=
+            this.getBuffBoost('/buff_types/wisdom').flatBoost
+        this.combatDetails.combatStats.criticalRate += this.getBuffBoost(
+            '/buff_types/critical_rate',
+        ).flatBoost
+        this.combatDetails.combatStats.criticalDamage += this.getBuffBoost(
+            '/buff_types/critical_damage',
+        ).flatBoost
+        this.combatDetails.combatStats.castSpeed += this.getBuffBoost(
+            '/buff_types/cast_speed',
+        ).flatBoost
 
-        let combatDropRateBoosts = this.getBuffBoost('/buff_types/combat_drop_rate')
+        let combatDropRateBoosts = this.getBuffBoost(
+            '/buff_types/combat_drop_rate',
+        )
         this.combatDetails.combatStats.combatDropRate +=
-            (1 + this.combatDetails.combatStats.combatDropRate) * combatDropRateBoosts.ratioBoost
-        this.combatDetails.combatStats.combatDropRate += combatDropRateBoosts.flatBoost
+            (1 + this.combatDetails.combatStats.combatDropRate) *
+            combatDropRateBoosts.ratioBoost
+        this.combatDetails.combatStats.combatDropRate +=
+            combatDropRateBoosts.flatBoost
         let combatRareFindBoosts = this.getBuffBoost('/buff_types/rare_find')
         this.combatDetails.combatStats.combatRareFind +=
-            (1 + this.combatDetails.combatStats.combatRareFind) * combatRareFindBoosts.ratioBoost
-        this.combatDetails.combatStats.combatRareFind += combatRareFindBoosts.flatBoost
+            (1 + this.combatDetails.combatStats.combatRareFind) *
+            combatRareFindBoosts.ratioBoost
+        this.combatDetails.combatStats.combatRareFind +=
+            combatRareFindBoosts.flatBoost
     }
 
     addBuff(buff, currentTime) {
@@ -300,7 +371,7 @@ class CombatUnit {
 
     removeExpiredBuffs(currentTime) {
         let expiredBuffs = Object.values(this.combatBuffs).filter(
-            (buff) => buff.startTime + buff.duration <= currentTime
+            (buff) => buff.startTime + buff.duration <= currentTime,
         )
         expiredBuffs.forEach((buff) => {
             delete this.combatBuffs[buff.uniqueHrid]
@@ -328,7 +399,10 @@ class CombatUnit {
         Object.values(this.combatBuffs)
             .filter((buff) => buff.typeHrid == type)
             .forEach((buff) => {
-                boosts.push({ ratioBoost: buff.ratioBoost, flatBoost: buff.flatBoost })
+                boosts.push({
+                    ratioBoost: buff.ratioBoost,
+                    flatBoost: buff.flatBoost,
+                })
             })
 
         return boosts
@@ -361,8 +435,12 @@ class CombatUnit {
     }
 
     resetCooldowns(currentTime = 0) {
-        this.food.filter((food) => food != null).forEach((food) => (food.lastUsed = Number.MIN_SAFE_INTEGER))
-        this.drinks.filter((drink) => drink != null).forEach((drink) => (drink.lastUsed = Number.MIN_SAFE_INTEGER))
+        this.food
+            .filter((food) => food != null)
+            .forEach((food) => (food.lastUsed = Number.MIN_SAFE_INTEGER))
+        this.drinks
+            .filter((drink) => drink != null)
+            .forEach((drink) => (drink.lastUsed = Number.MIN_SAFE_INTEGER))
 
         let haste = this.combatDetails.combatStats.abilityHaste
 
@@ -374,9 +452,12 @@ class CombatUnit {
                 } else {
                     let cooldownDuration = ability.cooldownDuration
                     if (haste > 0) {
-                        cooldownDuration = (cooldownDuration * 100) / (100 + haste)
+                        cooldownDuration =
+                            (cooldownDuration * 100) / (100 + haste)
                     }
-                    ability.lastUsed = currentTime - Math.floor(Math.random() * cooldownDuration)
+                    ability.lastUsed =
+                        currentTime -
+                        Math.floor(Math.random() * cooldownDuration)
                 }
             })
     }
@@ -384,11 +465,17 @@ class CombatUnit {
     addHitpoints(hitpoints) {
         let hitpointsAdded = 0
 
-        if (this.combatDetails.currentHitpoints >= this.combatDetails.maxHitpoints) {
+        if (
+            this.combatDetails.currentHitpoints >=
+            this.combatDetails.maxHitpoints
+        ) {
             return hitpointsAdded
         }
 
-        let newHitpoints = Math.min(this.combatDetails.currentHitpoints + hitpoints, this.combatDetails.maxHitpoints)
+        let newHitpoints = Math.min(
+            this.combatDetails.currentHitpoints + hitpoints,
+            this.combatDetails.maxHitpoints,
+        )
         hitpointsAdded = newHitpoints - this.combatDetails.currentHitpoints
         this.combatDetails.currentHitpoints = newHitpoints
 
@@ -398,13 +485,16 @@ class CombatUnit {
     addManapoints(manapoints) {
         let manapointsAdded = 0
 
-        if (this.combatDetails.currentManapoints >= this.combatDetails.maxManapoints) {
+        if (
+            this.combatDetails.currentManapoints >=
+            this.combatDetails.maxManapoints
+        ) {
             return manapointsAdded
         }
 
         let newManapoints = Math.min(
             this.combatDetails.currentManapoints + manapoints,
-            this.combatDetails.maxManapoints
+            this.combatDetails.maxManapoints,
         )
         manapointsAdded = newManapoints - this.combatDetails.currentManapoints
         this.combatDetails.currentManapoints = newManapoints

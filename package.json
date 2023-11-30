@@ -6,8 +6,9 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack",
-        "watch": "webpack --watch",
-        "dev": "webpack serve"
+        "build:watch": "webpack --watch",
+        "dev": "webpack serve",
+        "format": "prettier src --write"
     },
     "repository": {
         "type": "git",
@@ -22,6 +23,7 @@
     "homepage": "https://github.com/AmVoidGuy/MWICombatSimulator#readme",
     "devDependencies": {
         "copy-webpack-plugin": "^11.0.0",
+        "prettier": "^3.1.0",
         "webpack": "^5.73.0",
         "webpack-cli": "^4.10.0",
         "webpack-dev-server": "^4.15.1"

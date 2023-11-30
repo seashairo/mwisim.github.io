@@ -16,7 +16,10 @@ class Monster extends CombatUnit {
         }
 
         for (let i = 0; i < gameMonster.abilities.length; i++) {
-            this.abilities[i] = new Ability(gameMonster.abilities[i].abilityHrid, gameMonster.abilities[i].level)
+            this.abilities[i] = new Ability(
+                gameMonster.abilities[i].abilityHrid,
+                gameMonster.abilities[i].level,
+            )
         }
 
         for (let i = 0; i < gameMonster.dropTable.length; i++) {
@@ -24,7 +27,7 @@ class Monster extends CombatUnit {
                 gameMonster.dropTable[i].itemHrid,
                 gameMonster.dropTable[i].dropRate,
                 gameMonster.dropTable[i].minCount,
-                gameMonster.dropTable[i].maxCount
+                gameMonster.dropTable[i].maxCount,
             )
         }
 
@@ -33,7 +36,7 @@ class Monster extends CombatUnit {
                 gameMonster.rareDropTable[i].itemHrid,
                 gameMonster.rareDropTable[i].dropRate,
                 gameMonster.rareDropTable[i].minCount,
-                gameMonster.rareDropTable[i].maxCount
+                gameMonster.rareDropTable[i].maxCount,
             )
         }
     }
@@ -49,13 +52,17 @@ class Monster extends CombatUnit {
         this.rangedLevel = gameMonster.combatDetails.rangedLevel
         this.magicLevel = gameMonster.combatDetails.magicLevel
 
-        this.combatDetails.combatStats.combatStyleHrid = gameMonster.combatDetails.combatStats.combatStyleHrids[0]
+        this.combatDetails.combatStats.combatStyleHrid =
+            gameMonster.combatDetails.combatStats.combatStyleHrids[0]
 
-        for (const [key, value] of Object.entries(gameMonster.combatDetails.combatStats)) {
+        for (const [key, value] of Object.entries(
+            gameMonster.combatDetails.combatStats,
+        )) {
             this.combatDetails.combatStats[key] = value
         }
 
-        this.combatDetails.combatStats.attackInterval = gameMonster.combatDetails.attackInterval
+        this.combatDetails.combatStats.attackInterval =
+            gameMonster.combatDetails.attackInterval
 
         super.updateCombatDetails()
     }

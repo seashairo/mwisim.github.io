@@ -1,6 +1,6 @@
 import CombatEvent from './combatEvent'
 
-class AutoAttackEvent extends CombatEvent {
+export default class AutoAttackEvent extends CombatEvent {
     static type = 'autoAttack'
 
     constructor(time, source) {
@@ -9,5 +9,3 @@ class AutoAttackEvent extends CombatEvent {
         this.source = source
     }
 }
-
-export default AutoAttackEvent

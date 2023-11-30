@@ -1,6 +1,6 @@
 import CombatEvent from './combatEvent'
 
-class AwaitCooldownEvent extends CombatEvent {
+export default class AwaitCooldownEvent extends CombatEvent {
     static type = 'awaitCooldownEvent'
 
     constructor(time, source) {
@@ -9,5 +9,3 @@ class AwaitCooldownEvent extends CombatEvent {
         this.source = source
     }
 }
-
-export default AwaitCooldownEvent

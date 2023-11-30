@@ -30,7 +30,12 @@ class SimResult {
                 this.timeSpentAlive[i].alive = true
                 this.timeSpentAlive[i].spawnedAt = time
             } else {
-                this.timeSpentAlive.push({ name: name, timeSpentAlive: 0, spawnedAt: time, alive: true })
+                this.timeSpentAlive.push({
+                    name: name,
+                    timeSpentAlive: 0,
+                    spawnedAt: time,
+                    alive: true,
+                })
             }
         } else {
             const timeAlive = time - this.timeSpentAlive[i].spawnedAt
@@ -56,7 +61,8 @@ class SimResult {
             }
         }
 
-        this.experienceGained[unit.hrid][type] += experience * (1 + unit.combatDetails.combatStats.combatExperience)
+        this.experienceGained[unit.hrid][type] +=
+            experience * (1 + unit.combatDetails.combatStats.combatExperience)
     }
 
     addEncounterEnd() {
@@ -115,8 +121,10 @@ class SimResult {
     }
 
     setDropRateMultipliers(unit) {
-        this.dropRateMultiplier = 1 + unit.combatDetails.combatStats.combatDropRate
-        this.rareFindMultiplier = 1 + unit.combatDetails.combatStats.combatRareFind
+        this.dropRateMultiplier =
+            1 + unit.combatDetails.combatStats.combatDropRate
+        this.rareFindMultiplier =
+            1 + unit.combatDetails.combatStats.combatRareFind
     }
 
     setManaUsed(unit) {

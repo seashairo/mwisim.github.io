@@ -36,15 +36,25 @@ class Player extends CombatUnit {
         player.magicLevel = dto.magicLevel
 
         for (const [key, value] of Object.entries(dto.equipment)) {
-            player.equipment[key] = value ? Equipment.createFromDTO(value) : null
+            player.equipment[key] = value
+                ? Equipment.createFromDTO(value)
+                : null
         }
 
-        player.food = dto.food.map((food) => (food ? Consumable.createFromDTO(food) : null))
-        player.drinks = dto.drinks.map((drink) => (drink ? Consumable.createFromDTO(drink) : null))
-        player.abilities = dto.abilities.map((ability) => (ability ? Ability.createFromDTO(ability) : null))
+        player.food = dto.food.map((food) =>
+            food ? Consumable.createFromDTO(food) : null,
+        )
+        player.drinks = dto.drinks.map((drink) =>
+            drink ? Consumable.createFromDTO(drink) : null,
+        )
+        player.abilities = dto.abilities.map((ability) =>
+            ability ? Ability.createFromDTO(ability) : null,
+        )
         Object.entries(dto.houseRooms).forEach((houseRoom) => {
             if (houseRoom[1] > 0) {
-                player.houseRooms.push(new HouseRoom(houseRoom[0], houseRoom[1]))
+                player.houseRooms.push(
+                    new HouseRoom(houseRoom[0], houseRoom[1]),
+                )
             }
         })
 
@@ -55,17 +65,24 @@ class Player extends CombatUnit {
         if (this.equipment['/equipment_types/main_hand']) {
             this.combatDetails.combatStats.combatStyleHrid =
                 this.equipment['/equipment_types/main_hand'].getCombatStyle()
-            this.combatDetails.combatStats.damageType = this.equipment['/equipment_types/main_hand'].getDamageType()
+            this.combatDetails.combatStats.damageType =
+                this.equipment['/equipment_types/main_hand'].getDamageType()
             this.combatDetails.combatStats.attackInterval =
-                this.equipment['/equipment_types/main_hand'].getCombatStat('attackInterval')
+                this.equipment['/equipment_types/main_hand'].getCombatStat(
+                    'attackInterval',
+                )
         } else if (this.equipment['/equipment_types/two_hand']) {
             this.combatDetails.combatStats.combatStyleHrid =
                 this.equipment['/equipment_types/two_hand'].getCombatStyle()
-            this.combatDetails.combatStats.damageType = this.equipment['/equipment_types/two_hand'].getDamageType()
+            this.combatDetails.combatStats.damageType =
+                this.equipment['/equipment_types/two_hand'].getDamageType()
             this.combatDetails.combatStats.attackInterval =
-                this.equipment['/equipment_types/two_hand'].getCombatStat('attackInterval')
+                this.equipment['/equipment_types/two_hand'].getCombatStat(
+                    'attackInterval',
+                )
         } else {
-            this.combatDetails.combatStats.combatStyleHrid = '/combat_styles/smash'
+            this.combatDetails.combatStats.combatStyleHrid =
+                '/combat_styles/smash'
             this.combatDetails.combatStats.damageType = '/damage_types/physical'
             this.combatDetails.combatStats.attackInterval = 3000000000
         }
@@ -125,9 +142,15 @@ class Player extends CombatUnit {
 
         if (this.equipment['/equipment_types/pouch']) {
             this.combatDetails.combatStats.foodSlots =
-                1 + this.equipment['/equipment_types/pouch'].getCombatStat('foodSlots')
+                1 +
+                this.equipment['/equipment_types/pouch'].getCombatStat(
+                    'foodSlots',
+                )
             this.combatDetails.combatStats.drinkSlots =
-                1 + this.equipment['/equipment_types/pouch'].getCombatStat('drinkSlots')
+                1 +
+                this.equipment['/equipment_types/pouch'].getCombatStat(
+                    'drinkSlots',
+                )
         } else {
             this.combatDetails.combatStats.foodSlots = 1
             this.combatDetails.combatStats.drinkSlots = 1

@@ -1,6 +1,6 @@
 import CombatEvent from './combatEvent'
 
-class ConsumableTickEvent extends CombatEvent {
+export default class ConsumableTickEvent extends CombatEvent {
     static type = 'consumableTick'
 
     constructor(time, source, consumable, totalTicks, currentTick) {
@@ -12,5 +12,3 @@ class ConsumableTickEvent extends CombatEvent {
         this.currentTick = currentTick
     }
 }
-
-export default ConsumableTickEvent

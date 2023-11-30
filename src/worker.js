@@ -10,12 +10,18 @@ onmessage = async function (event) {
 
         let combatSimulator = new CombatSimulator(player, zone)
         combatSimulator.addEventListener('progress', (event) => {
-            this.postMessage({ type: 'simulation_progress', progress: event.detail })
+            this.postMessage({
+                type: 'simulation_progress',
+                progress: event.detail,
+            })
         })
 
         try {
             let simResult = await combatSimulator.simulate(simulationTimeLimit)
-            this.postMessage({ type: 'simulation_result', simResult: simResult })
+            this.postMessage({
+                type: 'simulation_result',
+                simResult: simResult,
+            })
         } catch (e) {
             this.postMessage({ type: 'simulation_error', error: e })
         }

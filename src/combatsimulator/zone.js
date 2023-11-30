@@ -12,12 +12,20 @@ class Zone {
     }
 
     getRandomEncounter() {
-        if (this.monsterSpawnInfo.bossFightMonsters && this.encountersKilled == this.monsterSpawnInfo.battlesPerBoss) {
+        if (
+            this.monsterSpawnInfo.bossFightMonsters &&
+            this.encountersKilled == this.monsterSpawnInfo.battlesPerBoss
+        ) {
             this.encountersKilled = 1
-            return this.monsterSpawnInfo.bossFightMonsters.map((hrid) => new Monster(hrid))
+            return this.monsterSpawnInfo.bossFightMonsters.map(
+                (hrid) => new Monster(hrid),
+            )
         }
 
-        let totalWeight = this.monsterSpawnInfo.spawns.reduce((prev, cur) => prev + cur.rate, 0)
+        let totalWeight = this.monsterSpawnInfo.spawns.reduce(
+            (prev, cur) => prev + cur.rate,
+            0,
+        )
 
         let encounterHrids = []
         let totalStrength = 0
@@ -31,7 +39,9 @@ class Zone {
                 if (randomWeight <= cumulativeWeight) {
                     totalStrength += spawn.strength
 
-                    if (totalStrength <= this.monsterSpawnInfo.maxTotalStrength) {
+                    if (
+                        totalStrength <= this.monsterSpawnInfo.maxTotalStrength
+                    ) {
                         encounterHrids.push(spawn.combatMonsterHrid)
                     } else {
                         break outer

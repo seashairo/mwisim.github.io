@@ -18,7 +18,8 @@ class Consumable {
 
         this.buffs = []
         if (gameConsumable.consumableDetail.buffs) {
-            for (const consumableBuff of gameConsumable.consumableDetail.buffs) {
+            for (const consumableBuff of gameConsumable.consumableDetail
+                .buffs) {
                 let buff = new Buff(consumableBuff)
                 this.buffs.push(buff)
             }
@@ -28,12 +29,13 @@ class Consumable {
             this.triggers = triggers
         } else {
             this.triggers = []
-            for (const defaultTrigger of gameConsumable.consumableDetail.defaultCombatTriggers) {
+            for (const defaultTrigger of gameConsumable.consumableDetail
+                .defaultCombatTriggers) {
                 let trigger = new Trigger(
                     defaultTrigger.dependencyHrid,
                     defaultTrigger.conditionHrid,
                     defaultTrigger.comparatorHrid,
-                    defaultTrigger.value
+                    defaultTrigger.value,
                 )
                 this.triggers.push(trigger)
             }
@@ -43,7 +45,9 @@ class Consumable {
     }
 
     static createFromDTO(dto) {
-        let triggers = dto.triggers.map((trigger) => Trigger.createFromDTO(trigger))
+        let triggers = dto.triggers.map((trigger) =>
+            Trigger.createFromDTO(trigger),
+        )
         let consumable = new Consumable(dto.hrid, triggers)
 
         return consumable
@@ -63,7 +67,15 @@ class Consumable {
         }
 
         for (const trigger of this.triggers) {
-            if (!trigger.isActive(source, target, friendlies, enemies, currentTime)) {
+            if (
+                !trigger.isActive(
+                    source,
+                    target,
+                    friendlies,
+                    enemies,
+                    currentTime,
+                )
+            ) {
                 return false
             }
         }
