@@ -4,7 +4,7 @@ import Consumable from './consumable'
 import Equipment from './equipment'
 import HouseRoom from './houseRoom'
 
-class Player extends CombatUnit {
+export default class Player extends CombatUnit {
     equipment = {
         '/equipment_types/head': null,
         '/equipment_types/body': null,
@@ -159,5 +159,3 @@ class Player extends CombatUnit {
         super.updateCombatDetails()
     }
 }
-
-export default Player

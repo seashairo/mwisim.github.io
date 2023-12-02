@@ -1,7 +1,7 @@
 import itemDetailMap from './data/itemDetailMap.json'
 import enhancementLevelTotalMultiplierTable from './data/enhancementLevelTotalMultiplierTable.json'
 
-class Equipment {
+export default class Equipment {
     constructor(hrid, enhancementLevel) {
         this.hrid = hrid
         let gameItem = itemDetailMap[this.hrid]
@@ -38,5 +38,3 @@ class Equipment {
         return this.gameItem.equipmentDetail.combatStats.damageType
     }
 }
-
-export default Equipment

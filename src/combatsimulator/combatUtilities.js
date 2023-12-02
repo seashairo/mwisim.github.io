@@ -1,4 +1,4 @@
-class CombatUtilities {
+export default class CombatUtilities {
     static getTarget(enemies) {
         let target = enemies?.find(
             (enemy) => enemy.combatDetails.currentHitpoints > 0,
@@ -430,5 +430,3 @@ class CombatUtilities {
         return 0.4 + 0.083375 * (damage + 0.35 * damagePrevented)
     }
 }
-
-export default CombatUtilities

@@ -3,7 +3,7 @@ import CombatUnit from './combatUnit'
 import combatMonsterDetailMap from './data/combatMonsterDetailMap.json'
 import Drops from './drops'
 
-class Monster extends CombatUnit {
+export default class Monster extends CombatUnit {
     constructor(hrid) {
         super()
 
@@ -67,5 +67,3 @@ class Monster extends CombatUnit {
         super.updateCombatDetails()
     }
 }
-
-export default Monster

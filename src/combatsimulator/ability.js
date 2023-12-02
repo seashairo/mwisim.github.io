@@ -2,7 +2,7 @@ import Buff from './buff'
 import abilityDetailMap from './data/abilityDetailMap.json'
 import Trigger from './trigger'
 
-class Ability {
+export default class Ability {
     constructor(hrid, level, triggers = null) {
         this.hrid = hrid
         this.level = level
@@ -120,5 +120,3 @@ class Ability {
         return shouldTrigger
     }
 }
-
-export default Ability

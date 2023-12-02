@@ -1,4 +1,4 @@
-class CombatUnit {
+export default class CombatUnit {
     isPlayer
     isStunned = false
     stunExpireTime = null
@@ -502,5 +502,3 @@ class CombatUnit {
         return manapointsAdded
     }
 }
-
-export default CombatUnit

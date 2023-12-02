@@ -1,4 +1,4 @@
-class SimResult {
+export default class SimResult {
     constructor() {
         this.deaths = {}
         this.experienceGained = {}
@@ -133,5 +133,3 @@ class SimResult {
         }
     }
 }
-
-export default SimResult

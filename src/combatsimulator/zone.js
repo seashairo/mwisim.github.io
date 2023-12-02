@@ -1,7 +1,7 @@
 import actionDetailMap from './data/actionDetailMap.json'
 import Monster from './monster'
 
-class Zone {
+export default class Zone {
     constructor(hrid) {
         this.hrid = hrid
 
@@ -54,5 +54,3 @@ class Zone {
         return encounterHrids.map((hrid) => new Monster(hrid))
     }
 }
-
-export default Zone

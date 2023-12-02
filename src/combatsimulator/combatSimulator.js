@@ -23,7 +23,7 @@ const REGEN_TICK_INTERVAL = 10 * ONE_SECOND
 const ENEMY_RESPAWN_INTERVAL = 3 * ONE_SECOND
 const PLAYER_RESPAWN_INTERVAL = 150 * ONE_SECOND
 
-class CombatSimulator extends EventTarget {
+export default class CombatSimulator extends EventTarget {
     constructor(player, zone) {
         super()
         this.players = [player]
@@ -54,7 +54,7 @@ class CombatSimulator extends EventTarget {
                         1,
                     ),
                 })
-                this.dispatchEvent(progressEvent)
+                // this.dispatchEvent(progressEvent)
             }
         }
 
@@ -129,7 +129,6 @@ class CombatSimulator extends EventTarget {
                 this.tryUseAbility(event.source, event.ability)
                 break
             case AwaitCooldownEvent.type:
-                // console.log("Await CD " + (this.simulationTime / 1000000000));
                 this.addNextAttackEvent(event.source)
                 break
             case CooldownReadyEvent.type:
@@ -447,9 +446,6 @@ class CombatSimulator extends EventTarget {
                         source.combatDetails.combatStats.attackInterval,
                     source,
                 )
-                /*-if (source.isPlayer) {
-                    console.log("next attack " + ((source.blindExpireTime + source.combatDetails.combatStats.attackInterval) / 1e9))
-                }*/
                 this.eventQueue.addEvent(autoAttackEvent)
             } else {
                 let awaitCooldownEvent = new AwaitCooldownEvent(
@@ -474,7 +470,6 @@ class CombatSimulator extends EventTarget {
                 event.consumable.hrid,
                 hitpointsAdded,
             )
-            // console.log("Added hitpoints:", hitpointsAdded);
         }
 
         if (event.consumable.manapointRestore > 0) {
@@ -489,7 +484,6 @@ class CombatSimulator extends EventTarget {
                 event.consumable.hrid,
                 manapointsAdded,
             )
-            // console.log("Added manapoints:", manapointsAdded);
         }
 
         if (event.currentTick < event.totalTicks) {
@@ -530,7 +524,6 @@ class CombatSimulator extends EventTarget {
             'stamina',
             targetStaminaExperience,
         )
-        // console.log(event.target.hrid, "bleed for", damage);
 
         switch (event.combatStyleHrid) {
             case '/combat_styles/magic':
@@ -1124,5 +1117,3 @@ class CombatSimulator extends EventTarget {
         this.simResult.addExperienceGain(source, 'magic', experienceGained)
     }
 }
-
-export default CombatSimulator

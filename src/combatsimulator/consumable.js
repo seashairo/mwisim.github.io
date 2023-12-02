@@ -2,7 +2,7 @@ import Buff from './buff'
 import itemDetailMap from './data/itemDetailMap.json'
 import Trigger from './trigger'
 
-class Consumable {
+export default class Consumable {
     constructor(hrid, triggers = null) {
         this.hrid = hrid
 
@@ -83,5 +83,3 @@ class Consumable {
         return true
     }
 }
-
-export default Consumable

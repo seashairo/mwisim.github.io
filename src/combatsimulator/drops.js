@@ -1,4 +1,4 @@
-class Drops {
+export default class Drops {
     constructor(itemHrid, dropRate, minCount, maxCount) {
         this.itemHrid = itemHrid
         this.dropRate = dropRate
@@ -6,5 +6,3 @@ class Drops {
         this.maxCount = maxCount
     }
 }
-
-export default Drops

@@ -42,7 +42,8 @@ worker.onmessage = function (event) {
         case 'simulation_result':
             progressbar.style.width = '100%'
             progressbar.innerHTML = '100%'
-            showSimulationResult(event.data.simResult)
+            console.log('simResult', event.data.simResult)
+            showSimulationResult(event.data.simResult[0])
             buttonStartSimulation.disabled = false
             break
         case 'simulation_progress':
@@ -939,6 +940,25 @@ function initZones() {
 
 // #endregion
 
+function initOptimiseFor() {
+    let optimiseForSelect = document.getElementById('optimiseFor')
+
+    let optimiseForOptions = [
+        'None',
+        'Stamina',
+        'Intelligence',
+        'Attack',
+        'Power',
+        'Defense',
+        'Ranged',
+        'Magic',
+    ]
+
+    for (const skill of Object.values(optimiseForOptions)) {
+        optimiseForSelect.add(new Option(skill, skill))
+    }
+}
+
 // #region Simulation Result
 
 function showSimulationResult(simResult) {
@@ -1831,13 +1851,15 @@ function startSimulation() {
 
     let zoneSelect = document.getElementById('selectZone')
     let simulationTimeInput = document.getElementById('inputSimulationTime')
-
     let simulationTimeLimit = Number(simulationTimeInput.value) * ONE_HOUR
+
+    let optimiseFor = document.getElementById('optimiseFor').value
 
     let workerMessage = {
         type: 'start_simulation',
         player: player,
         zoneHrid: zoneSelect.value,
+        optimiseFor: optimiseFor,
         simulationTimeLimit: simulationTimeLimit,
     }
 
@@ -2567,6 +2589,7 @@ initFoodSection()
 initDrinksSection()
 initAbilitiesSection()
 initZones()
+initOptimiseFor()
 initTriggerModal()
 initSimulationControls()
 initEquipmentSetsModal()

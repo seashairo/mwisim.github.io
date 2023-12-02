@@ -1,6 +1,6 @@
 import combatTriggerDependencyDetailMap from './data/combatTriggerDependencyDetailMap.json'
 
-class Trigger {
+export default class Trigger {
     constructor(dependencyHrid, conditionHrid, comparatorHrid, value = 0) {
         this.dependencyHrid = dependencyHrid
         this.conditionHrid = conditionHrid
@@ -170,5 +170,3 @@ class Trigger {
         }
     }
 }
-
-export default Trigger
