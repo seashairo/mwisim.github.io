@@ -16,6 +16,7 @@ import combatStyleDetailMap from './combatsimulator/data/combatStyleDetailMap.js
 
 const ONE_SECOND = 1e9
 const ONE_HOUR = 60 * 60 * ONE_SECOND
+const DEFAULT_EQUIPMENT_SET_NAME = 'Default (last used)'
 
 let buttonStartSimulation = document.getElementById('buttonStartSimulation')
 let progressbar = document.getElementById('simulationProgressBar')
@@ -1813,6 +1814,7 @@ function initSimulationControls() {
 function startSimulation() {
     updateState()
     updateUI()
+    updateEquipmentSetHandler(DEFAULT_EQUIPMENT_SET_NAME)
 
     for (let i = 0; i < 3; i++) {
         if (food[i] && i < player.combatDetails.combatStats.foodSlots) {
@@ -1976,13 +1978,17 @@ function createNewEquipmentSetHandler() {
     let equipmentSetNameInput = document.getElementById('inputEquipmentSetName')
     let equipmentSetName = equipmentSetNameInput.value
 
+    createNewEquipmentSet(equipmentSetName)
+
+    resetNewEquipmentSetControls()
+    updateEquipmentSetList()
+}
+
+function createNewEquipmentSet(equipmentSetName) {
     let equipmentSet = getEquipmentSetFromUI()
     let equipmentSets = loadEquipmentSets()
     equipmentSets[equipmentSetName] = equipmentSet
     saveEquipmentSets(equipmentSets)
-
-    resetNewEquipmentSetControls()
-    updateEquipmentSetList()
 }
 
 function loadEquipmentSetHandler(name) {
@@ -2598,3 +2604,8 @@ initImportExportModal()
 
 updateState()
 updateUI()
+
+const equipmentSets = loadEquipmentSets()
+equipmentSets[DEFAULT_EQUIPMENT_SET_NAME]
+    ? loadEquipmentSetHandler(DEFAULT_EQUIPMENT_SET_NAME)
+    : createNewEquipmentSet(DEFAULT_EQUIPMENT_SET_NAME)
