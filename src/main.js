@@ -946,6 +946,7 @@ function initOptimiseFor() {
 
     let optimiseForOptions = [
         'None',
+        'Total XP',
         'Stamina',
         'Intelligence',
         'Attack',
@@ -955,8 +956,8 @@ function initOptimiseFor() {
         'Magic',
     ]
 
-    for (const skill of Object.values(optimiseForOptions)) {
-        optimiseForSelect.add(new Option(skill, skill))
+    for (const optimiseForOption of Object.values(optimiseForOptions)) {
+        optimiseForSelect.add(new Option(optimiseForOption, optimiseForOption))
     }
 }
 

@@ -45,12 +45,16 @@ onmessage = async function (event) {
                     Player.createFromDTO(event.data.player),
                     gameZone,
                 )
+
                 combatSimulator.addEventListener('progress', (event) => {
+                    const currentProgress = results.length / gameZones.length
                     this.postMessage({
                         type: 'simulation_progress',
-                        progress: event.detail,
+                        progress:
+                            currentProgress + event.detail / gameZones.length,
                     })
                 })
+
                 let result = await combatSimulator.simulate(simulationTimeLimit)
                 results.push(result)
             } catch (e) {
@@ -58,13 +62,39 @@ onmessage = async function (event) {
             }
         }
 
+        const skills = [
+            'Stamina',
+            'Intelligence',
+            'Attack',
+            'Power',
+            'Defense',
+            'Ranged',
+            'Magic',
+        ]
+
         this.postMessage({
             type: 'simulation_result',
-            simResult: results.sort(
-                (a, b) =>
-                    b.experienceGained.player[optimiseFor.toLowerCase()] -
-                    a.experienceGained.player[optimiseFor.toLowerCase()],
-            ),
+            simResult: results.sort((a, b) => {
+                if (skills.includes(optimiseFor)) {
+                    return (
+                        b.experienceGained.player[optimiseFor.toLowerCase()] -
+                        a.experienceGained.player[optimiseFor.toLowerCase()]
+                    )
+                }
+
+                if (optimiseFor === 'Total XP') {
+                    return (
+                        Object.values(b.experienceGained.player).reduce(
+                            (acc, value) => acc + value,
+                            0,
+                        ) -
+                        Object.values(a.experienceGained.player).reduce(
+                            (acc, value) => acc + value,
+                            0,
+                        )
+                    )
+                }
+            }),
         })
     }
 }

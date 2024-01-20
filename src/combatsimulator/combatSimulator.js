@@ -54,7 +54,7 @@ export default class CombatSimulator extends EventTarget {
                         1,
                     ),
                 })
-                // this.dispatchEvent(progressEvent)
+                this.dispatchEvent(progressEvent)
             }
         }
 
